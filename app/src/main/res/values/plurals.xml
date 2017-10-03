@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- People characteristics -->
+    <plurals name="age">
+        <item quantity="one">Age: %1$d year</item>
+        <item quantity="other">Age: %1$d years</item>
+    </plurals>
+</resources>

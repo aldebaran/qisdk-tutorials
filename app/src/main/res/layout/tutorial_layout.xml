@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+    <RadioButton
+        android:id="@+id/bubble"
+        style="@style/Bubble"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        tools:text="Tutorial"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:gravity="center"/>
+
+    <ImageView
+        android:id="@+id/levelView"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintLeft_toLeftOf="@+id/bubble"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/bubble"
+        app:layout_constraintTop_toTopOf="@+id/bubble"
+        android:layout_marginTop="8dp"
+        tools:src="@drawable/ic_img_btn_statusgreen"/>
+
+</android.support.constraint.ConstraintLayout>

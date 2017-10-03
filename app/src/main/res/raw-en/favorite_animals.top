@@ -1,0 +1,8 @@
+topic: ~favorite_animals()
+
+dynamic: favorite_animals
+
+u:(ready) %ready
+
+proposal: %favorite Your favorite animals are: ^enumerate(~favorite_animals)
+proposal: %no_favorite You have no favorite animal, please add at least one

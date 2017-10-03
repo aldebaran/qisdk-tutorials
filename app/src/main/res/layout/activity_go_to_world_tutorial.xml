@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    tools:context=".ui.tutorials.move.GoToWorldTutorialActivity"
+    tools:layout_editor_absoluteY="0dp"
+    tools:layout_editor_absoluteX="0dp">
+
+    <com.softbankrobotics.qisdktutorials.ui.tutorialtoolbar.TutorialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <Button
+        style="@style/Button"
+        android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        tools:layout_editor_absoluteX="44dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/goto_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/editText" />
+
+    <Button
+        style="@style/Button"
+        android:id="@+id/goto_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/go_to_text"
+        app:layout_constraintStart_toStartOf="@+id/save_button"
+        app:layout_constraintEnd_toEndOf="@+id/save_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        tools:layout_editor_absoluteX="41dp" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:labelFor="@+id/editText"
+        android:hint="@string/location"
+        tools:text="Location"
+        tools:layout_editor_absoluteX="193dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/save_button"
+        app:layout_constraintStart_toEndOf="@+id/save_button"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@+id/goto_button"
+        app:layout_constraintBottom_toBottomOf="@+id/goto_button"
+        app:layout_constraintStart_toStartOf="@+id/editText"
+        app:layout_constraintEnd_toEndOf="@+id/editText"
+        tools:layout_editor_absoluteX="193dp" />
+
+    <com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
+        android:id="@+id/conversationView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        app:layout_constraintBottom_toTopOf="@+id/save_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteX="0dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
+        android:scrollbarStyle="outsideInset" />
+
+</android.support.constraint.ConstraintLayout>

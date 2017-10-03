@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            style="@style/Category"
+            android:id="@+id/talk_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_img_btn_talk"
+            android:text="@string/let_s_talk"
+            android:checked="true"/>
+
+        <RadioButton
+            style="@style/Category"
+            android:id="@+id/move_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_img_btn_move"
+            android:text="@string/let_s_move"/>
+
+        <RadioButton
+            style="@style/Category"
+            android:id="@+id/smart_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_img_btn_smart"
+            android:text="@string/let_s_be_smart"/>
+
+    </RadioGroup>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
+        android:scrollbarStyle="outsideInset"/>
+
+    <com.softbankrobotics.qisdktutorials.ui.bilateralswitch.BilateralSwitch
+        android:id="@+id/level_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        custom:first_section_name="BASICS"
+        custom:second_section_name="ADVANCED" />
+
+</LinearLayout>

@@ -1,0 +1,14 @@
+topic: ~common()
+
+concept:(talk) ["let's talk" talk]
+concept:(move) ["let's move" move]
+concept:(smart) ["let's be smart" smart]
+
+concept:(basics) [basics]
+concept:(advanced) [advanced]
+
+u:(~talk) OK %talk
+u:(~move) OK %move
+u:(~smart) OK %smart
+u:(~basics) OK %basics
+u:(~advanced) OK %advanced

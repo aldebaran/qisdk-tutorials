@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BilateralSwitch">
+        <attr name="first_section_name" format="string" />
+        <attr name="second_section_name" format="string" />
+    </declare-styleable>
+</resources>

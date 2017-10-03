@@ -1,0 +1,5 @@
+topic: ~mimic_animal()
+
+proposal: %mimic_proposal I can mimic a dog or an elephant. Which one do you want me to mimic?
+    u1: (dog) OK, I will mimic a dog %dog_mimic
+    u1: (elephant) OK, I will mimic an elephant %elephant_mimic

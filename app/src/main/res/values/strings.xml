@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">Qi SDK Tutorials</string>
+
+    <!-- Autonomous abilities -->
+    <string name="hold">Hold</string>
+    <string name="release">Release</string>
+
+    <!-- LookAt -->
+    <string name="cancel_action">Cancel action</string>
+
+    <!-- People characteristics -->
+    <string name="refresh">Refresh</string>
+    <string name="gender">Gender: %1$s</string>
+    <string name="pleasure_state">Pleasure state: %1$s</string>
+    <string name="excitement_state">Excitement state: %1$s</string>
+    <string name="smile_state">Smile state: %1$s</string>
+    <string name="attention_state">Attention state: %1$s</string>
+    <string name="distance">Distance: %1$f meter(s)</string>
+
+    <!-- Dynamic concepts -->
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    <string name="animal">Animal</string>
+
+    <!-- Go to world -->
+    <string name="save">Save</string>
+    <string name="go_to_text">Go to</string>
+    <string name="location">Location</string>
+
+    <!-- Follow human -->
+    <string name="follow">Follow</string>
+    <string name="stop">Stop</string>
+
+    <!-- QiChat variables -->
+    <string name="nickname">Nickname</string>
+    <string name="validate">Validate</string>
+
+    <!-- Tutorial names -->
+    <string name="hello_human">Hello human</string>
+    <string name="discuss">Listen and reply</string>
+    <string name="listen">Catch few words</string>
+    <string name="bookmarks">Mastering Bookmark</string>
+    <string name="dynamic_concepts">Mastering Dynamic concept</string>
+    <string name="qichat_variables">Mastering QiChat variable</string>
+    <string name="animation">Mimic animals</string>
+    <string name="go_to">Step forward</string>
+    <string name="look_at">Stare somewhere</string>
+    <string name="go_to_world">Saving Locations</string>
+    <string name="follow_human">Mastering Attached Frame</string>
+    <string name="autonomous_abilities">Hold/release autonomous abilities</string>
+    <string name="people_characteristics">Detect humans</string>
+    <string name="touch">React when touched</string>
+    <string name="trajectory">Trajectory</string>
+    <string name="collaborative_dialog">Mastering Collaborative dialog</string>
+
+    <!-- Tutorial descriptions -->
+    <string name="dynamic_concepts_tutorial_description">Add your favorite animals and say \"ready\" when you are.</string>
+    <string name="qichat_variables_tutorial_description">Enter a nickname and press \"Validate\". Then say \"nickname\"</string>
+
+    <!-- Categories -->
+    <string name="categories_intro_sentence">Please tell me or select on the tablet which demo you want me to show you</string>
+    <string name="let_s_talk">\"let\'s talk\"</string>
+    <string name="let_s_move">\"let\'s move\"</string>
+    <string name="let_s_be_smart">\"let\'s be smart\"</string>
+
+    <!-- Toolbar -->
+    <string name="toolbar_basic_level">BASIC</string>
+    <string name="toolbar_advanced_level">ADVANCED</string>
+
+</resources>

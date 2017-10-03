@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/sayable_blue</color>
+    <color name="colorPrimaryDark">@color/non_sayable_blue</color>
+    <color name="colorAccent">@color/advanced_orange</color>
+
+    <color name="human_bubble">#c5f7b2</color>
+    <color name="pepper_bubble">#f6dbfc</color>
+
+    <color name="basic_green">#42ea00</color>
+    <color name="advanced_orange">#ff9612</color>
+
+    <color name="sayable_blue">#1bbde2</color>
+    <color name="non_sayable_blue">#2e86d0</color>
+
+    <color name="selection_green">#11ef54</color>
+
+    <color name="gray">#888888</color>
+    <color name="light_gray">#cccccccc</color>
+</resources>

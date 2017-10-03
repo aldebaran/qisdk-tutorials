@@ -1,0 +1,18 @@
+topic: ~talk_tutorials()
+
+concept:(hello) ["Hello human" hello]
+concept:(discuss) ["Listen and reply" listen reply]
+concept:(listen) ["Catch few words" catch words]
+concept:(bookmark) ["Mastering bookmark" bookmark]
+concept:(dynamicconcept) ["Mastering dynamic concept" dynamic concept]
+concept:(qichatvariable) ["Mastering QiChat variable" qichat variable]
+concept:(collaborativedialog) ["Mastering Collaborative dialog" collaborative]
+
+u: ("~hello $level==basic") ^endDiscuss(hello)
+u: ("~discuss $level==basic") ^endDiscuss(discuss)
+u: ("~listen $level==basic") ^endDiscuss(listen)
+u: ("~bookmark $level==advanced") ^endDiscuss(bookmark)
+u: ("~dynamicconcept $level==advanced") ^endDiscuss(dynamic_concept)
+u: ("~qichatvariable $level==advanced") ^endDiscuss(qichat_variable)
+u: ("~collaborativedialog $level==advanced") ^endDiscuss(collaborative_dialog)
+

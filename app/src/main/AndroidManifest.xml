@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.softbankrobotics.qisdktutorials">
+
+    <uses-feature android:name="com.softbank.hardware.pepper" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_app_icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".ui.splashscreen.SplashScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.categories.CategoriesActivity" />
+        <activity android:name=".ui.tutorials.hellohuman.HelloHumanTutorialActivity" />
+        <activity android:name=".ui.tutorials.listen.ListenTutorialActivity" />
+        <activity android:name=".ui.tutorials.animate.AnimateTutorialActivity" />
+        <activity android:name=".ui.tutorials.move.GoToTutorialActivity" />
+        <activity android:name=".ui.tutorials.autonomousabilities.AutonomousAbilitiesTutorialActivity" />
+        <activity android:name=".ui.tutorials.peoplecharacteristics.PeopleCharacteristicsTutorialActivity" />
+        <activity android:name=".ui.tutorials.discuss.DiscussTutorialActivity" />
+        <activity android:name=".ui.tutorials.touch.TouchTutorialActivity" />
+        <activity android:name=".ui.tutorials.lookat.LookAtTutorialActivity" />
+        <activity android:name=".ui.tutorials.discuss.BookmarksTutorialActivity" />
+        <activity android:name=".ui.tutorials.discuss.DynamicConceptsTutorialActivity" />
+        <activity android:name=".ui.tutorials.move.GoToWorldTutorialActivity" />
+        <activity android:name=".ui.tutorials.move.FollowHumanTutorialActivity" />
+        <activity android:name=".ui.tutorials.discuss.QiChatVariablesTutorialActivity" />
+        <activity android:name=".ui.tutorials.animate.TrajectoryTutorialActivity" />
+        <activity android:name=".ui.tutorials.discuss.CollaborativeDialogTutorialActivity" />
+    </application>
+
+</manifest>
