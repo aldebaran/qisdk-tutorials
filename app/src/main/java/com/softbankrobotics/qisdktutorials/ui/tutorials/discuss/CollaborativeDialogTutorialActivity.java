@@ -72,7 +72,7 @@ public class CollaborativeDialogTutorialActivity extends TutorialActivity implem
         // Get the SharedTopics service from the QiContext.
         SharedTopics sharedTopics = qiContext.getSharedTopics();
         // Get the English shared topics.
-        List<Topic> topics = sharedTopics.sharedTopics(new Locale(Language.ENGLISH, Region.UNITED_STATES));
+        List<Topic> topics = sharedTopics.topicsWithLocale(new Locale(Language.ENGLISH, Region.UNITED_STATES));
 
         // Create the local topic.
         Topic localTopic = TopicBuilder.with(qiContext)
