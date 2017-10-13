@@ -20,6 +20,7 @@ import com.softbankrobotics.qisdktutorials.ui.tutorials.lookat.LookAtTutorialAct
 import com.softbankrobotics.qisdktutorials.ui.tutorials.move.FollowHumanTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.move.GoToTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.move.GoToWorldTutorialActivity;
+import com.softbankrobotics.qisdktutorials.ui.tutorials.peoplecharacteristics.EmotionTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.peoplecharacteristics.PeopleCharacteristicsTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.touch.TouchTutorialActivity;
 import com.softbankrobotics.qisdktutorials.utils.Constants;
@@ -77,6 +78,8 @@ class CategoriesRouter implements CategoriesContract.Router {
                 return AutonomousAbilitiesTutorialActivity.class;
             case COLLABORATIVE_DIALOG:
                 return CollaborativeDialogTutorialActivity.class;
+            case EMOTION:
+                return EmotionTutorialActivity.class;
             default:
                 throw new IllegalArgumentException("Unknown tutorial identifier: " + tutorialId);
         }

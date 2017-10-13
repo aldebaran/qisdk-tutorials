@@ -98,6 +98,7 @@ public class TutorialRepository {
                 break;
             case ADVANCED:
                 tutorials.add(new Tutorial(TutorialId.CHARACTERISTICS, R.string.people_characteristics, "people_characteristics", TutorialLevel.ADVANCED));
+                tutorials.add(new Tutorial(TutorialId.EMOTION, R.string.emotion, "emotion", TutorialLevel.ADVANCED));
                 break;
             default:
                 throw new IllegalArgumentException("Unknown tutorial level: " + tutorialLevel);

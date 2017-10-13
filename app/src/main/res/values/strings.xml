@@ -52,6 +52,7 @@
     <string name="touch">React when touched</string>
     <string name="trajectory">Trajectory</string>
     <string name="collaborative_dialog">Mastering Collaborative dialog</string>
+    <string name="emotion">Detect human emotions</string>
 
     <!-- Tutorial descriptions -->
     <string name="dynamic_concepts_tutorial_description">Add your favorite animals and say \"ready\" when you are.</string>
