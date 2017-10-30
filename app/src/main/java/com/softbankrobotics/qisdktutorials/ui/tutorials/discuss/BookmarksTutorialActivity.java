@@ -1,5 +1,6 @@
 package com.softbankrobotics.qisdktutorials.ui.tutorials.discuss;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.RawRes;
 import android.util.Log;
@@ -34,6 +35,7 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
     private static final String TAG = "BookmarksActivity";
 
     private ConversationView conversationView;
+    private MediaPlayer mediaPlayer;
 
     // Store the discuss action.
     private Discuss discuss;
@@ -52,6 +54,15 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
 
         // Register the RobotLifecycleCallbacks to this Activity.
         QiSDK.register(this, this);
+    }
+
+    @Override
+    protected void onStop() {
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+        super.onStop();
     }
 
     @Override
@@ -160,17 +171,17 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
         String message = "Dog mimic.";
         Log.i(TAG, message);
         displayLine(message, ConversationItemType.INFO_LOG);
-        mimic(R.raw.dog_a001, qiContext);
+        mimic(R.raw.dog_a001, R.raw.dog_sound, qiContext);
     }
 
     private void mimicElephant(QiContext qiContext) {
         String message = "Elephant mimic.";
         Log.i(TAG, message);
         displayLine(message, ConversationItemType.INFO_LOG);
-        mimic(R.raw.elephant_a001, qiContext);
+        mimic(R.raw.elephant_a001, R.raw.elephant_sound, qiContext);
     }
 
-    private void mimic(@RawRes Integer mimicResource, QiContext qiContext) {
+    private void mimic(@RawRes Integer mimicResource, @RawRes final Integer soundResource, QiContext qiContext) {
         // Create an animation from the mimic resource.
         Animation animation = AnimationBuilder.with(qiContext)
                 .withResources(mimicResource)
@@ -180,6 +191,19 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
         Animate animate = AnimateBuilder.with(qiContext)
                 .withAnimation(animation)
                 .build();
+
+        animate.setOnStartedListener(new Animate.OnStartedListener() {
+            @Override
+            public void onStarted() {
+                if (mediaPlayer != null) {
+                    mediaPlayer.release();
+                    mediaPlayer = null;
+                }
+
+                mediaPlayer = MediaPlayer.create(BookmarksTutorialActivity.this, soundResource);
+                mediaPlayer.start();
+            }
+        });
 
         // Run the animate action asynchronously.
         animate.async().run().andThenConsume(new Consumer<Void>() {

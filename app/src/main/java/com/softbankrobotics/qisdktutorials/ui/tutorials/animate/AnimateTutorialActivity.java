@@ -1,5 +1,6 @@
 package com.softbankrobotics.qisdktutorials.ui.tutorials.animate;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -27,6 +28,7 @@ public class AnimateTutorialActivity extends TutorialActivity implements RobotLi
     private static final String TAG = "AnimateTutorialActivity";
 
     private ConversationView conversationView;
+    private MediaPlayer mediaPlayer;
 
     // Store the Animate action.
     private Animate animate;
@@ -39,6 +41,19 @@ public class AnimateTutorialActivity extends TutorialActivity implements RobotLi
 
         // Register the RobotLifecycleCallbacks to this Activity.
         QiSDK.register(this, this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mediaPlayer = MediaPlayer.create(this, R.raw.elephant_sound);
+    }
+
+    @Override
+    protected void onStop() {
+        mediaPlayer.release();
+        mediaPlayer = null;
+        super.onStop();
     }
 
     @Override
@@ -81,6 +96,8 @@ public class AnimateTutorialActivity extends TutorialActivity implements RobotLi
                 String message = "Animation started.";
                 Log.i(TAG, message);
                 displayLine(message, ConversationItemType.INFO_LOG);
+
+                mediaPlayer.start();
             }
         });
 
