@@ -20,7 +20,7 @@
     <!-- Dynamic concepts -->
     <string name="add">Add</string>
     <string name="remove">Remove</string>
-    <string name="animal">Animal</string>
+    <string name="item">Item</string>
 
     <!-- Go to world -->
     <string name="save">Save</string>
@@ -55,7 +55,7 @@
     <string name="emotion">Mastering Emotion detection</string>
 
     <!-- Tutorial descriptions -->
-    <string name="dynamic_concepts_tutorial_description">Add your favorite animals and say \"ready\" when you are.</string>
+    <string name="dynamic_concepts_tutorial_description">Add some items and say \"ready\" when you are.</string>
     <string name="qichat_variables_tutorial_description">Enter a nickname and press \"Validate\". Then say \"nickname\"</string>
 
     <!-- Categories -->

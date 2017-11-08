@@ -1,0 +1,8 @@
+topic: ~items()
+
+dynamic: items
+
+u:(ready) %ready
+
+proposal: %items Your items are: ^enumerate(~items)
+proposal: %no_item You have no item, please add at least one

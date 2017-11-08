@@ -33,11 +33,11 @@ import java.util.Map;
  */
 public class DynamicConceptsTutorialActivity extends TutorialActivity implements RobotLifecycleCallbacks {
 
-    private FavoriteAnimalAdapter favoriteAnimalAdapter;
+    private ItemAdapter itemAdapter;
 
-    // Store the favorite animals dynamic concept.
-    private EditablePhraseSet favoriteAnimals;
-    private EditText animalEditText;
+    // Store the items dynamic concept.
+    private EditablePhraseSet items;
+    private EditText itemEditText;
     // Store the ready BookmarkStatus.
     private BookmarkStatus readyBookmarkStatus;
 
@@ -45,8 +45,8 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        animalEditText = findViewById(R.id.editText);
-        animalEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        itemEditText = findViewById(R.id.editText);
+        itemEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -57,21 +57,21 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
         });
 
         // Create adapter for recycler view.
-        favoriteAnimalAdapter = new FavoriteAnimalAdapter(new OnFavoriteAnimalClickedListener() {
+        itemAdapter = new ItemAdapter(new OnItemRemovedListener() {
             @Override
-            public void onAnimalRemoved(String animalName) {
-                // Remove animal from favorites.
-                removeFavoriteAnimal(animalName);
-                favoriteAnimalAdapter.removeAnimal(animalName);
+            public void onItemRemoved(String itemName) {
+                // Remove item.
+                removeItem(itemName);
+                itemAdapter.removeItem(itemName);
             }
         });
 
         // Setup recycler view.
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(favoriteAnimalAdapter);
+        recyclerView.setAdapter(itemAdapter);
 
-        // Add animal to favorites on add button clicked.
+        // Add item on add button clicked.
         Button addButton = findViewById(R.id.add_button);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +100,7 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
     public void onRobotFocusGained(QiContext qiContext) {
         // Create a topic.
         Topic topic = TopicBuilder.with(qiContext)
-                .withResource(R.raw.favorite_animals)
+                .withResource(R.raw.items)
                 .build();
 
         // Create a new discuss action.
@@ -108,24 +108,24 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
                 .withTopic(topic)
                 .build();
 
-        // Get the favorite animals dynamic concept.
-        favoriteAnimals = discuss.dynamicConcept("favorite_animals");
+        // Get the items dynamic concept.
+        items = discuss.dynamicConcept("items");
 
         // Get the bookmarks from the topic.
         Map<String, Bookmark> bookmarks = topic.getBookmarks();
         final Bookmark readyBookmark = bookmarks.get("ready");
-        final Bookmark favoriteBookmark = bookmarks.get("favorite");
-        final Bookmark noFavoriteBookmark = bookmarks.get("no_favorite");
+        final Bookmark itemsBookmark = bookmarks.get("items");
+        final Bookmark noItemBookmark = bookmarks.get("no_item");
 
         // When user is ready, decide which proposal the robot should say.
         readyBookmarkStatus = discuss.bookmarkStatus(readyBookmark);
         readyBookmarkStatus.setOnReachedListener(new BookmarkStatus.OnReachedListener() {
             @Override
             public void onReached() {
-                if (favoriteAnimals.getPhrases().isEmpty()) {
-                    discuss.goToBookmarkedOutputUtterance(noFavoriteBookmark);
+                if (items.getPhrases().isEmpty()) {
+                    discuss.goToBookmarkedOutputUtterance(noItemBookmark);
                 } else {
-                    discuss.goToBookmarkedOutputUtterance(favoriteBookmark);
+                    discuss.goToBookmarkedOutputUtterance(itemsBookmark);
                 }
             }
         });
@@ -148,27 +148,27 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
     }
 
     private void handleAddClick() {
-        String animalName = animalEditText.getText().toString();
-        animalEditText.setText("");
+        String itemName = itemEditText.getText().toString();
+        itemEditText.setText("");
         KeyboardUtils.hideKeyboard(this);
-        // Add animal only if new.
-        if (!animalName.isEmpty() && !favoriteAnimalAdapter.containsAnimal(animalName)) {
-            addFavoriteAnimal(animalName);
-            favoriteAnimalAdapter.addAnimal(animalName);
+        // Add item only if new.
+        if (!itemName.isEmpty() && !itemAdapter.containsItem(itemName)) {
+            addItem(itemName);
+            itemAdapter.addItem(itemName);
         }
     }
 
-    private void addFavoriteAnimal(String animalName) {
-        // Add the animal name to the dynamic concept.
-        if (favoriteAnimals != null) {
-            favoriteAnimals.async().addPhrases(Collections.singletonList(new Phrase(animalName)));
+    private void addItem(String itemName) {
+        // Add the item name to the dynamic concept.
+        if (items != null) {
+            items.async().addPhrases(Collections.singletonList(new Phrase(itemName)));
         }
     }
 
-    private void removeFavoriteAnimal(String animalName) {
-        // Remove the animal name from the dynamic concept.
-        if (favoriteAnimals != null) {
-            favoriteAnimals.async().removePhrases(Collections.singletonList(new Phrase(animalName)));
+    private void removeItem(String itemName) {
+        // Remove the item name from the dynamic concept.
+        if (items != null) {
+            items.async().removePhrases(Collections.singletonList(new Phrase(itemName)));
         }
     }
 }

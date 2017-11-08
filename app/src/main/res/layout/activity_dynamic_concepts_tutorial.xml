@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:hint="@string/animal"
+        android:hint="@string/item"
         app:layout_constraintRight_toLeftOf="@+id/add_button"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="8dp"
