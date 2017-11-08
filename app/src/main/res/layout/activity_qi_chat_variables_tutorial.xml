@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:hint="@string/nickname"
+        android:hint="@string/value"
         app:layout_constraintRight_toLeftOf="@+id/validate_button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

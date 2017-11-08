@@ -101,16 +101,16 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
     }
 
     private void updateVariable() {
-        String nickname = variableEditText.getText().toString();
+        String value = variableEditText.getText().toString();
         variableEditText.setText("");
         KeyboardUtils.hideKeyboard(this);
-        if (!nickname.isEmpty()) {
-            setVariable(nickname);
+        if (!value.isEmpty()) {
+            setVariable(value);
         }
     }
 
-    private void setVariable(String nickname) {
-        // Set the nickname.
-        variable.async().setValue(nickname);
+    private void setVariable(String value) {
+        // Set the value.
+        variable.async().setValue(value);
     }
 }

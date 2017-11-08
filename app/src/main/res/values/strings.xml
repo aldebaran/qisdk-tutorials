@@ -33,7 +33,7 @@
     <string name="stop">Stop</string>
 
     <!-- QiChat variables -->
-    <string name="nickname">Nickname</string>
+    <string name="value">Value</string>
     <string name="validate">Validate</string>
 
     <!-- Tutorial names -->
@@ -56,7 +56,7 @@
     <string name="emotion">Mastering Emotion detection</string>
 
     <!-- Tutorial descriptions -->
-    <string name="qichat_variables_tutorial_description">Enter a nickname and press \"Validate\". Then say \"nickname\"</string>
+    <string name="qichat_variables_tutorial_description">Enter a value and press \"Validate\". Then say \"value\"</string>
 
     <!-- Categories -->
     <string name="categories_intro_sentence">Please tell me or select on the tablet which demo you want me to show you</string>
