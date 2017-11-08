@@ -1,6 +1,7 @@
 package com.softbankrobotics.qisdktutorials.ui.categories;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.util.Log;
 
 import com.aldebaran.qi.Consumer;
@@ -40,6 +41,7 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
     private TutorialCategory selectedCategory = TutorialCategory.TALK;
     private TutorialLevel selectedLevel = TutorialLevel.BASICS;
     private QiChatVariable levelVariable;
+    private boolean isFirstIntro = true;
 
     CategoriesRobot(CategoriesContract.Presenter presenter) {
         this.presenter = presenter;
@@ -94,9 +96,11 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
         SayBuilder.with(qiContext)
-                .withText(qiContext.getString(R.string.categories_intro_sentence))
+                .withText(qiContext.getString(introSentenceRes()))
                 .build()
                 .run();
+
+        isFirstIntro = false;
 
         final Topic commonTopic = TopicBuilder.with(qiContext)
                 .withResource(R.raw.common)
@@ -241,5 +245,10 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
                 throw new IllegalArgumentException("Unknown tutorial level: " + level);
         }
         return value;
+    }
+
+    @StringRes
+    private int introSentenceRes() {
+        return isFirstIntro ? R.string.categories_intro_sentence : R.string.categories_intro_sentence_variant;
     }
 }
