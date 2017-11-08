@@ -14,14 +14,18 @@ import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.DiscussBuilder;
+import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.BookmarkStatus;
 import com.aldebaran.qi.sdk.object.conversation.Discuss;
 import com.aldebaran.qi.sdk.object.conversation.EditablePhraseSet;
 import com.aldebaran.qi.sdk.object.conversation.Phrase;
+import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
 import com.softbankrobotics.qisdktutorials.R;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 import com.softbankrobotics.qisdktutorials.utils.KeyboardUtils;
 
@@ -34,16 +38,21 @@ import java.util.Map;
 public class DynamicConceptsTutorialActivity extends TutorialActivity implements RobotLifecycleCallbacks {
 
     private ItemAdapter itemAdapter;
+    private ConversationView conversationView;
 
     // Store the items dynamic concept.
     private EditablePhraseSet items;
     private EditText itemEditText;
-    // Store the ready BookmarkStatus.
-    private BookmarkStatus readyBookmarkStatus;
+    // Store the list BookmarkStatus.
+    private BookmarkStatus listBookmarkStatus;
+    private Discuss discuss;
+    private Bookmark listBookmark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        conversationView = findViewById(R.id.conversationView);
 
         itemEditText = findViewById(R.id.editText);
         itemEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -53,6 +62,16 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
                     handleAddClick();
                 }
                 return false;
+            }
+        });
+
+        Button itemsButton = findViewById(R.id.items_button);
+        itemsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (discuss != null) {
+                    discuss.async().goToBookmarkedOutputUtterance(listBookmark);
+                }
             }
         });
 
@@ -98,13 +117,22 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
+        String textToSay = "Add some items to the dynamic concept and say \"items\" to list them.";
+        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+
+        Say say = SayBuilder.with(qiContext)
+                .withText(textToSay)
+                .build();
+
+        say.run();
+
         // Create a topic.
         Topic topic = TopicBuilder.with(qiContext)
                 .withResource(R.raw.items)
                 .build();
 
         // Create a new discuss action.
-        final Discuss discuss = DiscussBuilder.with(qiContext)
+        discuss = DiscussBuilder.with(qiContext)
                 .withTopic(topic)
                 .build();
 
@@ -113,13 +141,13 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
 
         // Get the bookmarks from the topic.
         Map<String, Bookmark> bookmarks = topic.getBookmarks();
-        final Bookmark readyBookmark = bookmarks.get("ready");
+        listBookmark = bookmarks.get("list");
         final Bookmark itemsBookmark = bookmarks.get("items");
         final Bookmark noItemBookmark = bookmarks.get("no_item");
 
         // When user is ready, decide which proposal the robot should say.
-        readyBookmarkStatus = discuss.bookmarkStatus(readyBookmark);
-        readyBookmarkStatus.setOnReachedListener(new BookmarkStatus.OnReachedListener() {
+        listBookmarkStatus = discuss.bookmarkStatus(listBookmark);
+        listBookmarkStatus.setOnReachedListener(new BookmarkStatus.OnReachedListener() {
             @Override
             public void onReached() {
                 if (items.getPhrases().isEmpty()) {
@@ -130,15 +158,33 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
             }
         });
 
+        discuss.setOnLatestInputUtteranceChangedListener(new Discuss.OnLatestInputUtteranceChangedListener() {
+            @Override
+            public void onLatestInputUtteranceChanged(Phrase input) {
+                displayLine(input.getText(), ConversationItemType.HUMAN_INPUT);
+            }
+        });
+
+        discuss.setOnLatestOutputUtteranceChangedListener(new Discuss.OnLatestOutputUtteranceChangedListener() {
+            @Override
+            public void onLatestOutputUtteranceChanged(Phrase output) {
+                displayLine(output.getText(), ConversationItemType.ROBOT_OUTPUT);
+            }
+        });
+
         // Run the discuss action asynchronously.
         discuss.async().run();
     }
 
     @Override
     public void onRobotFocusLost() {
-        // Remove the listener on the ready BookmarkStatus.
-        if (readyBookmarkStatus != null) {
-            readyBookmarkStatus.setOnReachedListener(null);
+        // Remove the listener on the list BookmarkStatus.
+        if (listBookmarkStatus != null) {
+            listBookmarkStatus.setOnReachedListener(null);
+        }
+        if (discuss != null) {
+            discuss.setOnLatestInputUtteranceChangedListener(null);
+            discuss.setOnLatestOutputUtteranceChangedListener(null);
         }
     }
 
@@ -170,5 +216,14 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
         if (items != null) {
             items.async().removePhrases(Collections.singletonList(new Phrase(itemName)));
         }
+    }
+
+    private void displayLine(final String text, final ConversationItemType type) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                conversationView.addLine(text, type);
+            }
+        });
     }
 }
