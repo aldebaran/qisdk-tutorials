@@ -12,11 +12,17 @@ import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.DiscussBuilder;
+import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
+import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.Discuss;
+import com.aldebaran.qi.sdk.object.conversation.Phrase;
 import com.aldebaran.qi.sdk.object.conversation.QiChatVariable;
+import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
 import com.softbankrobotics.qisdktutorials.R;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 import com.softbankrobotics.qisdktutorials.utils.KeyboardUtils;
 
@@ -26,17 +32,20 @@ import com.softbankrobotics.qisdktutorials.utils.KeyboardUtils;
 public class QiChatVariablesTutorialActivity extends TutorialActivity implements RobotLifecycleCallbacks {
 
     private EditText variableEditText;
+    private ConversationView conversationView;
 
     // Store the variable.
     private QiChatVariable variable;
+    private Discuss discuss;
+    private Bookmark readBookmark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        variableEditText = findViewById(R.id.variable_editText);
-        Button validateButton = findViewById(R.id.validate_button);
+        conversationView = findViewById(R.id.conversationView);
 
+        variableEditText = findViewById(R.id.variable_editText);
         variableEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -47,11 +56,20 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
             }
         });
 
-        // Save variable on validate button clicked.
-        validateButton.setOnClickListener(new View.OnClickListener() {
+        // Save variable on assign button clicked.
+        Button assignButton = findViewById(R.id.assign_button);
+        assignButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateVariable();
+            }
+        });
+
+        Button valueButton = findViewById(R.id.value_button);
+        valueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                discuss.async().goToBookmarkedOutputUtterance(readBookmark);
             }
         });
 
@@ -73,18 +91,43 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
+        String textToSay = "Assign a value to the variable and say \"value\" to read it.";
+        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+
+        Say say = SayBuilder.with(qiContext)
+                .withText(textToSay)
+                .build();
+
+        say.run();
+
         // Create a topic.
         Topic topic = TopicBuilder.with(qiContext)
                 .withResource(R.raw.variable)
                 .build();
 
+        readBookmark = topic.getBookmarks().get("read");
+
         // Create a new discuss action.
-        Discuss discuss = DiscussBuilder.with(qiContext)
+        discuss = DiscussBuilder.with(qiContext)
                 .withTopic(topic)
                 .build();
 
         // Get the variable.
         variable = discuss.variable("var");
+
+        discuss.setOnLatestInputUtteranceChangedListener(new Discuss.OnLatestInputUtteranceChangedListener() {
+            @Override
+            public void onLatestInputUtteranceChanged(Phrase input) {
+                displayLine(input.getText(), ConversationItemType.HUMAN_INPUT);
+            }
+        });
+
+        discuss.setOnLatestOutputUtteranceChangedListener(new Discuss.OnLatestOutputUtteranceChangedListener() {
+            @Override
+            public void onLatestOutputUtteranceChanged(Phrase output) {
+                displayLine(output.getText(), ConversationItemType.ROBOT_OUTPUT);
+            }
+        });
 
         // Run the discuss action asynchronously.
         discuss.async().run();
@@ -92,7 +135,10 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
 
     @Override
     public void onRobotFocusLost() {
-        // Nothing here.
+        if (discuss != null) {
+            discuss.setOnLatestInputUtteranceChangedListener(null);
+            discuss.setOnLatestOutputUtteranceChangedListener(null);
+        }
     }
 
     @Override
@@ -112,5 +158,14 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
     private void setVariable(String value) {
         // Set the value.
         variable.async().setValue(value);
+    }
+
+    private void displayLine(final String text, final ConversationItemType type) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                conversationView.addLine(text, type);
+            }
+        });
     }
 }
