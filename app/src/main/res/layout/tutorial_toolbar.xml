@@ -25,11 +25,12 @@
             android:layout_marginStart="24dp"
             app:layout_constraintLeft_toLeftOf="parent" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Hello human"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            tools:text="Mastering HumanAwareness &amp; Human"
+            android:gravity="center"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -38,7 +39,10 @@
             app:layout_constraintRight_toLeftOf="@+id/levelView"
             android:layout_marginRight="8dp"
             app:layout_constraintLeft_toRightOf="@+id/backArrow"
-            android:layout_marginLeft="8dp" />
+            android:layout_marginLeft="8dp"
+            android:maxLines="2"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMaxTextSize="@dimen/big_text" />
 
         <View
             android:id="@+id/levelView"

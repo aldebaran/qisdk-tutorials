@@ -1,15 +1,15 @@
 topic: ~move_tutorials()
 
 concept:(mimic) ["Mimic animals" mimic animals]
-concept:(trajectory) [Trajectory]
-concept:(step) ["Step forward" step forward]
-concept:(stare) ["Stare somewhere" stare somewhere]
-concept:(locations) ["Saving locations" saving location]
-concept:(attached) ["Mastering attached frame" attached frame]
+concept:(trajectory) ["Step forward" step forward]
+concept:(goto) ["Understanding GoTo" GoTo]
+concept:(lookat) ["Understanding LookAt" LookAt]
+concept:(freeframes) ["Mastering FreeFrames" FreeFrames]
+concept:(attachedframe) ["Mastering AttachedFrame" AttachedFrame]
 
 u: ("~mimic $level==basic") ^endDiscuss(animation)
 u: ("~trajectory $level==basic") ^endDiscuss(trajectory)
-u: ("~step $level==advanced") ^endDiscuss(goto)
-u: ("~stare $level==advanced") ^endDiscuss(lookat)
-u: ("~locations $level==advanced") ^endDiscuss(goto_world)
-u: ("~attached $level==advanced") ^endDiscuss(follow)
+u: ("~goto $level==advanced") ^endDiscuss(goto)
+u: ("~lookat $level==advanced") ^endDiscuss(lookat)
+u: ("~freeframes $level==advanced") ^endDiscuss(goto_world)
+u: ("~attachedframe $level==advanced") ^endDiscuss(follow)

@@ -43,16 +43,16 @@
     <string name="dynamic_concepts">Mastering Dynamic concept</string>
     <string name="qichat_variables">Mastering QiChat variable</string>
     <string name="animation">Mimic animals</string>
-    <string name="go_to">Step forward</string>
-    <string name="look_at">Stare somewhere</string>
-    <string name="go_to_world">Saving Locations</string>
-    <string name="follow_human">Mastering Attached Frame</string>
+    <string name="go_to">Understanding GoTo</string>
+    <string name="look_at">Understanding LookAt</string>
+    <string name="go_to_world">Mastering FreeFrames</string>
+    <string name="follow_human">Mastering AttachedFrame</string>
     <string name="autonomous_abilities">Hold/release autonomous abilities</string>
-    <string name="people_characteristics">Detect humans</string>
+    <string name="people_characteristics">Mastering HumanAwareness &amp; Human</string>
     <string name="touch">React when touched</string>
-    <string name="trajectory">Trajectory</string>
+    <string name="trajectory">Step forward</string>
     <string name="collaborative_dialog">Mastering Collaborative dialog</string>
-    <string name="emotion">Detect human emotions</string>
+    <string name="emotion">Mastering Emotion detection</string>
 
     <!-- Tutorial descriptions -->
     <string name="dynamic_concepts_tutorial_description">Add your favorite animals and say \"ready\" when you are.</string>
