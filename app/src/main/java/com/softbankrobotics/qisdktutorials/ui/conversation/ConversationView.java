@@ -36,7 +36,7 @@ public class ConversationView extends RecyclerView {
         setLayoutManager(new LinearLayoutManager(getContext()));
         setAdapter(adapter);
 
-        Drawable drawable = getContext().getDrawable(R.drawable.empty_divider);
+        Drawable drawable = getContext().getDrawable(R.drawable.empty_divider_big);
         if (drawable != null) {
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
             dividerItemDecoration.setDrawable(drawable);

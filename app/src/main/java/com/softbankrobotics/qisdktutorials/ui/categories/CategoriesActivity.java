@@ -187,7 +187,7 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesC
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         recyclerview.setAdapter(tutorialAdapter);
 
-        Drawable drawable = getDrawable(R.drawable.empty_divider);
+        Drawable drawable = getDrawable(R.drawable.empty_divider_small);
         if (drawable != null) {
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
             dividerItemDecoration.setDrawable(drawable);
