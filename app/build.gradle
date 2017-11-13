@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.softbankrobotics.qisdktutorials"
         minSdkVersion 22
@@ -21,19 +21,19 @@ android {
 
 dependencies {
     // dependencies versions
-    ext.support_version = '26.0.1'
+    ext.support_version = '26.1.0'
     ext.constraint_layout = '1.0.2'
     // local libs
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     // support
-    compile "com.android.support:appcompat-v7:$support_version"
-    compile "com.android.support:recyclerview-v7:$support_version"
-    compile "com.android.support.constraint:constraint-layout:$constraint_layout"
+    implementation "com.android.support:appcompat-v7:$support_version"
+    implementation "com.android.support:recyclerview-v7:$support_version"
+    implementation "com.android.support.constraint:constraint-layout:$constraint_layout"
     // tests
-    testCompile 'junit:junit:4.12'
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     // Pepper
-    compile 'com.aldebaran:qisdk:1.1.9'
+    implementation 'com.aldebaran:qisdk:1.1.9'
 }
