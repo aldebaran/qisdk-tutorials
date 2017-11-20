@@ -91,7 +91,7 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        String textToSay = "Assign a value to the variable and say \"value\" to read it.";
+        String textToSay = "Assign a value to the variable and say \"Use this value\" to read it.";
         displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
 
         Say say = SayBuilder.with(qiContext)

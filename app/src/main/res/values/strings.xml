@@ -32,7 +32,7 @@
     <!-- QiChat variables -->
     <string name="value">Value</string>
     <string name="assign">Assign</string>
-    <string name="value_sayable">\"Value\"</string>
+    <string name="use_this_value">\"Use this value\"</string>
 
     <!-- Tutorial names -->
     <string name="hello_human">Hello human</string>

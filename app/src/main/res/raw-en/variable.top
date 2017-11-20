@@ -1,3 +1,3 @@
 topic: ~variable()
 
-u:(value) %read ^first["The value is $var" "There is no value, type one"]
+u:(Use this value) %read ^first["My tailor is $var" "There is no value, type one"]
