@@ -8,34 +8,34 @@ import android.widget.TextView;
 import com.softbankrobotics.qisdktutorials.R;
 
 /**
- * The view holder to show an item.
+ * The view holder to show a greeting.
  */
-class ItemViewHolder extends RecyclerView.ViewHolder {
+class GreetingViewHolder extends RecyclerView.ViewHolder {
 
     private TextView textView;
     private Button button;
 
-    private OnItemRemovedListener onItemRemovedListener;
+    private OnGreetingRemovedListener onGreetingRemovedListener;
 
-    ItemViewHolder(View itemView, OnItemRemovedListener onItemRemovedListener) {
+    GreetingViewHolder(View itemView, OnGreetingRemovedListener onGreetingRemovedListener) {
         super(itemView);
-        this.onItemRemovedListener = onItemRemovedListener;
-        textView = itemView.findViewById(R.id.item_name_textview);
+        this.onGreetingRemovedListener = onGreetingRemovedListener;
+        textView = itemView.findViewById(R.id.greeting_textview);
         button = itemView.findViewById(R.id.delete_button);
     }
 
     /**
      * Binds a tutorial to the views.
-     * @param itemName the item name
+     * @param greeting the greeting
      */
-    void bind(final String itemName) {
-        textView.setText(itemName);
+    void bind(final String greeting) {
+        textView.setText(greeting);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onItemRemovedListener != null) {
-                    onItemRemovedListener.onItemRemoved(itemName);
+                if (onGreetingRemovedListener != null) {
+                    onGreetingRemovedListener.onGreetingRemoved(greeting);
                 }
             }
         });

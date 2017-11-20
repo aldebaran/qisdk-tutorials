@@ -20,8 +20,8 @@
     <!-- Dynamic concepts -->
     <string name="add">Add</string>
     <string name="remove">Remove</string>
-    <string name="item">Item</string>
-    <string name="items">\"Items\"</string>
+    <string name="greeting">Greeting</string>
+    <string name="greetings">\"Greetings\"</string>
 
     <!-- Go to world -->
     <string name="save">Save</string>

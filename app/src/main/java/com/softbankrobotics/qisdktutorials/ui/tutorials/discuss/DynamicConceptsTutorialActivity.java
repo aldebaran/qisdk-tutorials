@@ -37,12 +37,12 @@ import java.util.Map;
  */
 public class DynamicConceptsTutorialActivity extends TutorialActivity implements RobotLifecycleCallbacks {
 
-    private ItemAdapter itemAdapter;
+    private GreetingAdapter greetingAdapter;
     private ConversationView conversationView;
 
-    // Store the items dynamic concept.
-    private EditablePhraseSet items;
-    private EditText itemEditText;
+    // Store the greetings dynamic concept.
+    private EditablePhraseSet greetings;
+    private EditText greetingEditText;
     // Store the list BookmarkStatus.
     private BookmarkStatus listBookmarkStatus;
     private Discuss discuss;
@@ -54,8 +54,8 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
 
         conversationView = findViewById(R.id.conversationView);
 
-        itemEditText = findViewById(R.id.editText);
-        itemEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        greetingEditText = findViewById(R.id.editText);
+        greetingEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -65,8 +65,8 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
             }
         });
 
-        Button itemsButton = findViewById(R.id.items_button);
-        itemsButton.setOnClickListener(new View.OnClickListener() {
+        Button greetingsButton = findViewById(R.id.greetings_button);
+        greetingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (discuss != null) {
@@ -76,21 +76,21 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
         });
 
         // Create adapter for recycler view.
-        itemAdapter = new ItemAdapter(new OnItemRemovedListener() {
+        greetingAdapter = new GreetingAdapter(new OnGreetingRemovedListener() {
             @Override
-            public void onItemRemoved(String itemName) {
-                // Remove item.
-                removeItem(itemName);
-                itemAdapter.removeItem(itemName);
+            public void onGreetingRemoved(String greeting) {
+                // Remove greeting.
+                removeGreeting(greeting);
+                greetingAdapter.removeGreeting(greeting);
             }
         });
 
         // Setup recycler view.
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(itemAdapter);
+        recyclerView.setAdapter(greetingAdapter);
 
-        // Add item on add button clicked.
+        // Add greeting on add button clicked.
         Button addButton = findViewById(R.id.add_button);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +117,7 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        String textToSay = "Add some items to the dynamic concept and say \"items\" to list them.";
+        String textToSay = "Add some greetings to the dynamic concept and say \"greetings\" to list them.";
         displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
 
         Say say = SayBuilder.with(qiContext)
@@ -128,7 +128,7 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
 
         // Create a topic.
         Topic topic = TopicBuilder.with(qiContext)
-                .withResource(R.raw.items)
+                .withResource(R.raw.greetings_dynamic)
                 .build();
 
         // Create a new discuss action.
@@ -136,24 +136,24 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
                 .withTopic(topic)
                 .build();
 
-        // Get the items dynamic concept.
-        items = discuss.dynamicConcept("items");
+        // Get the greetings dynamic concept.
+        greetings = discuss.dynamicConcept("greetings");
 
         // Get the bookmarks from the topic.
         Map<String, Bookmark> bookmarks = topic.getBookmarks();
         listBookmark = bookmarks.get("list");
-        final Bookmark itemsBookmark = bookmarks.get("items");
-        final Bookmark noItemBookmark = bookmarks.get("no_item");
+        final Bookmark greetingsBookmark = bookmarks.get("greetings");
+        final Bookmark noGreetingBookmark = bookmarks.get("no_greeting");
 
         // When user is ready, decide which proposal the robot should say.
         listBookmarkStatus = discuss.bookmarkStatus(listBookmark);
         listBookmarkStatus.setOnReachedListener(new BookmarkStatus.OnReachedListener() {
             @Override
             public void onReached() {
-                if (items.getPhrases().isEmpty()) {
-                    discuss.goToBookmarkedOutputUtterance(noItemBookmark);
+                if (greetings.getPhrases().isEmpty()) {
+                    discuss.goToBookmarkedOutputUtterance(noGreetingBookmark);
                 } else {
-                    discuss.goToBookmarkedOutputUtterance(itemsBookmark);
+                    discuss.goToBookmarkedOutputUtterance(greetingsBookmark);
                 }
             }
         });
@@ -194,27 +194,27 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
     }
 
     private void handleAddClick() {
-        String itemName = itemEditText.getText().toString();
-        itemEditText.setText("");
+        String greeting = greetingEditText.getText().toString();
+        greetingEditText.setText("");
         KeyboardUtils.hideKeyboard(this);
-        // Add item only if new.
-        if (!itemName.isEmpty() && !itemAdapter.containsItem(itemName)) {
-            addItem(itemName);
-            itemAdapter.addItem(itemName);
+        // Add greeting only if new.
+        if (!greeting.isEmpty() && !greetingAdapter.containsGreeting(greeting)) {
+            addGreeting(greeting);
+            greetingAdapter.addGreeting(greeting);
         }
     }
 
-    private void addItem(String itemName) {
-        // Add the item name to the dynamic concept.
-        if (items != null) {
-            items.async().addPhrases(Collections.singletonList(new Phrase(itemName)));
+    private void addGreeting(String greeting) {
+        // Add the greeting to the dynamic concept.
+        if (greetings != null) {
+            greetings.async().addPhrases(Collections.singletonList(new Phrase(greeting)));
         }
     }
 
-    private void removeItem(String itemName) {
-        // Remove the item name from the dynamic concept.
-        if (items != null) {
-            items.async().removePhrases(Collections.singletonList(new Phrase(itemName)));
+    private void removeGreeting(String greeting) {
+        // Remove the greeting from the dynamic concept.
+        if (greetings != null) {
+            greetings.async().removePhrases(Collections.singletonList(new Phrase(greeting)));
         }
     }
 

@@ -1,0 +1,8 @@
+topic: ~greetings_dynamic()
+
+dynamic: greetings
+
+u:(greetings) %list
+
+proposal: %greetings Your greetings are: ^enumerate(~greetings)
+proposal: %no_greeting You have no greeting, please add at least one

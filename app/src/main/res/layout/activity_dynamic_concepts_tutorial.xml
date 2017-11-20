@@ -21,12 +21,12 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:hint="@string/item"
+        android:hint="@string/greeting"
         app:layout_constraintRight_toLeftOf="@+id/add_button"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="@+id/guideline"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/items_button" />
+        app:layout_constraintTop_toBottomOf="@+id/greetings_button" />
 
     <Button
         style="@style/Button"
@@ -83,11 +83,11 @@
         android:layout_marginBottom="8dp" />
 
     <Button
-        android:id="@+id/items_button"
+        android:id="@+id/greetings_button"
         style="@style/Bubble"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/items"
+        android:text="@string/greetings"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         android:layout_marginRight="8dp"

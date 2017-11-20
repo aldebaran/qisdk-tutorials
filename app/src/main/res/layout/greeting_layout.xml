@@ -10,11 +10,11 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
-        android:id="@+id/item_name_textview"
+        android:id="@+id/greeting_textview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        tools:text="Cat"/>
+        tools:text="Hello"/>
 
     <Button
         style="@style/Button"
