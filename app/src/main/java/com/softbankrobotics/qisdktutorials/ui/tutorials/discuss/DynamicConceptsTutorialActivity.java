@@ -10,14 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.aldebaran.qi.Consumer;
+import com.aldebaran.qi.sdk.Qi;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.DiscussBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
-import com.aldebaran.qi.sdk.object.conversation.Bookmark;
-import com.aldebaran.qi.sdk.object.conversation.BookmarkStatus;
 import com.aldebaran.qi.sdk.object.conversation.Discuss;
 import com.aldebaran.qi.sdk.object.conversation.EditablePhraseSet;
 import com.aldebaran.qi.sdk.object.conversation.Phrase;
@@ -30,7 +30,6 @@ import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 import com.softbankrobotics.qisdktutorials.utils.KeyboardUtils;
 
 import java.util.Collections;
-import java.util.Map;
 
 /**
  * The activity for the Dynamic concepts tutorial.
@@ -43,10 +42,7 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
     // Store the greetings dynamic concept.
     private EditablePhraseSet greetings;
     private EditText greetingEditText;
-    // Store the list BookmarkStatus.
-    private BookmarkStatus listBookmarkStatus;
     private Discuss discuss;
-    private Bookmark listBookmark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,23 +61,12 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
             }
         });
 
-        Button greetingsButton = findViewById(R.id.greetings_button);
-        greetingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (discuss != null) {
-                    discuss.async().goToBookmarkedOutputUtterance(listBookmark);
-                }
-            }
-        });
-
         // Create adapter for recycler view.
         greetingAdapter = new GreetingAdapter(new OnGreetingRemovedListener() {
             @Override
             public void onGreetingRemoved(String greeting) {
                 // Remove greeting.
                 removeGreeting(greeting);
-                greetingAdapter.removeGreeting(greeting);
             }
         });
 
@@ -117,7 +102,7 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        String textToSay = "Add some greetings to the dynamic concept and say \"greetings\" to list them.";
+        String textToSay = "Teach me how to greet people using a dynamic concept.";
         displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
 
         Say say = SayBuilder.with(qiContext)
@@ -139,24 +124,9 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
         // Get the greetings dynamic concept.
         greetings = discuss.dynamicConcept("greetings");
 
-        // Get the bookmarks from the topic.
-        Map<String, Bookmark> bookmarks = topic.getBookmarks();
-        listBookmark = bookmarks.get("list");
-        final Bookmark greetingsBookmark = bookmarks.get("greetings");
-        final Bookmark noGreetingBookmark = bookmarks.get("no_greeting");
-
-        // When user is ready, decide which proposal the robot should say.
-        listBookmarkStatus = discuss.bookmarkStatus(listBookmark);
-        listBookmarkStatus.setOnReachedListener(new BookmarkStatus.OnReachedListener() {
-            @Override
-            public void onReached() {
-                if (greetings.getPhrases().isEmpty()) {
-                    discuss.goToBookmarkedOutputUtterance(noGreetingBookmark);
-                } else {
-                    discuss.goToBookmarkedOutputUtterance(greetingsBookmark);
-                }
-            }
-        });
+        // Add default content to the dynamic concept.
+        addGreeting("Hello");
+        addGreeting("Hi");
 
         discuss.setOnLatestInputUtteranceChangedListener(new Discuss.OnLatestInputUtteranceChangedListener() {
             @Override
@@ -178,10 +148,6 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
 
     @Override
     public void onRobotFocusLost() {
-        // Remove the listener on the list BookmarkStatus.
-        if (listBookmarkStatus != null) {
-            listBookmarkStatus.setOnReachedListener(null);
-        }
         if (discuss != null) {
             discuss.setOnLatestInputUtteranceChangedListener(null);
             discuss.setOnLatestOutputUtteranceChangedListener(null);
@@ -200,21 +166,28 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
         // Add greeting only if new.
         if (!greeting.isEmpty() && !greetingAdapter.containsGreeting(greeting)) {
             addGreeting(greeting);
-            greetingAdapter.addGreeting(greeting);
         }
     }
 
-    private void addGreeting(String greeting) {
-        // Add the greeting to the dynamic concept.
+    private void addGreeting(final String greeting) {
         if (greetings != null) {
-            greetings.async().addPhrases(Collections.singletonList(new Phrase(greeting)));
+            greetings.async().addPhrases(Collections.singletonList(new Phrase(greeting))).andThenConsume(Qi.onUiThread(new Consumer<Void>() {
+                @Override
+                public void consume(Void ignore) throws Throwable {
+                    greetingAdapter.addGreeting(greeting);
+                }
+            }));
         }
     }
 
-    private void removeGreeting(String greeting) {
-        // Remove the greeting from the dynamic concept.
+    private void removeGreeting(final String greeting) {
         if (greetings != null) {
-            greetings.async().removePhrases(Collections.singletonList(new Phrase(greeting)));
+            greetings.async().removePhrases(Collections.singletonList(new Phrase(greeting))).andThenConsume(Qi.onUiThread(new Consumer<Void>() {
+                @Override
+                public void consume(Void ignore) throws Throwable {
+                    greetingAdapter.removeGreeting(greeting);
+                }
+            }));
         }
     }
 

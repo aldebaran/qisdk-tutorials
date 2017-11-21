@@ -21,7 +21,6 @@
     <string name="add">Add</string>
     <string name="remove">Remove</string>
     <string name="greeting">Greeting</string>
-    <string name="greetings">\"Greetings\"</string>
 
     <!-- Go to world -->
     <string name="save">Save</string>
