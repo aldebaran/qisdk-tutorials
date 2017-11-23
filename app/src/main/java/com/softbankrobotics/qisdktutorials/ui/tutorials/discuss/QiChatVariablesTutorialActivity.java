@@ -4,10 +4,11 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.aldebaran.qi.Consumer;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
@@ -36,7 +37,9 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
 
     // Store the variable.
     private QiChatVariable variable;
+    // Store the Discuss action.
     private Discuss discuss;
+    // Store the Bookmark used to read the variable.
     private Bookmark readBookmark;
 
     @Override
@@ -50,26 +53,18 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    updateVariable();
+                    retrieveAndAssignVariable();
                 }
                 return false;
             }
         });
 
-        // Save variable on assign button clicked.
-        Button assignButton = findViewById(R.id.assign_button);
+        // Assign variable on assign button clicked.
+        ImageButton assignButton = findViewById(R.id.assign_button);
         assignButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                updateVariable();
-            }
-        });
-
-        Button valueButton = findViewById(R.id.value_button);
-        valueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View view) {
-                discuss.async().goToBookmarkedOutputUtterance(readBookmark);
+                retrieveAndAssignVariable();
             }
         });
 
@@ -91,7 +86,7 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        String textToSay = "Assign a value to the variable and say \"Use this value\" to read it.";
+        String textToSay = "Assign a value to the variable.";
         displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
 
         Say say = SayBuilder.with(qiContext)
@@ -146,18 +141,22 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
         // Nothing here.
     }
 
-    private void updateVariable() {
+    private void retrieveAndAssignVariable() {
         String value = variableEditText.getText().toString();
         variableEditText.setText("");
-        KeyboardUtils.hideKeyboard(this);
-        if (!value.isEmpty()) {
-            setVariable(value);
-        }
+        KeyboardUtils.hideKeyboard(QiChatVariablesTutorialActivity.this);
+        assignVariable(value);
     }
 
-    private void setVariable(String value) {
+    private void assignVariable(String value) {
         // Set the value.
-        variable.async().setValue(value);
+        variable.async().setValue(value).andThenConsume(new Consumer<Void>() {
+            @Override
+            public void consume(Void ignore) throws Throwable {
+                // Read the value.
+                discuss.async().goToBookmarkedOutputUtterance(readBookmark);
+            }
+        });
     }
 
     private void displayLine(final String text, final ConversationItemType type) {

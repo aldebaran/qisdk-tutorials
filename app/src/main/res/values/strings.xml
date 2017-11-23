@@ -31,8 +31,7 @@
 
     <!-- QiChat variables -->
     <string name="value">Value</string>
-    <string name="assign">Assign</string>
-    <string name="use_this_value">\"Use this value\"</string>
+    <string name="assign_this_value">\"Assign this value\"</string>
 
     <!-- Tutorial names -->
     <string name="hello_human">Hello human</string>
@@ -63,5 +62,6 @@
     <!-- Toolbar -->
     <string name="toolbar_basic_level">BASIC</string>
     <string name="toolbar_advanced_level">ADVANCED</string>
+    <string name="template">My robot is ___</string>
 
 </resources>
