@@ -56,7 +56,7 @@ public class DiscussTutorialActivity extends TutorialActivity implements RobotLi
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        String textToSay = "I can discuss with humans: say \"Hello\" to start the discussion.";
+        String textToSay = "Say \"Hello\" to start the discussion.";
         displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
 
         Say say = SayBuilder.with(qiContext)
