@@ -6,8 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.aldebaran.qi.Consumer;
@@ -76,7 +76,7 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
         recyclerView.setAdapter(greetingAdapter);
 
         // Add greeting on add button clicked.
-        Button addButton = findViewById(R.id.add_button);
+        ImageButton addButton = findViewById(R.id.add_button);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,7 +102,7 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        String textToSay = "Teach me how to greet people using a dynamic concept.";
+        String textToSay = "Add more greetings to my dynamic concept and say \"Hello\".";
         displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
 
         Say say = SayBuilder.with(qiContext)

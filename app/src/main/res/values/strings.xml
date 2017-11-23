@@ -18,8 +18,6 @@
     <string name="distance">Distance: %1$f meter(s)</string>
 
     <!-- Dynamic concepts -->
-    <string name="add">Add</string>
-    <string name="remove">Remove</string>
     <string name="greeting">Greeting</string>
 
     <!-- Go to world -->

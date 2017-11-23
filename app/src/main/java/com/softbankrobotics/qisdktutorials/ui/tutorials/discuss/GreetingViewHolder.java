@@ -2,7 +2,7 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.discuss;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.softbankrobotics.qisdktutorials.R;
@@ -13,7 +13,7 @@ import com.softbankrobotics.qisdktutorials.R;
 class GreetingViewHolder extends RecyclerView.ViewHolder {
 
     private TextView textView;
-    private Button button;
+    private ImageButton button;
 
     private OnGreetingRemovedListener onGreetingRemovedListener;
 

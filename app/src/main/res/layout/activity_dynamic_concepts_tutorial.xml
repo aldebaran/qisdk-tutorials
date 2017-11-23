@@ -28,15 +28,19 @@
         app:layout_constraintRight_toLeftOf="@+id/add_button"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    <Button
-        style="@style/Button"
+    <ImageButton
         android:id="@+id/add_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editText"
+        style="@style/Button"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_add"
+        android:tint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/editText"
+        app:layout_constraintLeft_toRightOf="@+id/editText"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/editText" />
+        app:layout_constraintTop_toTopOf="@+id/editText" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="0dp"
