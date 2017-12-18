@@ -1,5 +1,5 @@
 topic: ~greetings()
 
-concept:(hello) [hello hi hey "good morning" greetings]
+concept:(hello) [hello hi hey "good morning"]
 
 u:(~hello) ~hello

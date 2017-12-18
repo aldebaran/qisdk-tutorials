@@ -1,11 +1,11 @@
 topic: ~move_tutorials()
 
-concept:(mimic) ["Mimic animals" mimic animals]
-concept:(trajectory) ["Step forward" step forward]
-concept:(goto) ["Understanding GoTo" GoTo]
-concept:(lookat) ["Understanding LookAt" LookAt]
-concept:(freeframes) ["Mastering FreeFrames" FreeFrames]
-concept:(attachedframe) ["Mastering AttachedFrame" AttachedFrame]
+concept:(mimic) ["{Mimic} animals"]
+concept:(trajectory) ["Step forward"]
+concept:(goto) ["Understanding GoTo"]
+concept:(lookat) ["Understanding LookAt"]
+concept:(freeframes) ["{Mastering} FreeFrames"]
+concept:(attachedframe) ["{Mastering} AttachedFrame"]
 
 u: ("~mimic $level==basic") ^endDiscuss(animation)
 u: ("~trajectory $level==basic") ^endDiscuss(trajectory)
