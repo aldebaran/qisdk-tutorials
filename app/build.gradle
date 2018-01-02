@@ -35,5 +35,5 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     // Pepper
-    implementation 'com.aldebaran:qisdk:1.1.9'
+    implementation 'com.aldebaran:qisdk:1.1.10'
 }

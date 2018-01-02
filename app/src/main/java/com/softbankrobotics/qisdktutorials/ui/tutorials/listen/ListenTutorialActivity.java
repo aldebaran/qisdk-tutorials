@@ -73,7 +73,7 @@ public class ListenTutorialActivity extends TutorialActivity implements RobotLif
 
         // Create a new listen action.
         Listen listen = ListenBuilder.with(qiContext) // Create the builder with the QiContext.
-                .withPhraseSet(phraseSetYes, phraseSetNo) // Set the PhraseSets to listen to.
+                .withPhraseSets(phraseSetYes, phraseSetNo) // Set the PhraseSets to listen to.
                 .build(); // Build the listen action.
 
         // Run the listen action and get the result.
