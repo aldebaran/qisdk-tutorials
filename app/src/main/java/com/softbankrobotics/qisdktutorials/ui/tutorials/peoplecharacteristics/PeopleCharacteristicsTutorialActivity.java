@@ -1,5 +1,7 @@
 package com.softbankrobotics.qisdktutorials.ui.tutorials.peoplecharacteristics;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,12 +30,14 @@ import com.aldebaran.qi.sdk.object.human.Human;
 import com.aldebaran.qi.sdk.object.human.PleasureState;
 import com.aldebaran.qi.sdk.object.human.SmileState;
 import com.aldebaran.qi.sdk.object.humanawareness.HumanAwareness;
+import com.aldebaran.qi.sdk.object.image.EncodedImage;
 import com.softbankrobotics.qisdktutorials.R;
 import com.softbankrobotics.qisdktutorials.model.data.HumanInfo;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -176,6 +180,13 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
             // Display the distance between the human and the robot.
             Log.i(TAG, "Distance: " + distance + " meter(s).");
 
+
+            //get face Picture
+            ByteBuffer facePictureBuffer = human.getFacePicture().getImage().getData();
+            final Bitmap facePicture = BitmapFactory.decodeByteArray(facePictureBuffer.array(), 0, facePictureBuffer.array().length);
+
+
+            HumanInfo humanInfo = new HumanInfo(age, gender, pleasureState, excitementState, smileState, attentionState, distance,facePicture);
             HumanInfo humanInfo = new HumanInfo(age, gender, pleasureState, excitementState, engagementIntentionState, smileState, attentionState, distance);
             humanInfoList.add(humanInfo);
         }
