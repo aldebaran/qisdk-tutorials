@@ -71,9 +71,11 @@ public class HumanInfo {
         return facePicture;
     }
 
+    /**
+     * To clear the memory before setting a new bitmap
+     * <a href = https://developer.android.com/reference/android/graphics/Bitmap.html#recycle()>https://developer.android.com/reference/android/graphics/Bitmap.html#recycle()</a>
+     */
     public void clearMemory() {
-        // To clear the memory before setting a new bitmap
-        //https://developer.android.com/reference/android/graphics/Bitmap.html#recycle()
         if (facePicture != null) {
             facePicture.recycle();
             facePicture = null;
