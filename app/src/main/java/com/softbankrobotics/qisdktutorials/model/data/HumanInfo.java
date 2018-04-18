@@ -70,4 +70,13 @@ public class HumanInfo {
     public Bitmap getFacePicture() {
         return facePicture;
     }
+
+    public void clearMemory() {
+        // To clear the memory before setting a new bitmap
+        //https://developer.android.com/reference/android/graphics/Bitmap.html#recycle()
+        if (facePicture != null) {
+            facePicture.recycle();
+            facePicture = null;
+        }
+    }
 }

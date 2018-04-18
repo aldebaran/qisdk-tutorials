@@ -57,6 +57,8 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
     // The QiContext provided by the QiSDK.
     private QiContext qiContext;
 
+    List<HumanInfo> humanInfoList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,7 +152,12 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
         // Get the robot frame.
         Frame robotFrame = actuation.robotFrame();
 
-        List<HumanInfo> humanInfoList = new ArrayList<>();
+        for (HumanInfo h : humanInfoList) {
+            h.clearMemory();
+        }
+
+
+        humanInfoList = new ArrayList<>();
         for (int i = 0; i < humans.size(); i++) {
             // Get the human.
             Human human = humans.get(i);
@@ -182,11 +189,16 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
 
             // Get face picture.
             ByteBuffer facePictureBuffer = human.getFacePicture().getImage().getData();
+            facePictureBuffer.rewind();
+            int pictureBufferSize = facePictureBuffer.remaining();
+            byte[] facePictureArray = new byte[pictureBufferSize];
+            facePictureBuffer.get(facePictureArray);
+
             Bitmap facePicture = null;
             // Test if the robot has an empty picture (this can happen when he detects a human but not the face).
-            if (facePictureBuffer != null && facePictureBuffer.array().length != 0) {
+            if (pictureBufferSize != 0) {
                 Log.i(TAG, "Picture available");
-                facePicture = BitmapFactory.decodeByteArray(facePictureBuffer.array(), 0, facePictureBuffer.array().length);
+                facePicture = BitmapFactory.decodeByteArray(facePictureArray, 0, pictureBufferSize);
             } else {
                 Log.i(TAG, "Picture not available");
             }
