@@ -183,11 +183,15 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
 
             //get face Picture
             ByteBuffer facePictureBuffer = human.getFacePicture().getImage().getData();
-            final Bitmap facePicture = BitmapFactory.decodeByteArray(facePictureBuffer.array(), 0, facePictureBuffer.array().length);
-
+            Bitmap facePicture = null;
+            //We test if the robot is sending an empty picture (this can happen when he detect a human but not his face)
+            if (facePictureBuffer!=null  && facePictureBuffer.array().length != 0) {
+                facePicture = BitmapFactory.decodeByteArray(facePictureBuffer.array(), 0, facePictureBuffer.array().length);
+            }
 
             HumanInfo humanInfo = new HumanInfo(age, gender, pleasureState, excitementState, smileState, attentionState, distance,facePicture);
             HumanInfo humanInfo = new HumanInfo(age, gender, pleasureState, excitementState, engagementIntentionState, smileState, attentionState, distance);
+            HumanInfo humanInfo = new HumanInfo(age, gender, pleasureState, excitementState, smileState, attentionState, distance, facePicture);
             humanInfoList.add(humanInfo);
         }
 

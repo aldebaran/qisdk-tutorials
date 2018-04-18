@@ -57,7 +57,12 @@ class HumanInfoViewHolder extends RecyclerView.ViewHolder {
         smileStateTextView.setText(resources.getString(R.string.smile_state, humanInfo.getSmileState()));
         attentionStateTextView.setText(resources.getString(R.string.attention_state, humanInfo.getAttentionState()));
         distanceTextView.setText(resources.getString(R.string.distance, humanInfo.getDistance()));
-        facePicture.setImageBitmap(humanInfo.getFacePicture());
+        if(humanInfo.getFacePicture()==null){
+            facePicture.setBackgroundResource(R.drawable.ic_icons_cute_anon_unknown);
+        }else {
+            facePicture.setImageBitmap(humanInfo.getFacePicture());
+        }
+
 
     }
 
