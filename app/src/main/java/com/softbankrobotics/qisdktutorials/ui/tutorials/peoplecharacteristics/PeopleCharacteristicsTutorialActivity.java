@@ -180,13 +180,15 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
             // Display the distance between the human and the robot.
             Log.i(TAG, "Distance: " + distance + " meter(s).");
 
-
-            //get face Picture
+            // Get face picture.
             ByteBuffer facePictureBuffer = human.getFacePicture().getImage().getData();
             Bitmap facePicture = null;
-            //We test if the robot is sending an empty picture (this can happen when he detect a human but not his face)
-            if (facePictureBuffer!=null  && facePictureBuffer.array().length != 0) {
+            // Test if the robot has an empty picture (this can happen when he detects a human but not the face).
+            if (facePictureBuffer != null && facePictureBuffer.array().length != 0) {
+                Log.i(TAG, "Picture available");
                 facePicture = BitmapFactory.decodeByteArray(facePictureBuffer.array(), 0, facePictureBuffer.array().length);
+            } else {
+                Log.i(TAG, "Picture not available");
             }
 
             HumanInfo humanInfo = new HumanInfo(age, gender, pleasureState, excitementState, smileState, attentionState, distance,facePicture);

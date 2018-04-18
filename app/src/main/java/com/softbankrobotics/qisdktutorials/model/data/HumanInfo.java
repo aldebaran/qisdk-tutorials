@@ -9,8 +9,6 @@ import com.aldebaran.qi.sdk.object.human.Gender;
 import com.aldebaran.qi.sdk.object.human.PleasureState;
 import com.aldebaran.qi.sdk.object.human.SmileState;
 
-import java.nio.ByteBuffer;
-
 /**
  * Represents the human information.
  */
