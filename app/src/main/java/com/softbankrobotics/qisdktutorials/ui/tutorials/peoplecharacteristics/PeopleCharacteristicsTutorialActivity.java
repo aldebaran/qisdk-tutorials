@@ -28,9 +28,9 @@ import com.aldebaran.qi.sdk.object.human.ExcitementState;
 import com.aldebaran.qi.sdk.object.human.Gender;
 import com.aldebaran.qi.sdk.object.human.Human;
 import com.aldebaran.qi.sdk.object.human.PleasureState;
+
 import com.aldebaran.qi.sdk.object.human.SmileState;
 import com.aldebaran.qi.sdk.object.humanawareness.HumanAwareness;
-import com.aldebaran.qi.sdk.object.image.EncodedImage;
 import com.softbankrobotics.qisdktutorials.R;
 import com.softbankrobotics.qisdktutorials.model.data.HumanInfo;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
