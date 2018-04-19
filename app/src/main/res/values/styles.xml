@@ -36,4 +36,8 @@
         <item name="android:padding">@dimen/button_padding</item>
     </style>
 
+    <style name="Progressbar.Blue" parent="AppTheme">
+        <item name="colorControlActivated">@color/non_sayable_blue</item>
+    </style>
+
 </resources>
