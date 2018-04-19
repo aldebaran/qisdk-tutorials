@@ -95,6 +95,7 @@ public class TutorialRepository {
             case BASICS:
                 tutorials.add(new Tutorial(TutorialId.TOUCH, R.string.touch, "touch", TutorialLevel.BASICS));
                 tutorials.add(new Tutorial(TutorialId.AUTONOMOUS_ABILITIES, R.string.autonomous_abilities, "autonomous", TutorialLevel.BASICS));
+                tutorials.add(new Tutorial(TutorialId.TAKE_PICTURE, R.string.take_picture, "picture", TutorialLevel.BASICS));
                 break;
             case ADVANCED:
                 tutorials.add(new Tutorial(TutorialId.CHARACTERISTICS, R.string.people_characteristics, "people_characteristics", TutorialLevel.ADVANCED));

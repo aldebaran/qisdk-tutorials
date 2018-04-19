@@ -64,5 +64,6 @@
     <!-- Toolbar -->
     <string name="toolbar_basic_level">BASIC</string>
     <string name="toolbar_advanced_level">ADVANCED</string>
+    <string name="take_picture">Take a picture</string>
 
 </resources>

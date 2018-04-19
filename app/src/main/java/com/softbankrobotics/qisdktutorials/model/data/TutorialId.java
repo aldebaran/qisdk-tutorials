@@ -21,4 +21,5 @@ public enum TutorialId {
     TRAJECTORY,
     COLLABORATIVE_DIALOG,
     EMOTION,
+    TAKE_PICTURE,
 }

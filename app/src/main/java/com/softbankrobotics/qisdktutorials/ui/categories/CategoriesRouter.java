@@ -2,6 +2,7 @@ package com.softbankrobotics.qisdktutorials.ui.categories;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.softbankrobotics.qisdktutorials.model.data.Tutorial;
 import com.softbankrobotics.qisdktutorials.model.data.TutorialId;
@@ -22,8 +23,11 @@ import com.softbankrobotics.qisdktutorials.ui.tutorials.move.GoToTutorialActivit
 import com.softbankrobotics.qisdktutorials.ui.tutorials.move.GoToWorldTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.peoplecharacteristics.EmotionTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.peoplecharacteristics.PeopleCharacteristicsTutorialActivity;
+import com.softbankrobotics.qisdktutorials.ui.tutorials.takepicture.TakePictureTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.touch.TouchTutorialActivity;
 import com.softbankrobotics.qisdktutorials.utils.Constants;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * The router for the tutorial categories.
@@ -45,6 +49,7 @@ class CategoriesRouter implements CategoriesContract.Router {
      * @return The destination activity class.
      */
     private Class<? extends TutorialActivity> getDestinationActivity(TutorialId tutorialId) {
+        Log.i(TAG, "tutorialId: " + tutorialId);
         switch (tutorialId) {
             case SAY:
                 return HelloHumanTutorialActivity.class;
@@ -80,6 +85,8 @@ class CategoriesRouter implements CategoriesContract.Router {
                 return CollaborativeDialogTutorialActivity.class;
             case EMOTION:
                 return EmotionTutorialActivity.class;
+            case TAKE_PICTURE:
+                return TakePictureTutorialActivity.class;
             default:
                 throw new IllegalArgumentException("Unknown tutorial identifier: " + tutorialId);
         }
