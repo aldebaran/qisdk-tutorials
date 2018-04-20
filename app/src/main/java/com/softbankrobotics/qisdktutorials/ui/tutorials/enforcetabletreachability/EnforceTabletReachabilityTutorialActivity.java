@@ -34,6 +34,8 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
     private Animate animate;
     private Button animateButton;
     private Button enforceTabletReachabilityButton;
+    private QiContext qiContext;
+    private Future<Void> enforceTabletReachabilityFuture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
 
         conversationView = findViewById(R.id.conversationView);
 
-        //TODO get the button
+        animateButton = findViewById(R.id.animate_button);
         animateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,10 +51,18 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
             }
         });
 
+        enforceTabletReachabilityButton = findViewById(R.id.toggle_tablet_reachability_button);
         enforceTabletReachabilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startAsyncEnforceTabletReachability();
+                if (enforceTabletReachabilityFuture == null) {
+                    enforceTabletReachabilityFuture = startAsyncEnforceTabletReachability();
+                    enforceTabletReachabilityButton.setText("Stop EnforceTabletReachability");
+                }
+                else {
+                    enforceTabletReachabilityFuture.requestCancellation();
+                    enforceTabletReachabilityButton.setText("Start EnforceTabletReachability");
+                }
             }
         });
 
@@ -61,7 +71,7 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
     }
 
     private Future<Void> startAsyncEnforceTabletReachability() {
-        //TODO
+
         return null;
     }
 
@@ -84,11 +94,14 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
 
     @Override
     protected int getLayoutId() {
-        return R.layout.conversation_layout;
+        return R.layout.activity_enforce_tablet_reachability_tutorial;
     }
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
+        this.qiContext = qiContext;
+
+        // Introduction Say
         String textToSay = "I can enforce my tablet reachability by limiting my torso and arms movements. Try it out!";
         displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
 
@@ -103,7 +116,7 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
                 .withResources(R.raw.elephant_a001) // Set the animation resource.
                 .build(); // Build the animation.
 
-        // Create an animate action.
+        // Create and store the animate action.
         animate = AnimateBuilder.with(qiContext) // Create the builder with the context.
                 .withAnimation(animation) // Set the animation.
                 .build(); // Build the animate action.

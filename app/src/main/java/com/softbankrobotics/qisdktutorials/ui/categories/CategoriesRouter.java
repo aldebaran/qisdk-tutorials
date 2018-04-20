@@ -12,10 +12,11 @@ import com.softbankrobotics.qisdktutorials.ui.tutorials.animate.AnimationLabelAc
 import com.softbankrobotics.qisdktutorials.ui.tutorials.animate.TrajectoryTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.autonomousabilities.AutonomousAbilitiesTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.BookmarksTutorialActivity;
+import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.QiChatbotTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.DynamicConceptsTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.ExecuteTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.QiChatVariablesTutorialActivity;
-import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.QiChatbotTutorialActivity;
+import com.softbankrobotics.qisdktutorials.ui.tutorials.enforcetabletreachability.EnforceTabletReachabilityTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.hellohuman.HelloHumanTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.listen.ListenTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.lookat.LookAtTutorialActivity;
@@ -28,12 +29,13 @@ import com.softbankrobotics.qisdktutorials.ui.tutorials.takepicture.TakePictureT
 import com.softbankrobotics.qisdktutorials.ui.tutorials.touch.TouchTutorialActivity;
 import com.softbankrobotics.qisdktutorials.utils.Constants;
 
-import static android.content.ContentValues.TAG;
 
 /**
  * The router for the tutorial categories.
  */
 class CategoriesRouter implements CategoriesContract.Router {
+
+    private static final String TAG = "CategoriesRouter";
 
     @Override
     public void goToTutorial(Tutorial tutorial, Context context) {
@@ -86,6 +88,8 @@ class CategoriesRouter implements CategoriesContract.Router {
                 return AutonomousAbilitiesTutorialActivity.class;
             case EMOTION:
                 return EmotionTutorialActivity.class;
+            case ENFORCE_TABLET_REACHABILITY:
+                return EnforceTabletReachabilityTutorialActivity.class;
             case TAKE_PICTURE:
                 return TakePictureTutorialActivity.class;
             case ANIMATION_LABEL:

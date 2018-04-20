@@ -71,6 +71,7 @@ public class TutorialRepository {
             case BASICS:
                 tutorials.add(new Tutorial(TutorialId.ANIMATION, R.string.animation, "animation", TutorialLevel.BASICS));
                 tutorials.add(new Tutorial(TutorialId.TRAJECTORY, R.string.trajectory, "trajectory", TutorialLevel.BASICS));
+                tutorials.add(new Tutorial(TutorialId.ENFORCE_TABLET_REACHABILITY, R.string.enforce_tablet_reachability, "enforce_tablet_reachability", TutorialLevel.BASICS));
                 break;
             case ADVANCED:
                 tutorials.add(new Tutorial(TutorialId.ANIMATION_LABEL, R.string.animation_label, "animation_label", TutorialLevel.ADVANCED));

@@ -37,6 +37,7 @@
         <activity android:name=".ui.tutorials.animate.AnimationLabelActivity" />
         <activity android:name=".ui.tutorials.takepicture.TakePictureTutorialActivity" />
         <activity android:name=".ui.tutorials.chat.ExecuteTutorialActivity" />
+        <activity android:name=".ui.tutorials.enforcetabletreachability.EnforceTabletReachabilityTutorialActivity" />
     </application>
 
 </manifest>
