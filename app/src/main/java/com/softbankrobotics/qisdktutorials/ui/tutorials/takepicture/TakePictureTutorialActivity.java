@@ -22,9 +22,6 @@ import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.image.EncodedImage;
 import com.aldebaran.qi.sdk.object.image.EncodedImageHandle;
 import com.aldebaran.qi.sdk.object.image.TimestampedImageHandle;
-import com.aldebaran.qi.sdk.object.touch.Touch;
-import com.aldebaran.qi.sdk.object.touch.TouchSensor;
-import com.aldebaran.qi.sdk.object.touch.TouchState;
 import com.softbankrobotics.qisdktutorials.R;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
@@ -33,7 +30,7 @@ import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 import java.nio.ByteBuffer;
 
 /**
- * The activity for the Touch tutorial.
+ * The activity for the take picture tutorial.
  */
 public class TakePictureTutorialActivity extends TutorialActivity implements RobotLifecycleCallbacks {
 
@@ -130,7 +127,15 @@ public class TakePictureTutorialActivity extends TutorialActivity implements Rob
         // Get Camera service
         Camera cameraService = qiContext.getCamera();
 
+        if (pictureBitmap != null) {
+            pictureBitmap.recycle();
+            pictureBitmap = null;
+            pictureView.setImageBitmap(null);
+        }
+
+
         Log.i(TAG, "make take picture");
+        // Build the action.
         Future<TakePicture> takePictureFuture = cameraService.async().makeTakePicture(qiContext.getRobotContext());
         // Take picture
         Future<TimestampedImageHandle> timestampedImageHandleFuture = takePictureFuture.andThenCompose(new Function<TakePicture, Future<TimestampedImageHandle>>() {
@@ -141,20 +146,16 @@ public class TakePictureTutorialActivity extends TutorialActivity implements Rob
                     @Override
                     public void run() {
                         progressBar.setVisibility(View.VISIBLE);
+                        takePicButton.setEnabled(false);
                     }
                 });
-                return takePicture.async().run();
+               return takePicture.async().run();
             }
         });
-
+        //Consume take picture action when it's ready
         timestampedImageHandleFuture.thenConsume(new Consumer<Future<TimestampedImageHandle>>() {
             @Override
             public void consume(Future<TimestampedImageHandle> timestampedImageHandleFuture) {
-
-                if(pictureBitmap!=null){
-                    pictureBitmap.recycle();
-                }
-
                 Log.i(TAG, "Picture taken");
 
                 // get picture
@@ -168,6 +169,7 @@ public class TakePictureTutorialActivity extends TutorialActivity implements Rob
                     @Override
                     public void run() {
                         progressBar.setVisibility(View.GONE);
+                        takePicButton.setEnabled(true);
                     }
                 });
 
@@ -191,4 +193,6 @@ public class TakePictureTutorialActivity extends TutorialActivity implements Rob
             }
         });
     }
+
 }
+
