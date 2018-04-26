@@ -76,7 +76,7 @@ public class HumanInfo {
      * <a href = https://developer.android.com/reference/android/graphics/Bitmap.html#recycle()>https://developer.android.com/reference/android/graphics/Bitmap.html#recycle()</a>
      */
     public void clearMemory() {
-        if (facePicture != null) {
+        if (facePicture != null && !facePicture.isRecycled()) {
             facePicture.recycle();
             facePicture = null;
         }
