@@ -30,6 +30,12 @@
         tools:text="Excitement state" />
 
     <TextView
+        android:id="@+id/engagement_intention_state_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Engagement intention state" />
+
+    <TextView
         android:id="@+id/smile_state_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

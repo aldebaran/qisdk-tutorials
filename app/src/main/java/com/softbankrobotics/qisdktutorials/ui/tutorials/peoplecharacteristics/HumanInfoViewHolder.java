@@ -17,6 +17,7 @@ class HumanInfoViewHolder extends RecyclerView.ViewHolder {
     private TextView genderTextView;
     private TextView pleasureStateTextView;
     private TextView excitementStateTextView;
+    private TextView engagementIntentionStateTextView;
     private TextView smileStateTextView;
     private TextView attentionStateTextView;
     private TextView distanceTextView;
@@ -27,6 +28,7 @@ class HumanInfoViewHolder extends RecyclerView.ViewHolder {
         genderTextView = itemView.findViewById(R.id.gender_textview);
         pleasureStateTextView = itemView.findViewById(R.id.pleasure_state_textview);
         excitementStateTextView = itemView.findViewById(R.id.excitement_state_textview);
+        engagementIntentionStateTextView = itemView.findViewById(R.id.engagement_intention_state_textview);
         smileStateTextView = itemView.findViewById(R.id.smile_state_textview);
         attentionStateTextView = itemView.findViewById(R.id.attention_state_textview);
         distanceTextView = itemView.findViewById(R.id.distance_textview);
@@ -42,6 +44,7 @@ class HumanInfoViewHolder extends RecyclerView.ViewHolder {
         genderTextView.setText(resources.getString(R.string.gender, humanInfo.getGender()));
         pleasureStateTextView.setText(resources.getString(R.string.pleasure_state, humanInfo.getPleasureState()));
         excitementStateTextView.setText(resources.getString(R.string.excitement_state, humanInfo.getExcitementState()));
+        engagementIntentionStateTextView.setText(resources.getString(R.string.engagement_intention_state, humanInfo.getEngagementIntentionState()));
         smileStateTextView.setText(resources.getString(R.string.smile_state, humanInfo.getSmileState()));
         attentionStateTextView.setText(resources.getString(R.string.attention_state, humanInfo.getAttentionState()));
         distanceTextView.setText(resources.getString(R.string.distance, humanInfo.getDistance()));

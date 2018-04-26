@@ -21,6 +21,7 @@ import com.aldebaran.qi.sdk.object.geometry.Transform;
 import com.aldebaran.qi.sdk.object.geometry.TransformTime;
 import com.aldebaran.qi.sdk.object.geometry.Vector3;
 import com.aldebaran.qi.sdk.object.human.AttentionState;
+import com.aldebaran.qi.sdk.object.human.EngagementIntentionState;
 import com.aldebaran.qi.sdk.object.human.ExcitementState;
 import com.aldebaran.qi.sdk.object.human.Gender;
 import com.aldebaran.qi.sdk.object.human.Human;
@@ -155,6 +156,7 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
             Gender gender = human.getEstimatedGender();
             PleasureState pleasureState = human.getEmotion().getPleasure();
             ExcitementState excitementState = human.getEmotion().getExcitement();
+            EngagementIntentionState engagementIntentionState = human.getEngagementIntention();
             SmileState smileState = human.getFacialExpressions().getSmile();
             AttentionState attentionState = human.getAttention();
             Frame humanFrame = human.getHeadFrame();
@@ -165,6 +167,7 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
             Log.i(TAG, "Gender: " + gender);
             Log.i(TAG, "Pleasure state: " + pleasureState);
             Log.i(TAG, "Excitement state: " + excitementState);
+            Log.i(TAG, "Engagement state: " + engagementIntentionState);
             Log.i(TAG, "Smile state: " + smileState);
             Log.i(TAG, "Attention state: " + attentionState);
 
@@ -173,7 +176,7 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
             // Display the distance between the human and the robot.
             Log.i(TAG, "Distance: " + distance + " meter(s).");
 
-            HumanInfo humanInfo = new HumanInfo(age, gender, pleasureState, excitementState, smileState, attentionState, distance);
+            HumanInfo humanInfo = new HumanInfo(age, gender, pleasureState, excitementState, engagementIntentionState, smileState, attentionState, distance);
             humanInfoList.add(humanInfo);
         }
 

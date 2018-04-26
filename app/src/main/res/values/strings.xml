@@ -13,6 +13,7 @@
     <string name="gender">Gender: %1$s</string>
     <string name="pleasure_state">Pleasure state: %1$s</string>
     <string name="excitement_state">Excitement state: %1$s</string>
+    <string name="engagement_intention_state">Engagement intention state: %1$s</string>
     <string name="smile_state">Smile state: %1$s</string>
     <string name="attention_state">Attention state: %1$s</string>
     <string name="distance">Distance: %1$f meter(s)</string>
