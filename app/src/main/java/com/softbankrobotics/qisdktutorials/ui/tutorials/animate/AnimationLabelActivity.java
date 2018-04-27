@@ -39,16 +39,6 @@ public class AnimationLabelActivity extends TutorialActivity implements RobotLif
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
     protected void onDestroy() {
         // Unregister all the RobotLifecycleCallbacks for this Activity.
         QiSDK.unregister(this);
