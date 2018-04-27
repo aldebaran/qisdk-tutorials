@@ -53,6 +53,7 @@
     <string name="trajectory">Step forward</string>
     <string name="collaborative_dialog">Mastering Collaborative dialog</string>
     <string name="emotion">Mastering Emotion detection</string>
+    <string name="animation_labels">Trigger events with animation labels</string>
 
     <!-- Categories -->
     <string name="categories_intro_sentence">Please tell me or select on the tablet which demo you want me to show you</string>

@@ -8,6 +8,7 @@ import com.softbankrobotics.qisdktutorials.model.data.Tutorial;
 import com.softbankrobotics.qisdktutorials.model.data.TutorialId;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.animate.AnimateTutorialActivity;
+import com.softbankrobotics.qisdktutorials.ui.tutorials.animate.AnimationLabelActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.animate.TrajectoryTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.autonomousabilities.AutonomousAbilitiesTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.discuss.BookmarksTutorialActivity;
@@ -87,6 +88,8 @@ class CategoriesRouter implements CategoriesContract.Router {
                 return EmotionTutorialActivity.class;
             case TAKE_PICTURE:
                 return TakePictureTutorialActivity.class;
+            case ANIMATION_LABELS:
+                return AnimationLabelActivity.class;
             default:
                 throw new IllegalArgumentException("Unknown tutorial identifier: " + tutorialId);
         }

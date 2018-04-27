@@ -73,6 +73,7 @@ public class TutorialRepository {
                 tutorials.add(new Tutorial(TutorialId.TRAJECTORY, R.string.trajectory, "trajectory", TutorialLevel.BASICS));
                 break;
             case ADVANCED:
+                tutorials.add(new Tutorial(TutorialId.ANIMATION_LABELS, R.string.animation_labels, "animation_labels", TutorialLevel.ADVANCED));
                 tutorials.add(new Tutorial(TutorialId.GOTO, R.string.go_to, "goto", TutorialLevel.ADVANCED));
                 tutorials.add(new Tutorial(TutorialId.LOOKAT, R.string.look_at, "lookat", TutorialLevel.ADVANCED));
                 tutorials.add(new Tutorial(TutorialId.GOTO_WORLD, R.string.go_to_world, "goto_world", TutorialLevel.ADVANCED));
