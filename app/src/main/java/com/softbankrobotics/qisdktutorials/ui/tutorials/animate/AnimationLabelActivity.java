@@ -61,7 +61,7 @@ public class AnimationLabelActivity extends TutorialActivity implements RobotLif
     }
 
     @Override
-    public void onRobotFocusGained(QiContext qiContext) {
+    public void onRobotFocusGained(final QiContext qiContext) {
         String textToSay = "I can trigger events using animation labels.";
         displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
 
@@ -73,13 +73,26 @@ public class AnimationLabelActivity extends TutorialActivity implements RobotLif
 
         // Create an animation.
         Animation animation = AnimationBuilder.with(qiContext) // Create the builder with the context.
-                .withResources(R.raw.elephant_a001) // Set the animation resource.
+                .withResources(R.raw.dance_b001) // Set the animation resource.
                 .build(); // Build the animation.
 
         // Create an animate action.
         animate = AnimateBuilder.with(qiContext) // Create the builder with the context.
                 .withAnimation(animation) // Set the animation.
                 .build(); // Build the animate action.
+
+        animate.setOnLabelReachedListener(new Animate.OnLabelReachedListener(){
+            @Override
+            public void onLabelReached(String label, Long time) {
+                Say sayLabel = SayBuilder.with(qiContext)
+                        .withText(label)
+                        .build();
+
+                sayLabel.async().run();
+
+                displayLine(label, ConversationItemType.ROBOT_OUTPUT);
+            }
+        });
 
         // Set an on started listener to the animate action.
         animate.setOnStartedListener(new Animate.OnStartedListener() {
