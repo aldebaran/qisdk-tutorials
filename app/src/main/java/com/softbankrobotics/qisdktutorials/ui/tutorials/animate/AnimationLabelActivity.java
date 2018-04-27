@@ -71,6 +71,7 @@ public class AnimationLabelActivity extends TutorialActivity implements RobotLif
                 .withAnimation(animation) // Set the animation.
                 .build(); // Build the animate action.
 
+        // Say and display the name of the reached labels
         animate.setOnLabelReachedListener(new Animate.OnLabelReachedListener() {
             @Override
             public void onLabelReached(String label, Long time) {
