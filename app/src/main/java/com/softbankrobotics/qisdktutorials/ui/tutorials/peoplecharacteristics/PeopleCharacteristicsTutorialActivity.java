@@ -150,11 +150,10 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
 
         // Get the robot frame.
         Frame robotFrame = actuation.robotFrame();
-
+        //we clear memory used for human who are being showed
         for (HumanInfo h : humanInfoList) {
             h.clearMemory();
         }
-
 
         humanInfoList = new ArrayList<>();
         for (int i = 0; i < humans.size(); i++) {

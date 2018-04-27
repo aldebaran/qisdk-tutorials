@@ -52,9 +52,9 @@ class HumanInfoViewHolder extends RecyclerView.ViewHolder {
         smileStateTextView.setText(resources.getString(R.string.smile_state, humanInfo.getSmileState()));
         attentionStateTextView.setText(resources.getString(R.string.attention_state, humanInfo.getAttentionState()));
         distanceTextView.setText(resources.getString(R.string.distance, humanInfo.getDistance()));
+        //we should put image bitmap to null to avoid setting image on recycled bitmap
+        facePictureImageView.setImageBitmap(null);
         if (humanInfo.getFacePicture() == null) {
-            //we should put image bitmap to null to avoid setting image on recycled bitmap
-            facePictureImageView.setImageBitmap(humanInfo.getFacePicture());
             facePictureImageView.setBackgroundResource(R.drawable.ic_icons_cute_anon_unknown);
         } else {
             facePictureImageView.setImageBitmap(humanInfo.getFacePicture());
