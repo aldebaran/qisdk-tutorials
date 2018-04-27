@@ -35,7 +35,7 @@
         <activity android:name=".ui.tutorials.animate.TrajectoryTutorialActivity" />
         <activity android:name=".ui.tutorials.discuss.CollaborativeDialogTutorialActivity" />
         <activity android:name=".ui.tutorials.peoplecharacteristics.EmotionTutorialActivity" />
-        <activity android:name=".ui.tutorials.animate.AnimationLabelActivity"></activity>
+        <activity android:name=".ui.tutorials.animate.AnimationLabelActivity" />
         <activity android:name=".ui.tutorials.takepicture.TakePictureTutorialActivity" />
     </application>
 
