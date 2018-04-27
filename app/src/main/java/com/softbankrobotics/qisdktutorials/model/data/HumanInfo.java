@@ -24,8 +24,7 @@ public class HumanInfo {
     private double distance;
     private Bitmap facePicture;
 
-    public HumanInfo(int age, Gender gender, PleasureState pleasureState, ExcitementState excitementState, EngagementIntentionState engagementIntentionState, SmileState smileState, AttentionState attentionState, double distance) {
-    public HumanInfo(int age, Gender gender, PleasureState pleasureState, ExcitementState excitementState, SmileState smileState, AttentionState attentionState, double distance, Bitmap facePicture) {
+    public HumanInfo(int age, Gender gender, PleasureState pleasureState, ExcitementState excitementState, EngagementIntentionState engagementIntentionState, SmileState smileState, AttentionState attentionState, double distance, Bitmap facePicture) {
         this.age = age;
         this.gender = gender;
         this.pleasureState = pleasureState;

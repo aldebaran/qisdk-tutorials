@@ -28,7 +28,6 @@ import com.aldebaran.qi.sdk.object.human.ExcitementState;
 import com.aldebaran.qi.sdk.object.human.Gender;
 import com.aldebaran.qi.sdk.object.human.Human;
 import com.aldebaran.qi.sdk.object.human.PleasureState;
-
 import com.aldebaran.qi.sdk.object.human.SmileState;
 import com.aldebaran.qi.sdk.object.humanawareness.HumanAwareness;
 import com.softbankrobotics.qisdktutorials.R;
@@ -203,9 +202,7 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
                 Log.i(TAG, "Picture not available");
             }
 
-            HumanInfo humanInfo = new HumanInfo(age, gender, pleasureState, excitementState, smileState, attentionState, distance,facePicture);
-            HumanInfo humanInfo = new HumanInfo(age, gender, pleasureState, excitementState, engagementIntentionState, smileState, attentionState, distance);
-            HumanInfo humanInfo = new HumanInfo(age, gender, pleasureState, excitementState, smileState, attentionState, distance, facePicture);
+            HumanInfo humanInfo = new HumanInfo(age, gender, pleasureState, excitementState, engagementIntentionState, smileState, attentionState, distance, facePicture);
             humanInfoList.add(humanInfo);
         }
 
