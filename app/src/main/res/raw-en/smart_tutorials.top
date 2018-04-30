@@ -2,7 +2,7 @@ topic: ~smart_tutorials()
 
 concept:(human) ["{Mastering} HumanAwareness {"and Human"}" "Mastering Human"]
 concept:(touch) ["React {when} touched"]
-concept:(picture) ["Take a {Pciture}"]
+concept:(picture) ["Take {a} Picture"]
 concept:(abilities) ["{hold release} autonomous abilities"]
 concept:(emotion) ["Mastering Emotion {detection}" "emotion detection"]
 
