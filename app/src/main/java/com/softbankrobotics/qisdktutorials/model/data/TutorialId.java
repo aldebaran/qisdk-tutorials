@@ -22,5 +22,5 @@ public enum TutorialId {
     COLLABORATIVE_DIALOG,
     EMOTION,
     TAKE_PICTURE,
-    ANIMATION_LABELS,
+    ANIMATION_LABEL,
 }

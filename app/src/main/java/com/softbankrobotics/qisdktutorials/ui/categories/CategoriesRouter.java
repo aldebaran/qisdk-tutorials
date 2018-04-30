@@ -88,7 +88,7 @@ class CategoriesRouter implements CategoriesContract.Router {
                 return EmotionTutorialActivity.class;
             case TAKE_PICTURE:
                 return TakePictureTutorialActivity.class;
-            case ANIMATION_LABELS:
+            case ANIMATION_LABEL:
                 return AnimationLabelActivity.class;
             default:
                 throw new IllegalArgumentException("Unknown tutorial identifier: " + tutorialId);

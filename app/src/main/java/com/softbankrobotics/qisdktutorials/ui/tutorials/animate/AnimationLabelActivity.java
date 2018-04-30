@@ -52,7 +52,7 @@ public class AnimationLabelActivity extends TutorialActivity implements RobotLif
 
     @Override
     public void onRobotFocusGained(final QiContext qiContext) {
-        String textToSay = "I can trigger events using animation labels.";
+        String textToSay = "I can trigger events using animation labels: I will synchronize my speech with my dance.";
         displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
 
         Say say = SayBuilder.with(qiContext)

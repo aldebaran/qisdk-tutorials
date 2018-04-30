@@ -6,6 +6,7 @@ concept:(goto) ["Understanding GoTo"]
 concept:(lookat) ["Understanding LookAt"]
 concept:(freeframes) ["{Mastering} FreeFrames"]
 concept:(attachedframe) ["{Mastering} AttachedFrame"]
+concept:(animationlabel) ["{Mastering} Animation labels"]
 
 u: ("~mimic $level==basic") ^endDiscuss(animation)
 u: ("~trajectory $level==basic") ^endDiscuss(trajectory)
@@ -13,3 +14,4 @@ u: ("~goto $level==advanced") ^endDiscuss(goto)
 u: ("~lookat $level==advanced") ^endDiscuss(lookat)
 u: ("~freeframes $level==advanced") ^endDiscuss(goto_world)
 u: ("~attachedframe $level==advanced") ^endDiscuss(follow)
+u: ("~animationlabel $level==advanced") ^endDiscuss(animation_label)
