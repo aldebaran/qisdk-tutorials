@@ -6,7 +6,6 @@ concept:(listen) ["Catch {few} words"]
 concept:(bookmark) ["{Mastering} bookmark"]
 concept:(dynamicconcept) ["{Mastering} dynamic concept"]
 concept:(qichatvariable) ["{Mastering} QiChat variable"]
-concept:(collaborativedialog) ["{Mastering} Collaborative dialog"]
 
 u: ("~hello $level==basic") ^endDiscuss(hello)
 u: ("~discuss $level==basic") ^endDiscuss(discuss)
@@ -14,5 +13,4 @@ u: ("~listen $level==basic") ^endDiscuss(listen)
 u: ("~bookmark $level==advanced") ^endDiscuss(bookmark)
 u: ("~dynamicconcept $level==advanced") ^endDiscuss(dynamic_concept)
 u: ("~qichatvariable $level==advanced") ^endDiscuss(qichat_variable)
-u: ("~collaborativedialog $level==advanced") ^endDiscuss(collaborative_dialog)
 

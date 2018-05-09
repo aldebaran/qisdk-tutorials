@@ -12,7 +12,6 @@ import com.softbankrobotics.qisdktutorials.ui.tutorials.animate.AnimationLabelAc
 import com.softbankrobotics.qisdktutorials.ui.tutorials.animate.TrajectoryTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.autonomousabilities.AutonomousAbilitiesTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.discuss.BookmarksTutorialActivity;
-import com.softbankrobotics.qisdktutorials.ui.tutorials.discuss.CollaborativeDialogTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.discuss.DiscussTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.discuss.DynamicConceptsTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.discuss.QiChatVariablesTutorialActivity;
@@ -82,8 +81,6 @@ class CategoriesRouter implements CategoriesContract.Router {
                 return GoToWorldTutorialActivity.class;
             case AUTONOMOUS_ABILITIES:
                 return AutonomousAbilitiesTutorialActivity.class;
-            case COLLABORATIVE_DIALOG:
-                return CollaborativeDialogTutorialActivity.class;
             case EMOTION:
                 return EmotionTutorialActivity.class;
             case TAKE_PICTURE:

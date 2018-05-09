@@ -51,7 +51,6 @@ public class TutorialRepository {
                 tutorials.add(new Tutorial(TutorialId.BOOKMARK, R.string.bookmarks, "bookmark", TutorialLevel.ADVANCED));
                 tutorials.add(new Tutorial(TutorialId.DYNAMIC_CONCEPT, R.string.dynamic_concepts, "dynamic_concept", TutorialLevel.ADVANCED));
                 tutorials.add(new Tutorial(TutorialId.QICHAT_VARIABLE, R.string.qichat_variables, "qichat_variable", TutorialLevel.ADVANCED));
-                tutorials.add(new Tutorial(TutorialId.COLLABORATIVE_DIALOG, R.string.collaborative_dialog, "collaborative_dialog", TutorialLevel.ADVANCED));
                 break;
             default:
                 throw new IllegalArgumentException("Unknown tutorial level: " + tutorialLevel);
