@@ -21,32 +21,37 @@ import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 
 /**
- * The activity for the Animate tutorial (animation).
+ * The activity for the EnforceTabletReachability tutorial.
  */
 public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity implements RobotLifecycleCallbacks {
 
-    private static final String TAG = "AnimateTutorialActivity";
-
+    private static final String TAG = "TabletReachActivity";
     private ConversationView conversationView;
 
-    // Store the Animate action.
+    // Store action button
     private Button enforceTabletReachabilityButton;
+
+    // Store QiContext
     private QiContext qiContext;
+
+    // Store action future
     private Future<Void> enforceTabletReachabilityFuture;
 
+    // Runnable object used to start action asynchronously when the button is clicked
     private Runnable startEnforceTabletReachability = new Runnable() {
         @Override
         public void run() {
             // Get actuation service
             Actuation actuation = qiContext.getActuation();
 
-            // Create EnforceTabletReachability action
+            // Build EnforceTabletReachability action
             EnforceTabletReachability enforceTabletReachability = actuation.makeEnforceTabletReachability(qiContext.getRobotContext());
 
+            // Update button text when the action starts
             enforceTabletReachability.setOnStartedListener(new EnforceTabletReachability.OnStartedListener() {
                    @Override
                    public void onStarted() {
-                       setButtonText("Stop EnforceTabletReachability");
+                       setButtonText("Stop action");
                    }
                }
             );
@@ -54,10 +59,11 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
             // Run the action asynchronously
             enforceTabletReachabilityFuture = enforceTabletReachability.async().run();
 
+            // Update button text when the action fishishes and log eventual errors
             enforceTabletReachabilityFuture.thenConsume(new Consumer<Future<Void>>() {
                 @Override
                 public void consume(Future<Void> voidFuture) throws Throwable {
-                    setButtonText("Start EnforceTabletReachability");
+                    setButtonText("Enforce Tablet Reachability");
                     if (voidFuture.hasError()) {
                         Log.e(TAG, voidFuture.getErrorMessage());
                     }
@@ -81,7 +87,6 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
 
         conversationView = findViewById(R.id.conversationView);
 
-        // Set button actions
         enforceTabletReachabilityButton = findViewById(R.id.tablet_reachability_button);
         enforceTabletReachabilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,7 +147,6 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
             say.run();
         }
     }
-
 
     @Override
     public void onRobotFocusLost() {
