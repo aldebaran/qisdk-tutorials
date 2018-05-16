@@ -30,16 +30,7 @@
         tools:layout_height="40dp" />
 
     <Button
-        android:id="@+id/animate_button"
-        style="@style/Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="Run EnforceTabletReachability" />
-
-    <Button
-        android:id="@+id/toggle_tablet_reachability_button"
+        android:id="@+id/tablet_reachability_button"
         style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

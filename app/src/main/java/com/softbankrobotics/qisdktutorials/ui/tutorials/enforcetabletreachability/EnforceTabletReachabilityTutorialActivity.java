@@ -1,5 +1,6 @@
 package com.softbankrobotics.qisdktutorials.ui.tutorials.enforcetabletreachability;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,11 +11,9 @@ import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
-import com.aldebaran.qi.sdk.builder.AnimateBuilder;
-import com.aldebaran.qi.sdk.builder.AnimationBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
-import com.aldebaran.qi.sdk.object.actuation.Animate;
-import com.aldebaran.qi.sdk.object.actuation.Animation;
+import com.aldebaran.qi.sdk.object.actuation.Actuation;
+import com.aldebaran.qi.sdk.object.actuation.EnforceTabletReachability;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.softbankrobotics.qisdktutorials.R;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
@@ -31,11 +30,32 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
     private ConversationView conversationView;
 
     // Store the Animate action.
-    private Animate animate;
-    private Button animateButton;
     private Button enforceTabletReachabilityButton;
     private QiContext qiContext;
     private Future<Void> enforceTabletReachabilityFuture;
+
+    private Runnable startEnforceTabletReachability = new Runnable() {
+        @Override
+        public void run() {
+            // Get actuation service
+            Actuation actuation = qiContext.getActuation();
+
+            // Create EnforceTabletReachability action
+            EnforceTabletReachability enforceTabletReachability = actuation.makeEnforceTabletReachability(qiContext.getRobotContext());
+
+            // Run the action asynchronously
+            enforceTabletReachabilityFuture = enforceTabletReachability.async().run();
+
+            enforceTabletReachabilityFuture.thenConsume(new Consumer<Future<Void>>() {
+                @Override
+                public void consume(Future<Void> voidFuture) throws Throwable {
+                    if (voidFuture.hasError()) {
+                        Log.e(TAG, voidFuture.getErrorMessage());
+                    }
+                }
+            });
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,46 +63,21 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
 
         conversationView = findViewById(R.id.conversationView);
 
-        animateButton = findViewById(R.id.animate_button);
-        animateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startAsyncAnimate();
-            }
-        });
-
-        enforceTabletReachabilityButton = findViewById(R.id.toggle_tablet_reachability_button);
+        // Set button actions
+        enforceTabletReachabilityButton = findViewById(R.id.tablet_reachability_button);
         enforceTabletReachabilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (enforceTabletReachabilityFuture == null) {
-                    enforceTabletReachabilityFuture = startAsyncEnforceTabletReachability();
-                    enforceTabletReachabilityButton.setText("Stop EnforceTabletReachability");
-                }
-                else {
+                if (enforceTabletReachabilityFuture == null || enforceTabletReachabilityFuture.isDone()) {
+                    AsyncTask.execute(startEnforceTabletReachability);
+                } else {
                     enforceTabletReachabilityFuture.requestCancellation();
-                    enforceTabletReachabilityButton.setText("Start EnforceTabletReachability");
                 }
             }
         });
 
         // Register the RobotLifecycleCallbacks to this Activity.
         QiSDK.register(this, this);
-    }
-
-    private Future<Void> startAsyncEnforceTabletReachability() {
-
-        return null;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
     @Override
@@ -102,7 +97,7 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
         this.qiContext = qiContext;
 
         // Introduction Say
-        String textToSay = "I can enforce my tablet reachability by limiting my torso and arms movements. Try it out!";
+        String textToSay = "I can enforce my tablet reachability by limiting my movements. Try it out while I count!";
         displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
 
         Say say = SayBuilder.with(qiContext)
@@ -111,58 +106,29 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
 
         say.run();
 
-        // Create an animation.
-        Animation animation = AnimationBuilder.with(qiContext) // Create the builder with the context.
-                .withResources(R.raw.elephant_a001) // Set the animation resource.
-                .build(); // Build the animation.
-
-        // Create and store the animate action.
-        animate = AnimateBuilder.with(qiContext) // Create the builder with the context.
-                .withAnimation(animation) // Set the animation.
-                .build(); // Build the animate action.
-
-        // Set an on started listener to the animate action.
-        animate.setOnStartedListener(new Animate.OnStartedListener() {
-            @Override
-            public void onStarted() {
-                String message = "Animation started.";
-                Log.i(TAG, message);
-                displayLine(message, ConversationItemType.INFO_LOG);
-
-            }
-        });
-
+        startCounting();
     }
 
-    private Future<Void> startAsyncAnimate() {
-        // Run the animate action asynchronously.
-        Future<Void> animateFuture = animate.async().run();
+    private void startCounting() {
+        int sayCounter = 0;
 
-        // Add a consumer to the action execution.
-        animateFuture.thenConsume(new Consumer<Future<Void>>() {
-            @Override
-            public void consume(Future<Void> future) throws Throwable {
-                if (future.isSuccess()) {
-                    String message = "Animation finished with success.";
-                    Log.i(TAG, message);
-                    displayLine(message, ConversationItemType.INFO_LOG);
-                } else if (future.hasError()) {
-                    String message = "Animation finished with error.";
-                    Log.e(TAG, message, future.getError());
-                    displayLine(message, ConversationItemType.ERROR_LOG);
-                }
-            }
-        });
+        while (qiContext != null) {
+            // Say the next number
+            String numberToSay = String.valueOf(++sayCounter);
+            displayLine(numberToSay, ConversationItemType.ROBOT_OUTPUT);
 
-        return animateFuture;
+            Say say = SayBuilder.with(qiContext)
+                    .withText(numberToSay)
+                    .build();
+
+            say.run();
+        }
     }
+
 
     @Override
     public void onRobotFocusLost() {
-        // Remove the on started listener from the animate action.
-        if (animate != null) {
-            animate.setOnStartedListener(null);
-        }
+        this.qiContext = null;
     }
 
     @Override
