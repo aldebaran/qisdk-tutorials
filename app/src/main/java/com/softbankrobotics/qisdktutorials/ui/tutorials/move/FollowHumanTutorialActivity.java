@@ -21,6 +21,7 @@ import com.aldebaran.qi.sdk.object.geometry.Transform;
 import com.aldebaran.qi.sdk.object.geometry.Vector3;
 import com.aldebaran.qi.sdk.object.human.Human;
 import com.aldebaran.qi.sdk.object.humanawareness.HumanAwareness;
+import com.aldebaran.qi.sdk.util.FutureUtils;
 import com.softbankrobotics.qisdktutorials.R;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
@@ -29,6 +30,7 @@ import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class FollowHumanTutorialActivity extends TutorialActivity implements RobotLifecycleCallbacks {
 
@@ -59,7 +61,14 @@ public class FollowHumanTutorialActivity extends TutorialActivity implements Rob
             public void onClick(View v) {
                 if (qiContext != null) {
                     followButton.setEnabled(false);
-                    searchHumans();
+                    displayLine("Following in 3 seconds...", ConversationItemType.INFO_LOG);
+                    // Wait 3 seconds before following.
+                    FutureUtils.wait(3, TimeUnit.SECONDS).andThenConsume(new Consumer<Void>() {
+                        @Override
+                        public void consume(Void ignored) throws Throwable {
+                            searchHumans();
+                        }
+                    });
                 }
             }
         });
@@ -212,7 +221,7 @@ public class FollowHumanTutorialActivity extends TutorialActivity implements Rob
         // Get the human head frame.
         Frame humanFrame = humanToFollow.getHeadFrame();
         // Create a transform for Pepper to stay at 1 meter in front of the human.
-        Transform transform = TransformBuilder.create().fromXTranslation(-1);
+        Transform transform = TransformBuilder.create().fromXTranslation(1);
         // Create an AttachedFrame that automatically updates with the human frame.
         AttachedFrame attachedFrame = humanFrame.makeAttachedFrame(transform);
         // Returns the corresponding Frame.
