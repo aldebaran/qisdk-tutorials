@@ -92,8 +92,8 @@ public class GoToTutorialActivity extends TutorialActivity implements RobotLifec
                                .withFrame(targetFrame.frame()) // Set the target frame.
                                .build(); // Build the GoTo action.
 
-        // Set an on started listener on the GoTo action.
-        goTo.setOnStartedListener(new GoTo.OnStartedListener() {
+        // Add an on started listener on the GoTo action.
+        goTo.addOnStartedListener(new GoTo.OnStartedListener() {
             @Override
             public void onStarted() {
                 String message = "GoTo action started.";
@@ -124,9 +124,9 @@ public class GoToTutorialActivity extends TutorialActivity implements RobotLifec
 
     @Override
     public void onRobotFocusLost() {
-        // Remove the on started listener from the GoTo action.
+        // Remove on started listeners from the GoTo action.
         if (goTo != null) {
-            goTo.setOnStartedListener(null);
+            goTo.removeAllOnStartedListeners();
         }
     }
 

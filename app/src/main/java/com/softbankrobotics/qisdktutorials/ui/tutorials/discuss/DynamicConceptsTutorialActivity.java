@@ -128,14 +128,14 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
         addGreeting("Hello");
         addGreeting("Hi");
 
-        discuss.setOnLatestInputUtteranceChangedListener(new Discuss.OnLatestInputUtteranceChangedListener() {
+        discuss.addOnLatestInputUtteranceChangedListener(new Discuss.OnLatestInputUtteranceChangedListener() {
             @Override
             public void onLatestInputUtteranceChanged(Phrase input) {
                 displayLine(input.getText(), ConversationItemType.HUMAN_INPUT);
             }
         });
 
-        discuss.setOnLatestOutputUtteranceChangedListener(new Discuss.OnLatestOutputUtteranceChangedListener() {
+        discuss.addOnLatestOutputUtteranceChangedListener(new Discuss.OnLatestOutputUtteranceChangedListener() {
             @Override
             public void onLatestOutputUtteranceChanged(Phrase output) {
                 displayLine(output.getText(), ConversationItemType.ROBOT_OUTPUT);
@@ -149,8 +149,8 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
     @Override
     public void onRobotFocusLost() {
         if (discuss != null) {
-            discuss.setOnLatestInputUtteranceChangedListener(null);
-            discuss.setOnLatestOutputUtteranceChangedListener(null);
+            discuss.removeAllOnLatestInputUtteranceChangedListeners();
+            discuss.removeAllOnLatestOutputUtteranceChangedListeners();
         }
     }
 

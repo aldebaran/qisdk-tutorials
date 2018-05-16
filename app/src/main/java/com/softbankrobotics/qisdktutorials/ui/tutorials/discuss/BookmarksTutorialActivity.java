@@ -95,21 +95,21 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
         proposalBookmark = bookmarks.get("mimic_proposal");
 
         // Go to the proposal bookmark when the discuss action starts.
-        discuss.setOnStartedListener(new Discuss.OnStartedListener() {
+        discuss.addOnStartedListener(new Discuss.OnStartedListener() {
             @Override
             public void onStarted() {
                 sayProposal();
             }
         });
 
-        discuss.setOnLatestInputUtteranceChangedListener(new Discuss.OnLatestInputUtteranceChangedListener() {
+        discuss.addOnLatestInputUtteranceChangedListener(new Discuss.OnLatestInputUtteranceChangedListener() {
             @Override
             public void onLatestInputUtteranceChanged(Phrase input) {
                 displayLine(input.getText(), ConversationItemType.HUMAN_INPUT);
             }
         });
 
-        discuss.setOnLatestOutputUtteranceChangedListener(new Discuss.OnLatestOutputUtteranceChangedListener() {
+        discuss.addOnLatestOutputUtteranceChangedListener(new Discuss.OnLatestOutputUtteranceChangedListener() {
             @Override
             public void onLatestOutputUtteranceChanged(Phrase output) {
                 displayLine(output.getText(), ConversationItemType.ROBOT_OUTPUT);
@@ -125,7 +125,7 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
         elephantBookmarkStatus = discuss.bookmarkStatus(elephantBookmark);
 
         // Mimic a dog when the dog mimic bookmark is reached.
-        dogBookmarkStatus.setOnReachedListener(new BookmarkStatus.OnReachedListener() {
+        dogBookmarkStatus.addOnReachedListener(new BookmarkStatus.OnReachedListener() {
             @Override
             public void onReached() {
                 mimicDog(qiContext);
@@ -133,7 +133,7 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
         });
 
         // Mimic an elephant when the elephant mimic bookmark is reached.
-        elephantBookmarkStatus.setOnReachedListener(new BookmarkStatus.OnReachedListener() {
+        elephantBookmarkStatus.addOnReachedListener(new BookmarkStatus.OnReachedListener() {
             @Override
             public void onReached() {
                 mimicElephant(qiContext);
@@ -148,17 +148,17 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
     public void onRobotFocusLost() {
         // Remove the listeners from the discuss action.
         if (discuss != null) {
-            discuss.setOnStartedListener(null);
-            discuss.setOnLatestInputUtteranceChangedListener(null);
-            discuss.setOnLatestOutputUtteranceChangedListener(null);
+            discuss.removeAllOnStartedListeners();
+            discuss.removeAllOnLatestInputUtteranceChangedListeners();
+            discuss.removeAllOnLatestOutputUtteranceChangedListeners();
         }
 
-        // Remove the listener on each BookmarkStatus.
+        // Remove the listeners on each BookmarkStatus.
         if (dogBookmarkStatus != null) {
-            dogBookmarkStatus.setOnReachedListener(null);
+            dogBookmarkStatus.removeAllOnReachedListeners();
         }
         if (elephantBookmarkStatus != null) {
-            elephantBookmarkStatus.setOnReachedListener(null);
+            elephantBookmarkStatus.removeAllOnReachedListeners();
         }
     }
 
@@ -192,7 +192,7 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
                 .withAnimation(animation)
                 .build();
 
-        animate.setOnStartedListener(new Animate.OnStartedListener() {
+        animate.addOnStartedListener(new Animate.OnStartedListener() {
             @Override
             public void onStarted() {
                 if (mediaPlayer != null) {

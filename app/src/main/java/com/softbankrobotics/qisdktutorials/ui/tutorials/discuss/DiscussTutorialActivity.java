@@ -75,8 +75,8 @@ public class DiscussTutorialActivity extends TutorialActivity implements RobotLi
                                         .withTopic(topic) // Add the topic.
                                         .build(); // Build the discuss action.
 
-        // Set an on started listener to the discuss action.
-        discuss.setOnStartedListener(new Discuss.OnStartedListener() {
+        // Add an on started listener to the discuss action.
+        discuss.addOnStartedListener(new Discuss.OnStartedListener() {
             @Override
             public void onStarted() {
                 String message = "Discussion started.";
@@ -85,14 +85,14 @@ public class DiscussTutorialActivity extends TutorialActivity implements RobotLi
             }
         });
 
-        discuss.setOnLatestInputUtteranceChangedListener(new Discuss.OnLatestInputUtteranceChangedListener() {
+        discuss.addOnLatestInputUtteranceChangedListener(new Discuss.OnLatestInputUtteranceChangedListener() {
             @Override
             public void onLatestInputUtteranceChanged(Phrase input) {
                 displayLine(input.getText(), ConversationItemType.HUMAN_INPUT);
             }
         });
 
-        discuss.setOnLatestOutputUtteranceChangedListener(new Discuss.OnLatestOutputUtteranceChangedListener() {
+        discuss.addOnLatestOutputUtteranceChangedListener(new Discuss.OnLatestOutputUtteranceChangedListener() {
             @Override
             public void onLatestOutputUtteranceChanged(Phrase output) {
                 displayLine(output.getText(), ConversationItemType.ROBOT_OUTPUT);
@@ -119,9 +119,9 @@ public class DiscussTutorialActivity extends TutorialActivity implements RobotLi
     public void onRobotFocusLost() {
         // Remove the listeners from the discuss action.
         if (discuss != null) {
-            discuss.setOnStartedListener(null);
-            discuss.setOnLatestInputUtteranceChangedListener(null);
-            discuss.setOnLatestOutputUtteranceChangedListener(null);
+            discuss.removeAllOnStartedListeners();
+            discuss.removeAllOnLatestInputUtteranceChangedListeners();
+            discuss.removeAllOnLatestOutputUtteranceChangedListeners();
         }
     }
 

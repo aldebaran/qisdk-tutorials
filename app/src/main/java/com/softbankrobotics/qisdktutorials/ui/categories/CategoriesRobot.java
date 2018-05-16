@@ -131,7 +131,7 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
         enableLevel(selectedLevel);
         enableTopic(selectedCategory);
 
-        discuss.setOnBookmarkReachedListener(new Discuss.OnBookmarkReachedListener() {
+        discuss.addOnBookmarkReachedListener(new Discuss.OnBookmarkReachedListener() {
             @Override
             public void onBookmarkReached(Bookmark bookmark) {
                 String bookmarkName = bookmark.getName();
@@ -173,7 +173,7 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
     @Override
     public void onRobotFocusLost() {
         if (discuss != null) {
-            discuss.setOnBookmarkReachedListener(null);
+            discuss.removeAllOnBookmarkReachedListeners();
             discuss = null;
         }
         discussFuture = null;

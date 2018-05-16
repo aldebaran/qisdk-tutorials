@@ -166,9 +166,9 @@ public class GoToWorldTutorialActivity extends TutorialActivity implements Robot
         Log.i(TAG, "Focus lost.");
         // Remove the QiContext.
         qiContext = null;
-        // Remove the on started listener from the GoTo action.
+        // Remove on started listeners from the GoTo action.
         if (goTo != null) {
-            goTo.setOnStartedListener(null);
+            goTo.removeAllOnStartedListeners();
         }
     }
 
@@ -234,7 +234,7 @@ public class GoToWorldTutorialActivity extends TutorialActivity implements Robot
                         .build();
 
                 // Display text when the GoTo action starts.
-                goTo.setOnStartedListener(new GoTo.OnStartedListener() {
+                goTo.addOnStartedListener(new GoTo.OnStartedListener() {
                     @Override
                     public void onStarted() {
                         String message = "Moving...";

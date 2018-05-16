@@ -20,8 +20,8 @@ public class BasicEmotionObserver {
     private OnBasicEmotionChangedListener listener;
     // Store the HumanAwareness service.
     private HumanAwareness humanAwareness;
-    // Store the observed human.
-    private Human observedHuman;
+    // Store the observed emotion.
+    private Emotion observedEmotion;
     // Store the last excitement, pleasure and basic emotion.
     private ExcitementState lastExcitement;
     private PleasureState lastPleasure;
@@ -35,15 +35,15 @@ public class BasicEmotionObserver {
         // Get the HumanAwareness service.
         humanAwareness = qiContext.getHumanAwareness();
 
-        // Retrieve the humans around and update the observed human.
+        // Retrieve the humans around and update the observed emotion.
         List<Human> humansAround = humanAwareness.getHumansAround();
-        updateObservedHuman(humansAround);
+        updateObservedEmotion(humansAround);
 
-        // Update the observed human when the humans around change.
-        humanAwareness.setOnHumansAroundChangedListener(new HumanAwareness.OnHumansAroundChangedListener() {
+        // Update the observed emotion when the humans around change.
+        humanAwareness.addOnHumansAroundChangedListener(new HumanAwareness.OnHumansAroundChangedListener() {
             @Override
             public void onHumansAroundChanged(List<Human> humansAround) {
-                updateObservedHuman(humansAround);
+                updateObservedEmotion(humansAround);
             }
         });
     }
@@ -52,12 +52,12 @@ public class BasicEmotionObserver {
      * Stop the observation.
      */
     public void stopObserving() {
-        // Clear observed human.
-        clearObservedHuman();
+        // Clear observed emotion.
+        clearObservedEmotion();
 
         // Remove listener on HumanAwareness.
         if (humanAwareness != null) {
-            humanAwareness.setOnHumansAroundChangedListener(null);
+            humanAwareness.removeAllOnHumansAroundChangedListeners();
             humanAwareness = null;
         }
     }
@@ -70,24 +70,24 @@ public class BasicEmotionObserver {
         this.listener = listener;
     }
 
-    private void updateObservedHuman(List<Human> humansAround) {
-        // Clear observed human.
-        clearObservedHuman();
+    private void updateObservedEmotion(List<Human> humansAround) {
+        // Clear observed emotion.
+        clearObservedEmotion();
 
         if (!humansAround.isEmpty()) {
-            // Update observed human.
-            observedHuman = humansAround.get(0);
+            // Update observed emotion.
+            Human observedHuman = humansAround.get(0);
+            observedEmotion = observedHuman.getEmotion();
 
             // Get and store human excitement and pleasure.
-            Emotion emotion = observedHuman.getEmotion();
-            lastExcitement = emotion.getExcitement();
-            lastPleasure = emotion.getPleasure();
+            lastExcitement = observedEmotion.getExcitement();
+            lastPleasure = observedEmotion.getPleasure();
 
             // Notify the listener.
             notifyListener();
 
             // Notify the listener when excitement changes.
-            emotion.setOnExcitementChangedListener(new Emotion.OnExcitementChangedListener() {
+            observedEmotion.addOnExcitementChangedListener(new Emotion.OnExcitementChangedListener() {
                 @Override
                 public void onExcitementChanged(ExcitementState excitementState) {
                     if (excitementState != lastExcitement) {
@@ -98,7 +98,7 @@ public class BasicEmotionObserver {
             });
 
             // Notify the listener when pleasure changes.
-            emotion.setOnPleasureChangedListener(new Emotion.OnPleasureChangedListener() {
+            observedEmotion.addOnPleasureChangedListener(new Emotion.OnPleasureChangedListener() {
                 @Override
                 public void onPleasureChanged(PleasureState pleasureState) {
                     if (pleasureState != lastPleasure) {
@@ -110,13 +110,12 @@ public class BasicEmotionObserver {
         }
     }
 
-    private void clearObservedHuman() {
-        // Remove listeners on observed human.
-        if (observedHuman != null) {
-            Emotion emotion = observedHuman.getEmotion();
-            emotion.setOnExcitementChangedListener(null);
-            emotion.setOnPleasureChangedListener(null);
-            observedHuman = null;
+    private void clearObservedEmotion() {
+        // Remove listeners on observed emotion.
+        if (observedEmotion != null) {
+            observedEmotion.removeAllOnExcitementChangedListeners();
+            observedEmotion.removeAllOnPleasureChangedListeners();
+            observedEmotion = null;
         }
     }
 

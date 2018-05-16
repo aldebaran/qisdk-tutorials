@@ -66,8 +66,8 @@ public class TouchTutorialActivity extends TutorialActivity implements RobotLife
 
         // Get the head touch sensor.
         headTouchSensor = touch.getSensor("Head/Touch");
-        // Set onStateChanged listener.
-        headTouchSensor.setOnStateChangedListener(new TouchSensor.OnStateChangedListener() {
+        // Add onStateChanged listener.
+        headTouchSensor.addOnStateChangedListener(new TouchSensor.OnStateChangedListener() {
             @Override
             public void onStateChanged(TouchState touchState) {
                 String message = "Sensor " + (touchState.getTouched() ? "touched" : "released") + " at " + touchState.getTime();
@@ -79,9 +79,9 @@ public class TouchTutorialActivity extends TutorialActivity implements RobotLife
 
     @Override
     public void onRobotFocusLost() {
-        // Remove onStateChanged listener.
+        // Remove onStateChanged listeners.
         if (headTouchSensor != null) {
-            headTouchSensor.setOnStateChangedListener(null);
+            headTouchSensor.removeAllOnStateChangedListeners();
         }
     }
 

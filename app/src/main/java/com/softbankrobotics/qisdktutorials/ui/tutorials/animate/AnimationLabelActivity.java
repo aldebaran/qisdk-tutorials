@@ -72,7 +72,7 @@ public class AnimationLabelActivity extends TutorialActivity implements RobotLif
                 .build(); // Build the animate action.
 
         // Say and display the name of the reached labels
-        animate.setOnLabelReachedListener(new Animate.OnLabelReachedListener() {
+        animate.addOnLabelReachedListener(new Animate.OnLabelReachedListener() {
             @Override
             public void onLabelReached(String label, Long time) {
                 Say sayLabel = SayBuilder.with(qiContext)
@@ -85,8 +85,8 @@ public class AnimationLabelActivity extends TutorialActivity implements RobotLif
             }
         });
 
-        // Set an on started listener to the animate action.
-        animate.setOnStartedListener(new Animate.OnStartedListener() {
+        // Add an on started listener to the animate action.
+        animate.addOnStartedListener(new Animate.OnStartedListener() {
             @Override
             public void onStarted() {
                 String message = "Animation started.";
@@ -119,8 +119,8 @@ public class AnimationLabelActivity extends TutorialActivity implements RobotLif
     public void onRobotFocusLost() {
         // Remove the signal listeners from the animate action.
         if (animate != null) {
-            animate.setOnStartedListener(null);
-            animate.setOnLabelReachedListener(null);
+            animate.removeAllOnStartedListeners();
+            animate.removeAllOnLabelReachedListeners();
         }
     }
 

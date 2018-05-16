@@ -113,8 +113,8 @@ public class LookAtTutorialActivity extends TutorialActivity implements RobotLif
         // Set the LookAt policy to look with the head only.
         lookAt.setPolicy(LookAtMovementPolicy.HEAD_ONLY);
 
-        // Set an on started listener on the LookAt action.
-        lookAt.setOnStartedListener(new LookAt.OnStartedListener() {
+        // Add an on started listener on the LookAt action.
+        lookAt.addOnStartedListener(new LookAt.OnStartedListener() {
             @Override
             public void onStarted() {
                 String message = "LookAt action started.";
@@ -149,9 +149,9 @@ public class LookAtTutorialActivity extends TutorialActivity implements RobotLif
 
     @Override
     public void onRobotFocusLost() {
-        // Remove the on started listener from the LookAt action.
+        // Remove on started listeners from the LookAt action.
         if (lookAt != null) {
-            lookAt.setOnStartedListener(null);
+            lookAt.removeAllOnStartedListeners();
         }
     }
 

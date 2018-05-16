@@ -89,8 +89,8 @@ public class AnimateTutorialActivity extends TutorialActivity implements RobotLi
                                         .withAnimation(animation) // Set the animation.
                                         .build(); // Build the animate action.
 
-        // Set an on started listener to the animate action.
-        animate.setOnStartedListener(new Animate.OnStartedListener() {
+        // Add an on started listener to the animate action.
+        animate.addOnStartedListener(new Animate.OnStartedListener() {
             @Override
             public void onStarted() {
                 String message = "Animation started.";
@@ -123,9 +123,9 @@ public class AnimateTutorialActivity extends TutorialActivity implements RobotLi
 
     @Override
     public void onRobotFocusLost() {
-        // Remove the on started listener from the animate action.
+        // Remove on started listeners from the animate action.
         if (animate != null) {
-            animate.setOnStartedListener(null);
+            animate.removeAllOnStartedListeners();
         }
     }
 

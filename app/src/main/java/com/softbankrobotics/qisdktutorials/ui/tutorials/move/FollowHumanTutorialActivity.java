@@ -123,9 +123,9 @@ public class FollowHumanTutorialActivity extends TutorialActivity implements Rob
         Log.i(TAG, "Focus lost.");
         // Remove the QiContext.
         this.qiContext = null;
-        // Remove the on started listener from the GoTo action.
+        // Remove on started listeners from the GoTo action.
         if (goTo != null) {
-            goTo.setOnStartedListener(null);
+            goTo.removeAllOnStartedListeners();
         }
     }
 
@@ -189,7 +189,7 @@ public class FollowHumanTutorialActivity extends TutorialActivity implements Rob
                 .build();
 
         // Update UI when the GoTo action starts.
-        goTo.setOnStartedListener(new GoTo.OnStartedListener() {
+        goTo.addOnStartedListener(new GoTo.OnStartedListener() {
             @Override
             public void onStarted() {
                 enterMovingState();
