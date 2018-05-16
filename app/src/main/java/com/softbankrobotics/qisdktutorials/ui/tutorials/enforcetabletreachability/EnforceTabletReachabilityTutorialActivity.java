@@ -43,12 +43,21 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
             // Create EnforceTabletReachability action
             EnforceTabletReachability enforceTabletReachability = actuation.makeEnforceTabletReachability(qiContext.getRobotContext());
 
+            enforceTabletReachability.setOnStartedListener(new EnforceTabletReachability.OnStartedListener() {
+                   @Override
+                   public void onStarted() {
+                       setButtonText("Stop EnforceTabletReachability");
+                   }
+               }
+            );
+
             // Run the action asynchronously
             enforceTabletReachabilityFuture = enforceTabletReachability.async().run();
 
             enforceTabletReachabilityFuture.thenConsume(new Consumer<Future<Void>>() {
                 @Override
                 public void consume(Future<Void> voidFuture) throws Throwable {
+                    setButtonText("Start EnforceTabletReachability");
                     if (voidFuture.hasError()) {
                         Log.e(TAG, voidFuture.getErrorMessage());
                     }
@@ -56,6 +65,15 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
             });
         }
     };
+
+    private void setButtonText(final String str) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                enforceTabletReachabilityButton.setText(str);
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
