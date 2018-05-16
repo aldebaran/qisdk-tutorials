@@ -36,6 +36,7 @@
         <activity android:name=".ui.tutorials.peoplecharacteristics.EmotionTutorialActivity" />
         <activity android:name=".ui.tutorials.animate.AnimationLabelActivity" />
         <activity android:name=".ui.tutorials.takepicture.TakePictureTutorialActivity" />
+        <activity android:name=".ui.tutorials.discuss.ExecuteTutorialActivity" />
     </application>
 
 </manifest>

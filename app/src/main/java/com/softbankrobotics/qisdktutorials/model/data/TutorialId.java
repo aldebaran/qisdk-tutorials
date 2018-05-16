@@ -13,6 +13,7 @@ public enum TutorialId {
     CHARACTERISTICS,
     TOUCH,
     BOOKMARK,
+    EXECUTE,
     DYNAMIC_CONCEPT,
     QICHAT_VARIABLE,
     GOTO_WORLD,

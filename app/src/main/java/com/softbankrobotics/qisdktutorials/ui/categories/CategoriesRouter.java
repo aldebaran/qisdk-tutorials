@@ -14,6 +14,7 @@ import com.softbankrobotics.qisdktutorials.ui.tutorials.autonomousabilities.Auto
 import com.softbankrobotics.qisdktutorials.ui.tutorials.discuss.BookmarksTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.discuss.DiscussTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.discuss.DynamicConceptsTutorialActivity;
+import com.softbankrobotics.qisdktutorials.ui.tutorials.discuss.ExecuteTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.discuss.QiChatVariablesTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.hellohuman.HelloHumanTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.listen.ListenTutorialActivity;
@@ -69,6 +70,8 @@ class CategoriesRouter implements CategoriesContract.Router {
                 return TrajectoryTutorialActivity.class;
             case BOOKMARK:
                 return BookmarksTutorialActivity.class;
+            case EXECUTE:
+                return ExecuteTutorialActivity.class;
             case ATTACHED_FRAME:
                 return FollowHumanTutorialActivity.class;
             case CHARACTERISTICS:
