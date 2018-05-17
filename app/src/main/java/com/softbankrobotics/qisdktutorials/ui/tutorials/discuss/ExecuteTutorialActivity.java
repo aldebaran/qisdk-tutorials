@@ -2,6 +2,7 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.discuss;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
@@ -77,13 +78,16 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
         Map<String, QiChatExecutor> executors = new HashMap<>();
         //Map the executor name from the topic to our qiChatbotExecutor
         executors.put("myExecutor", new MyQiChatExecutor(qiContext));
+        //Set the executors to the qiChatbot
         qiChatbot.setExecutors(executors);
         List<Chatbot> chatbots = new ArrayList<>();
         chatbots.add(qiChatbot);
+        //make chat with the chatbots
         Chat chat = conversationService.makeChat(qiContext.getRobotContext(), chatbots);
         chat.addOnStartedListener(new Chat.OnStartedListener() {
             @Override
             public void onStarted() {
+                //Say proposal to user
                 Bookmark bookmark = topic.getBookmarks().get("execute_proposal");
                 qiChatbot.goToBookmark(bookmark, AutonomousReactionImportance.HIGH, AutonomousReactionValidity.IMMEDIATE);
             }
@@ -92,6 +96,7 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
         chat.addOnSayingChangedListener(new Chat.OnSayingChangedListener() {
             @Override
             public void onSayingChanged(Phrase sayingPhrase) {
+                //Show on screen what paper is saying
                 if (!TextUtils.isEmpty(sayingPhrase.getText())) {
                     displayLine(sayingPhrase.getText(), ConversationItemType.ROBOT_OUTPUT);
                 }
@@ -100,6 +105,7 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
         chat.addOnHeardListener(new Chat.OnHeardListener() {
             @Override
             public void onHeard(Phrase heardPhrase) {
+                //Show on screen what paper hear
                 displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT);
             }
         });
@@ -152,6 +158,7 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
         @Override
         public void stop() {
             // This is called when chat is canceled or stopped.
+            Log.i(TAG, "execute stopped");
         }
 
 
