@@ -5,9 +5,11 @@ concept:(touch) ["React {when} touched"]
 concept:(picture) ["Take {a} picture"]
 concept:(abilities) ["{hold release} autonomous abilities"]
 concept:(emotion) ["Mastering Emotion {detection}" "emotion detection"]
+concept:(tabletreachability) ["{Enforce} tablet reachability"]
 
 u: ("~touch $level==basic") ^endDiscuss(touch)
 u: ("~abilities $level==basic") ^endDiscuss(autonomous)
 u: ("~picture $level==basic") ^endDiscuss(picture)
+u: ("~tabletreachability $level==basic") ^endDiscuss(enforce_tablet_reachability)
 u: ("~human $level==advanced") ^endDiscuss(people_characteristics)
 u: ("~emotion $level==advanced") ^endDiscuss(emotion)
