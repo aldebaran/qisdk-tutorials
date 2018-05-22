@@ -1,6 +1,7 @@
 package com.softbankrobotics.qisdktutorials.ui.tutorials.chat;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -12,13 +13,16 @@ import com.aldebaran.qi.Consumer;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
-import com.aldebaran.qi.sdk.builder.DiscussBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
+import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionImportance;
+import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionValidity;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
-import com.aldebaran.qi.sdk.object.conversation.Discuss;
+import com.aldebaran.qi.sdk.object.conversation.Chat;
+import com.aldebaran.qi.sdk.object.conversation.Chatbot;
 import com.aldebaran.qi.sdk.object.conversation.Phrase;
 import com.aldebaran.qi.sdk.object.conversation.QiChatVariable;
+import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
 import com.softbankrobotics.qisdktutorials.R;
@@ -26,6 +30,8 @@ import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 import com.softbankrobotics.qisdktutorials.utils.KeyboardUtils;
+
+import java.util.Collections;
 
 /**
  * The activity for the QiChatVariables tutorial.
@@ -37,8 +43,10 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
 
     // Store the variable.
     private QiChatVariable variable;
-    // Store the Discuss action.
-    private Discuss discuss;
+    // Store the QiChatbot.
+    private QiChatbot qiChatbot;
+    // Store the Chat action.
+    private Chat chat;
     // Store the Bookmark used to read the variable.
     private Bookmark readBookmark;
 
@@ -102,37 +110,44 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
 
         readBookmark = topic.getBookmarks().get("read");
 
-        // Create a new discuss action.
-        discuss = DiscussBuilder.with(qiContext)
-                .withTopic(topic)
-                .build();
+        // Create a new QiChatbot.
+        qiChatbot = qiContext.getConversation()
+                .makeQiChatbot(qiContext.getRobotContext(), Collections.singletonList(topic));
+
+        // Create a new Chat action.
+        chat = qiContext.getConversation()
+                .makeChat(qiContext.getRobotContext(), Collections.<Chatbot>singletonList(qiChatbot));
+
 
         // Get the variable.
-        variable = discuss.variable("var");
+        variable = qiChatbot.variable("var");
 
-        discuss.addOnLatestInputUtteranceChangedListener(new Discuss.OnLatestInputUtteranceChangedListener() {
+        chat.addOnHeardListener(new Chat.OnHeardListener() {
             @Override
-            public void onLatestInputUtteranceChanged(Phrase input) {
-                displayLine(input.getText(), ConversationItemType.HUMAN_INPUT);
+            public void onHeard(Phrase heardPhrase) {
+                displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT);
             }
         });
 
-        discuss.addOnLatestOutputUtteranceChangedListener(new Discuss.OnLatestOutputUtteranceChangedListener() {
+        chat.addOnSayingChangedListener(new Chat.OnSayingChangedListener() {
             @Override
-            public void onLatestOutputUtteranceChanged(Phrase output) {
-                displayLine(output.getText(), ConversationItemType.ROBOT_OUTPUT);
+            public void onSayingChanged(Phrase sayingPhrase) {
+                String text = sayingPhrase.getText();
+                if (!TextUtils.isEmpty(text)) {
+                    displayLine(text, ConversationItemType.ROBOT_OUTPUT);
+                }
             }
         });
 
-        // Run the discuss action asynchronously.
-        discuss.async().run();
+        // Run the Chat action asynchronously.
+        chat.async().run();
     }
 
     @Override
     public void onRobotFocusLost() {
-        if (discuss != null) {
-            discuss.removeAllOnLatestInputUtteranceChangedListeners();
-            discuss.removeAllOnLatestOutputUtteranceChangedListeners();
+        if (chat != null) {
+            chat.removeAllOnHeardListeners();
+            chat.removeAllOnSayingChangedListeners();
         }
     }
 
@@ -154,7 +169,7 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
             @Override
             public void consume(Void ignore) throws Throwable {
                 // Read the value.
-                discuss.async().goToBookmarkedOutputUtterance(readBookmark);
+                qiChatbot.async().goToBookmark(readBookmark, AutonomousReactionImportance.HIGH, AutonomousReactionValidity.IMMEDIATE);
             }
         });
     }
