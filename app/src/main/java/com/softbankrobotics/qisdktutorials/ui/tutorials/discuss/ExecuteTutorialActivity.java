@@ -68,7 +68,6 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
                 .withResource(R.raw.execute)
                 .build();
 
-
         // Create a list of topics to pass it to qiChatbot
         List<Topic> topics = new ArrayList<>();
         topics.add(topic);
@@ -76,13 +75,16 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
         // Create qiChatbot
         final QiChatbot qiChatbot = conversationService.makeQiChatbot(qiContext.getRobotContext(), topics);
         Map<String, QiChatExecutor> executors = new HashMap<>();
-        //Map the executor name from the topic to our qiChatbotExecutor
+
+        // Map the executor name from the topic to our qiChatbotExecutor
         executors.put("myExecutor", new MyQiChatExecutor(qiContext));
-        //Set the executors to the qiChatbot
+
+        // Set the executors to the qiChatbot
         qiChatbot.setExecutors(executors);
         List<Chatbot> chatbots = new ArrayList<>();
         chatbots.add(qiChatbot);
-        //make chat with the chatbots
+
+        // make chat with the chatbots
         Chat chat = conversationService.makeChat(qiContext.getRobotContext(), chatbots);
         chat.addOnStartedListener(new Chat.OnStartedListener() {
             @Override
@@ -96,7 +98,7 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
         chat.addOnSayingChangedListener(new Chat.OnSayingChangedListener() {
             @Override
             public void onSayingChanged(Phrase sayingPhrase) {
-                //Show on screen what paper is saying
+                // Show on screen what Pepper is saying
                 if (!TextUtils.isEmpty(sayingPhrase.getText())) {
                     displayLine(sayingPhrase.getText(), ConversationItemType.ROBOT_OUTPUT);
                 }
@@ -105,7 +107,7 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
         chat.addOnHeardListener(new Chat.OnHeardListener() {
             @Override
             public void onHeard(Phrase heardPhrase) {
-                //Show on screen what paper hear
+                // Show on screen what Pepper heard
                 displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT);
             }
         });
@@ -128,9 +130,6 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
         return R.layout.conversation_layout;
     }
 
-    /*
-     *class that implement BaseQiChatExecutor
-     */
 
     private void displayLine(final String text, final ConversationItemType type) {
         runOnUiThread(new Runnable() {
@@ -158,7 +157,8 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
         @Override
         public void stop() {
             // This is called when chat is canceled or stopped.
-            Log.i(TAG, "execute stopped");
+            displayLine("QiChatExecutor stopped", ConversationItemType.INFO_LOG);
+            Log.i(TAG, "QiChatExecutor stopped");
         }
 
 

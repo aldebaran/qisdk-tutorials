@@ -1,7 +1,0 @@
-topic: ~execute()
-# Defining extra concepts out of words or group of words
-concept:(execute) [execute executor]
-
-# Replying to speech
-proposal: %execute_proposal Say  'execute'  or  'executor'  to trigger an anmiation action during a Qi Chat topic .
-u:(~execute) I launche the execute ^execute(myExecutor, param1, param2) and now i continue
