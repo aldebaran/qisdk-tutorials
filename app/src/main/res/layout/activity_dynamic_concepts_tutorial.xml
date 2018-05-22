@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
-    tools:context=".ui.tutorials.discuss.DynamicConceptsTutorialActivity">
+    tools:context=".ui.tutorials.chat.DynamicConceptsTutorialActivity">
 
     <com.softbankrobotics.qisdktutorials.ui.tutorialtoolbar.TutorialToolbar
         android:id="@+id/toolbar"

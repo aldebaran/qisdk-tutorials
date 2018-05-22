@@ -1,4 +1,4 @@
-package com.softbankrobotics.qisdktutorials.ui.tutorials.discuss;
+package com.softbankrobotics.qisdktutorials.ui.tutorials.chat;
 
 /**
  * The listener used to handle a greeting removal.

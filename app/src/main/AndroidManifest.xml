@@ -24,19 +24,19 @@
         <activity android:name=".ui.tutorials.move.GoToTutorialActivity" />
         <activity android:name=".ui.tutorials.autonomousabilities.AutonomousAbilitiesTutorialActivity" />
         <activity android:name=".ui.tutorials.peoplecharacteristics.PeopleCharacteristicsTutorialActivity" />
-        <activity android:name=".ui.tutorials.discuss.DiscussTutorialActivity" />
+        <activity android:name=".ui.tutorials.chat.DiscussTutorialActivity" />
         <activity android:name=".ui.tutorials.touch.TouchTutorialActivity" />
         <activity android:name=".ui.tutorials.lookat.LookAtTutorialActivity" />
-        <activity android:name=".ui.tutorials.discuss.BookmarksTutorialActivity" />
-        <activity android:name=".ui.tutorials.discuss.DynamicConceptsTutorialActivity" />
+        <activity android:name=".ui.tutorials.chat.BookmarksTutorialActivity" />
+        <activity android:name=".ui.tutorials.chat.DynamicConceptsTutorialActivity" />
         <activity android:name=".ui.tutorials.move.GoToWorldTutorialActivity" />
         <activity android:name=".ui.tutorials.move.FollowHumanTutorialActivity" />
-        <activity android:name=".ui.tutorials.discuss.QiChatVariablesTutorialActivity" />
+        <activity android:name=".ui.tutorials.chat.QiChatVariablesTutorialActivity" />
         <activity android:name=".ui.tutorials.animate.TrajectoryTutorialActivity" />
         <activity android:name=".ui.tutorials.peoplecharacteristics.EmotionTutorialActivity" />
         <activity android:name=".ui.tutorials.animate.AnimationLabelActivity" />
         <activity android:name=".ui.tutorials.takepicture.TakePictureTutorialActivity" />
-        <activity android:name=".ui.tutorials.discuss.ExecuteTutorialActivity" />
+        <activity android:name=".ui.tutorials.chat.ExecuteTutorialActivity" />
     </application>
 
 </manifest>

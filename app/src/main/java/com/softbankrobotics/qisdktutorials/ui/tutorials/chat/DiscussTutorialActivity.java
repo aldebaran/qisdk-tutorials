@@ -1,4 +1,4 @@
-package com.softbankrobotics.qisdktutorials.ui.tutorials.discuss;
+package com.softbankrobotics.qisdktutorials.ui.tutorials.chat;
 
 import android.os.Bundle;
 import android.util.Log;

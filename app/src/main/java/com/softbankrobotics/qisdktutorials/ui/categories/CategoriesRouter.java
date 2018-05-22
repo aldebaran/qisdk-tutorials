@@ -11,11 +11,11 @@ import com.softbankrobotics.qisdktutorials.ui.tutorials.animate.AnimateTutorialA
 import com.softbankrobotics.qisdktutorials.ui.tutorials.animate.AnimationLabelActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.animate.TrajectoryTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.autonomousabilities.AutonomousAbilitiesTutorialActivity;
-import com.softbankrobotics.qisdktutorials.ui.tutorials.discuss.BookmarksTutorialActivity;
-import com.softbankrobotics.qisdktutorials.ui.tutorials.discuss.DiscussTutorialActivity;
-import com.softbankrobotics.qisdktutorials.ui.tutorials.discuss.DynamicConceptsTutorialActivity;
-import com.softbankrobotics.qisdktutorials.ui.tutorials.discuss.ExecuteTutorialActivity;
-import com.softbankrobotics.qisdktutorials.ui.tutorials.discuss.QiChatVariablesTutorialActivity;
+import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.BookmarksTutorialActivity;
+import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.DiscussTutorialActivity;
+import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.DynamicConceptsTutorialActivity;
+import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.ExecuteTutorialActivity;
+import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.QiChatVariablesTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.hellohuman.HelloHumanTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.listen.ListenTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.lookat.LookAtTutorialActivity;

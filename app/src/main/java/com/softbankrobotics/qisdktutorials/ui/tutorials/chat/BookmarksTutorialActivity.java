@@ -1,4 +1,4 @@
-package com.softbankrobotics.qisdktutorials.ui.tutorials.discuss;
+package com.softbankrobotics.qisdktutorials.ui.tutorials.chat;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
