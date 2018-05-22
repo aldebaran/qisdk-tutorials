@@ -1,6 +1,7 @@
 package com.softbankrobotics.qisdktutorials.ui.tutorials.chat;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.aldebaran.qi.Consumer;
@@ -8,11 +9,12 @@ import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
-import com.aldebaran.qi.sdk.builder.DiscussBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
-import com.aldebaran.qi.sdk.object.conversation.Discuss;
+import com.aldebaran.qi.sdk.object.conversation.Chat;
+import com.aldebaran.qi.sdk.object.conversation.Chatbot;
 import com.aldebaran.qi.sdk.object.conversation.Phrase;
+import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
 import com.softbankrobotics.qisdktutorials.R;
@@ -20,17 +22,19 @@ import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 
-/**
- * The activity for the Discuss tutorial.
- */
-public class DiscussTutorialActivity extends TutorialActivity implements RobotLifecycleCallbacks {
+import java.util.Collections;
 
-    private static final String TAG = "DiscussTutorialActivity";
+/**
+ * The activity for the QiChatbot tutorial.
+ */
+public class QiChatbotTutorialActivity extends TutorialActivity implements RobotLifecycleCallbacks {
+
+    private static final String TAG = "QiChatbotActivity";
 
     private ConversationView conversationView;
 
-    // Store the Discuss action.
-    private Discuss discuss;
+    // Store the Chat action.
+    private Chat chat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +74,16 @@ public class DiscussTutorialActivity extends TutorialActivity implements RobotLi
                                   .withResource(R.raw.greetings) // Set the topic resource.
                                   .build(); // Build the topic.
 
-        // Create a new discuss action.
-        discuss = DiscussBuilder.with(qiContext) // Create the builder using the QiContext.
-                                        .withTopic(topic) // Add the topic.
-                                        .build(); // Build the discuss action.
+        // Create a new QiChatbot.
+        QiChatbot qiChatbot = qiContext.getConversation()
+                .makeQiChatbot(qiContext.getRobotContext(), Collections.singletonList(topic));
 
-        // Add an on started listener to the discuss action.
-        discuss.addOnStartedListener(new Discuss.OnStartedListener() {
+        // Create a new Chat action.
+        chat = qiContext.getConversation()
+                .makeChat(qiContext.getRobotContext(), Collections.<Chatbot>singletonList(qiChatbot));
+
+        // Add an on started listener to the Chat action.
+        chat.addOnStartedListener(new Chat.OnStartedListener() {
             @Override
             public void onStarted() {
                 String message = "Discussion started.";
@@ -85,27 +92,30 @@ public class DiscussTutorialActivity extends TutorialActivity implements RobotLi
             }
         });
 
-        discuss.addOnLatestInputUtteranceChangedListener(new Discuss.OnLatestInputUtteranceChangedListener() {
+        chat.addOnHeardListener(new Chat.OnHeardListener() {
             @Override
-            public void onLatestInputUtteranceChanged(Phrase input) {
-                displayLine(input.getText(), ConversationItemType.HUMAN_INPUT);
+            public void onHeard(Phrase heardPhrase) {
+                displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT);
             }
         });
 
-        discuss.addOnLatestOutputUtteranceChangedListener(new Discuss.OnLatestOutputUtteranceChangedListener() {
+        chat.addOnSayingChangedListener(new Chat.OnSayingChangedListener() {
             @Override
-            public void onLatestOutputUtteranceChanged(Phrase output) {
-                displayLine(output.getText(), ConversationItemType.ROBOT_OUTPUT);
+            public void onSayingChanged(Phrase sayingPhrase) {
+                String text = sayingPhrase.getText();
+                if (!TextUtils.isEmpty(text)) {
+                    displayLine(text, ConversationItemType.ROBOT_OUTPUT);
+                }
             }
         });
 
-        // Run the discuss action asynchronously.
-        Future<String> discussFuture = discuss.async().run();
+        // Run the Chat action asynchronously.
+        Future<Void> chatFuture = chat.async().run();
 
         // Add a consumer to the action execution.
-        discussFuture.thenConsume(new Consumer<Future<String>>() {
+        chatFuture.thenConsume(new Consumer<Future<Void>>() {
             @Override
-            public void consume(Future<String> future) throws Throwable {
+            public void consume(Future<Void> future) throws Throwable {
                 if (future.hasError()) {
                     String message = "Discussion finished with error.";
                     Log.e(TAG, message, future.getError());
@@ -117,11 +127,11 @@ public class DiscussTutorialActivity extends TutorialActivity implements RobotLi
 
     @Override
     public void onRobotFocusLost() {
-        // Remove the listeners from the discuss action.
-        if (discuss != null) {
-            discuss.removeAllOnStartedListeners();
-            discuss.removeAllOnLatestInputUtteranceChangedListeners();
-            discuss.removeAllOnLatestOutputUtteranceChangedListeners();
+        // Remove the listeners from the Chat action.
+        if (chat != null) {
+            chat.removeAllOnStartedListeners();
+            chat.removeAllOnHeardListeners();
+            chat.removeAllOnSayingChangedListeners();
         }
     }
 

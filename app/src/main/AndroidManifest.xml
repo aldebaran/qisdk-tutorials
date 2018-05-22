@@ -24,7 +24,7 @@
         <activity android:name=".ui.tutorials.move.GoToTutorialActivity" />
         <activity android:name=".ui.tutorials.autonomousabilities.AutonomousAbilitiesTutorialActivity" />
         <activity android:name=".ui.tutorials.peoplecharacteristics.PeopleCharacteristicsTutorialActivity" />
-        <activity android:name=".ui.tutorials.chat.DiscussTutorialActivity" />
+        <activity android:name=".ui.tutorials.chat.QiChatbotTutorialActivity" />
         <activity android:name=".ui.tutorials.touch.TouchTutorialActivity" />
         <activity android:name=".ui.tutorials.lookat.LookAtTutorialActivity" />
         <activity android:name=".ui.tutorials.chat.BookmarksTutorialActivity" />
