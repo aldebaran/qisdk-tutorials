@@ -39,7 +39,6 @@ import java.util.Map;
 public class ExecuteTutorialActivity extends TutorialActivity implements RobotLifecycleCallbacks {
 
     private static final String TAG = "ExecuteTutorialActivity";
-    Conversation conversationService;
     private ConversationView conversationView;
 
     @Override
@@ -62,7 +61,7 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
         // Get the conversation service.
-        conversationService = qiContext.getConversation();
+        Conversation conversationService = qiContext.getConversation();
         // Create a topic.
         final Topic topic = TopicBuilder.with(qiContext)
                 .withResource(R.raw.execute)
