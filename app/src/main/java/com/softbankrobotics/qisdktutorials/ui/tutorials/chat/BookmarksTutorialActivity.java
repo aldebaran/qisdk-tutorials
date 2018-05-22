@@ -3,6 +3,7 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.chat;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.RawRes;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.aldebaran.qi.Consumer;
@@ -11,20 +12,24 @@ import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.AnimateBuilder;
 import com.aldebaran.qi.sdk.builder.AnimationBuilder;
-import com.aldebaran.qi.sdk.builder.DiscussBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
 import com.aldebaran.qi.sdk.object.actuation.Animate;
 import com.aldebaran.qi.sdk.object.actuation.Animation;
+import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionImportance;
+import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionValidity;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.BookmarkStatus;
-import com.aldebaran.qi.sdk.object.conversation.Discuss;
+import com.aldebaran.qi.sdk.object.conversation.Chat;
+import com.aldebaran.qi.sdk.object.conversation.Chatbot;
 import com.aldebaran.qi.sdk.object.conversation.Phrase;
+import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
 import com.softbankrobotics.qisdktutorials.R;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -37,8 +42,10 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
     private ConversationView conversationView;
     private MediaPlayer mediaPlayer;
 
-    // Store the discuss action.
-    private Discuss discuss;
+    // Store the QiChatbot.
+    private QiChatbot qiChatbot;
+    // Store the Chat action.
+    private Chat chat;
     // Store the proposal bookmark.
     private Bookmark proposalBookmark;
     // Store the dog BookmarkStatus.
@@ -84,35 +91,41 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
                 .withResource(R.raw.mimic_animal)
                 .build();
 
-        // Create a new discuss action.
-        discuss = DiscussBuilder.with(qiContext)
-                .withTopic(topic)
-                .build();
+        // Create a new QiChatbot.
+        qiChatbot = qiContext.getConversation()
+                .makeQiChatbot(qiContext.getRobotContext(), Collections.singletonList(topic));
+
+        // Create a new Chat action.
+        chat = qiContext.getConversation()
+                .makeChat(qiContext.getRobotContext(), Collections.<Chatbot>singletonList(qiChatbot));
 
         // Get the bookmarks from the topic.
         Map<String, Bookmark> bookmarks = topic.getBookmarks();
         // Get the proposal bookmark.
         proposalBookmark = bookmarks.get("mimic_proposal");
 
-        // Go to the proposal bookmark when the discuss action starts.
-        discuss.addOnStartedListener(new Discuss.OnStartedListener() {
+        // Go to the proposal bookmark when the Chat action starts.
+        chat.addOnStartedListener(new Chat.OnStartedListener() {
             @Override
             public void onStarted() {
                 sayProposal();
             }
         });
 
-        discuss.addOnLatestInputUtteranceChangedListener(new Discuss.OnLatestInputUtteranceChangedListener() {
+        chat.addOnHeardListener(new Chat.OnHeardListener() {
             @Override
-            public void onLatestInputUtteranceChanged(Phrase input) {
-                displayLine(input.getText(), ConversationItemType.HUMAN_INPUT);
+            public void onHeard(Phrase heardPhrase) {
+                displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT);
             }
         });
 
-        discuss.addOnLatestOutputUtteranceChangedListener(new Discuss.OnLatestOutputUtteranceChangedListener() {
+        chat.addOnSayingChangedListener(new Chat.OnSayingChangedListener() {
             @Override
-            public void onLatestOutputUtteranceChanged(Phrase output) {
-                displayLine(output.getText(), ConversationItemType.ROBOT_OUTPUT);
+            public void onSayingChanged(Phrase sayingPhrase) {
+                String text = sayingPhrase.getText();
+                if (!TextUtils.isEmpty(text)) {
+                    displayLine(text, ConversationItemType.ROBOT_OUTPUT);
+                }
             }
         });
 
@@ -121,8 +134,8 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
         Bookmark elephantBookmark = bookmarks.get("elephant_mimic");
 
         // Create a BookmarkStatus for each bookmark.
-        dogBookmarkStatus = discuss.bookmarkStatus(dogBookmark);
-        elephantBookmarkStatus = discuss.bookmarkStatus(elephantBookmark);
+        dogBookmarkStatus = qiChatbot.bookmarkStatus(dogBookmark);
+        elephantBookmarkStatus = qiChatbot.bookmarkStatus(elephantBookmark);
 
         // Mimic a dog when the dog mimic bookmark is reached.
         dogBookmarkStatus.addOnReachedListener(new BookmarkStatus.OnReachedListener() {
@@ -140,17 +153,17 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
             }
         });
 
-        // Run the discuss action asynchronously.
-        discuss.async().run();
+        // Run the Chat action asynchronously.
+        chat.async().run();
     }
 
     @Override
     public void onRobotFocusLost() {
-        // Remove the listeners from the discuss action.
-        if (discuss != null) {
-            discuss.removeAllOnStartedListeners();
-            discuss.removeAllOnLatestInputUtteranceChangedListeners();
-            discuss.removeAllOnLatestOutputUtteranceChangedListeners();
+        // Remove the listeners from the Chat action.
+        if (chat != null) {
+            chat.removeAllOnStartedListeners();
+            chat.removeAllOnHeardListeners();
+            chat.removeAllOnSayingChangedListeners();
         }
 
         // Remove the listeners on each BookmarkStatus.
@@ -215,7 +228,7 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
     }
 
     private void sayProposal() {
-        discuss.goToBookmarkedOutputUtterance(proposalBookmark);
+        qiChatbot.goToBookmark(proposalBookmark, AutonomousReactionImportance.HIGH, AutonomousReactionValidity.IMMEDIATE);
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
