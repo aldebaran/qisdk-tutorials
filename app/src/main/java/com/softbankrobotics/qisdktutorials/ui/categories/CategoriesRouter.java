@@ -54,7 +54,7 @@ class CategoriesRouter implements CategoriesContract.Router {
         switch (tutorialId) {
             case SAY:
                 return HelloHumanTutorialActivity.class;
-            case DISCUSS:
+            case QICHATBOT:
                 return DiscussTutorialActivity.class;
             case LISTEN:
                 return ListenTutorialActivity.class;

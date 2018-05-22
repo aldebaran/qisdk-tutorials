@@ -5,7 +5,7 @@ package com.softbankrobotics.qisdktutorials.model.data;
  */
 public enum TutorialId {
     SAY,
-    DISCUSS,
+    QICHATBOT,
     LISTEN,
     ANIMATION,
     GOTO,

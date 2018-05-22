@@ -44,7 +44,7 @@ public class TutorialRepository {
         switch (tutorialLevel) {
             case BASICS:
                 tutorials.add(new Tutorial(TutorialId.SAY, R.string.hello_human, "hello", TutorialLevel.BASICS));
-                tutorials.add(new Tutorial(TutorialId.DISCUSS, R.string.discuss, "discuss", TutorialLevel.BASICS));
+                tutorials.add(new Tutorial(TutorialId.QICHATBOT, R.string.qichatbot, "qichatbot", TutorialLevel.BASICS));
                 tutorials.add(new Tutorial(TutorialId.LISTEN, R.string.listen, "listen", TutorialLevel.BASICS));
                 break;
             case ADVANCED:

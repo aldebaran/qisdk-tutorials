@@ -37,7 +37,7 @@
 
     <!-- Tutorial names -->
     <string name="hello_human">Hello human</string>
-    <string name="discuss">Listen and reply</string>
+    <string name="qichatbot">Listen and reply</string>
     <string name="listen">Catch few words</string>
     <string name="bookmarks">Mastering Bookmark</string>
     <string name="execute">Mastering Execute</string>

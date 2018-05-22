@@ -26,7 +26,7 @@ interface CategoriesContract {
         void unbind();
         void loadTutorials(TutorialCategory category);
         void loadTutorials(TutorialLevel level);
-        void goToTutorialForDiscussId(String tutorialDiscussId);
+        void goToTutorialForQiChatbotId(String tutorialQiChatbotId);
         void goToTutorial(Tutorial tutorial);
     }
 

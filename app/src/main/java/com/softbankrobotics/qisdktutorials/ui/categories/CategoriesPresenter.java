@@ -44,9 +44,9 @@ class CategoriesPresenter implements CategoriesContract.Presenter {
     }
 
     @Override
-    public void goToTutorialForDiscussId(String tutorialDiscussId) {
+    public void goToTutorialForQiChatbotId(String tutorialQiChatbotId) {
         for (Tutorial tutorial : loadedTutorials) {
-            if (tutorial.getDiscussId().equals(tutorialDiscussId)) {
+            if (tutorial.getQiChatbotId().equals(tutorialQiChatbotId)) {
                 view.selectTutorial(tutorial);
                 view.goToTutorial(tutorial);
                 break;

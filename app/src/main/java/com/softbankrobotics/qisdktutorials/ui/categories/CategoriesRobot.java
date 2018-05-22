@@ -165,7 +165,7 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
         discussFuture.andThenConsume(new Consumer<String>() {
             @Override
             public void consume(String tutorialDiscussId) throws Throwable {
-                presenter.goToTutorialForDiscussId(tutorialDiscussId);
+                presenter.goToTutorialForQiChatbotId(tutorialDiscussId);
             }
         });
     }

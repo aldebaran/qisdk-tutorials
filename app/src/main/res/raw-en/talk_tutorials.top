@@ -1,7 +1,7 @@
 topic: ~talk_tutorials()
 
 concept:(hello) ["Hello human"]
-concept:(discuss) ["Listen and reply"]
+concept:(qichatbot) ["Listen and reply"]
 concept:(listen) ["Catch {few} words"]
 concept:(bookmark) ["{Mastering} bookmark"]
 concept:(execute) ["{Mastering} execute"]
@@ -9,7 +9,7 @@ concept:(dynamicconcept) ["{Mastering} dynamic concept"]
 concept:(qichatvariable) ["{Mastering} QiChat variable"]
 
 u: ("~hello $level==basic") ^endDiscuss(hello)
-u: ("~discuss $level==basic") ^endDiscuss(discuss)
+u: ("~qichatbot $level==basic") ^endDiscuss(qichatbot)
 u: ("~listen $level==basic") ^endDiscuss(listen)
 u: ("~bookmark $level==advanced") ^endDiscuss(bookmark)
 u: ("~execute $level==advanced") ^endDiscuss(execute)

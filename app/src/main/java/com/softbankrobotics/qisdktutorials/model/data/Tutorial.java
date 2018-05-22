@@ -9,15 +9,15 @@ public class Tutorial {
 
     private final TutorialId id;
     private final @StringRes int nameResId;
-    private final String discussId;
+    private final String qiChatbotId;
     private final TutorialLevel tutorialLevel;
     private boolean selected;
     private boolean enabled;
 
-    public Tutorial(TutorialId id, @StringRes int nameResId, String discussId, TutorialLevel tutorialLevel) {
+    public Tutorial(TutorialId id, @StringRes int nameResId, String qiChatbotId, TutorialLevel tutorialLevel) {
         this.id = id;
         this.nameResId = nameResId;
-        this.discussId = discussId;
+        this.qiChatbotId = qiChatbotId;
         this.tutorialLevel = tutorialLevel;
         this.selected = false;
         this.enabled = true;
@@ -27,8 +27,8 @@ public class Tutorial {
         return nameResId;
     }
 
-    public String getDiscussId() {
-        return discussId;
+    public String getQiChatbotId() {
+        return qiChatbotId;
     }
 
     public boolean isSelected() {
