@@ -9,18 +9,22 @@ import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
-import com.aldebaran.qi.sdk.builder.DiscussBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
-import com.aldebaran.qi.sdk.object.conversation.Discuss;
+import com.aldebaran.qi.sdk.object.conversation.Chat;
+import com.aldebaran.qi.sdk.object.conversation.Chatbot;
 import com.aldebaran.qi.sdk.object.conversation.QiChatVariable;
+import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
 import com.aldebaran.qi.sdk.object.conversation.TopicStatus;
 import com.softbankrobotics.qisdktutorials.R;
 import com.softbankrobotics.qisdktutorials.model.data.Tutorial;
 import com.softbankrobotics.qisdktutorials.model.data.TutorialCategory;
 import com.softbankrobotics.qisdktutorials.model.data.TutorialLevel;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * The robot for the tutorial categories.
@@ -36,8 +40,8 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
     private TopicStatus talkTopicStatus;
     private TopicStatus moveTopicStatus;
     private TopicStatus smartTopicStatus;
-    private Discuss discuss;
-    private Future<String> discussFuture;
+    private QiChatbot qiChatbot;
+    private Future<Void> chatFuture;
     private TutorialCategory selectedCategory = TutorialCategory.TALK;
     private TutorialLevel selectedLevel = TutorialLevel.BASICS;
     private QiChatVariable levelVariable;
@@ -59,16 +63,16 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
 
     @Override
     public void stopDiscussion(final Tutorial tutorial) {
-        if (discussFuture != null) {
-            discussFuture.thenConsume(new Consumer<Future<String>>() {
+        if (chatFuture != null) {
+            chatFuture.thenConsume(new Consumer<Future<Void>>() {
                 @Override
-                public void consume(Future<String> future) throws Throwable {
+                public void consume(Future<Void> future) throws Throwable {
                     if (future.isCancelled()) {
                         presenter.goToTutorial(tutorial);
                     }
                 }
             });
-            discussFuture.requestCancellation();
+            chatFuture.requestCancellation();
         } else {
             presenter.goToTutorial(tutorial);
         }
@@ -118,20 +122,22 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
                 .withResource(R.raw.smart_tutorials)
                 .build();
 
-        discuss = DiscussBuilder.with(qiContext)
-                .withTopic(commonTopic, talkTopic, moveTopic, smartTopic)
-                .build();
+        qiChatbot = qiContext.getConversation()
+                .makeQiChatbot(qiContext.getRobotContext(), Arrays.asList(commonTopic, talkTopic, moveTopic, smartTopic));
 
-        talkTopicStatus = discuss.topicStatus(talkTopic);
-        moveTopicStatus = discuss.topicStatus(moveTopic);
-        smartTopicStatus = discuss.topicStatus(smartTopic);
+        Chat chat = qiContext.getConversation()
+                .makeChat(qiContext.getRobotContext(), Collections.<Chatbot>singletonList(qiChatbot));
 
-        levelVariable = discuss.variable("level");
+        talkTopicStatus = qiChatbot.topicStatus(talkTopic);
+        moveTopicStatus = qiChatbot.topicStatus(moveTopic);
+        smartTopicStatus = qiChatbot.topicStatus(smartTopic);
+
+        levelVariable = qiChatbot.variable("level");
 
         enableLevel(selectedLevel);
         enableTopic(selectedCategory);
 
-        discuss.addOnBookmarkReachedListener(new Discuss.OnBookmarkReachedListener() {
+        qiChatbot.addOnBookmarkReachedListener(new QiChatbot.OnBookmarkReachedListener() {
             @Override
             public void onBookmarkReached(Bookmark bookmark) {
                 String bookmarkName = bookmark.getName();
@@ -160,23 +166,24 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
             }
         });
 
-        discussFuture = discuss.async().run();
-
-        discussFuture.andThenConsume(new Consumer<String>() {
+        qiChatbot.addOnEndedListener(new QiChatbot.OnEndedListener() {
             @Override
-            public void consume(String tutorialDiscussId) throws Throwable {
-                presenter.goToTutorialForQiChatbotId(tutorialDiscussId);
+            public void onEnded(String tutorialQiChatbotId) {
+                presenter.goToTutorialForQiChatbotId(tutorialQiChatbotId);
             }
         });
+
+        chatFuture = chat.async().run();
     }
 
     @Override
     public void onRobotFocusLost() {
-        if (discuss != null) {
-            discuss.removeAllOnBookmarkReachedListeners();
-            discuss = null;
+        if (qiChatbot != null) {
+            qiChatbot.removeAllOnBookmarkReachedListeners();
+            qiChatbot.removeAllOnEndedListeners();
+            qiChatbot = null;
         }
-        discussFuture = null;
+        chatFuture = null;
         talkTopicStatus = null;
         moveTopicStatus = null;
         smartTopicStatus = null;
