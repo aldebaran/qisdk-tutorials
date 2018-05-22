@@ -3,6 +3,7 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.chat;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -15,12 +16,13 @@ import com.aldebaran.qi.sdk.Qi;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
-import com.aldebaran.qi.sdk.builder.DiscussBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
-import com.aldebaran.qi.sdk.object.conversation.Discuss;
+import com.aldebaran.qi.sdk.object.conversation.Chat;
+import com.aldebaran.qi.sdk.object.conversation.Chatbot;
 import com.aldebaran.qi.sdk.object.conversation.EditablePhraseSet;
 import com.aldebaran.qi.sdk.object.conversation.Phrase;
+import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
 import com.softbankrobotics.qisdktutorials.R;
@@ -42,7 +44,7 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
     // Store the greetings dynamic concept.
     private EditablePhraseSet greetings;
     private EditText greetingEditText;
-    private Discuss discuss;
+    private Chat chat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,41 +118,47 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
                 .withResource(R.raw.greetings_dynamic)
                 .build();
 
-        // Create a new discuss action.
-        discuss = DiscussBuilder.with(qiContext)
-                .withTopic(topic)
-                .build();
+        // Create a new QiChatbot.
+        QiChatbot qiChatbot = qiContext.getConversation()
+                .makeQiChatbot(qiContext.getRobotContext(), Collections.singletonList(topic));
+
+        // Create a new Chat action.
+        chat = qiContext.getConversation()
+                .makeChat(qiContext.getRobotContext(), Collections.<Chatbot>singletonList(qiChatbot));
 
         // Get the greetings dynamic concept.
-        greetings = discuss.dynamicConcept("greetings");
+        greetings = qiChatbot.dynamicConcept("greetings");
 
         // Add default content to the dynamic concept.
         addGreeting("Hello");
         addGreeting("Hi");
 
-        discuss.addOnLatestInputUtteranceChangedListener(new Discuss.OnLatestInputUtteranceChangedListener() {
+        chat.addOnHeardListener(new Chat.OnHeardListener() {
             @Override
-            public void onLatestInputUtteranceChanged(Phrase input) {
-                displayLine(input.getText(), ConversationItemType.HUMAN_INPUT);
+            public void onHeard(Phrase heardPhrase) {
+                displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT);
             }
         });
 
-        discuss.addOnLatestOutputUtteranceChangedListener(new Discuss.OnLatestOutputUtteranceChangedListener() {
+        chat.addOnSayingChangedListener(new Chat.OnSayingChangedListener() {
             @Override
-            public void onLatestOutputUtteranceChanged(Phrase output) {
-                displayLine(output.getText(), ConversationItemType.ROBOT_OUTPUT);
+            public void onSayingChanged(Phrase sayingPhrase) {
+                String text = sayingPhrase.getText();
+                if (!TextUtils.isEmpty(text)) {
+                    displayLine(text, ConversationItemType.ROBOT_OUTPUT);
+                }
             }
         });
 
-        // Run the discuss action asynchronously.
-        discuss.async().run();
+        // Run the Chat action asynchronously.
+        chat.async().run();
     }
 
     @Override
     public void onRobotFocusLost() {
-        if (discuss != null) {
-            discuss.removeAllOnLatestInputUtteranceChangedListeners();
-            discuss.removeAllOnLatestOutputUtteranceChangedListeners();
+        if (chat != null) {
+            chat.removeAllOnHeardListeners();
+            chat.removeAllOnSayingChangedListeners();
         }
     }
 
