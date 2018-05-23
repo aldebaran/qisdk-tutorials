@@ -118,22 +118,17 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
     @Override
     public void onRobotFocusLost() {
         Log.i(TAG, "Focus lost.");
-        removeChatListeners();
-    }
-
-    @Override
-    public void onRobotFocusRefused(String reason) {
-        Log.i(TAG, "Focus refused.");
-        removeChatListeners();
-    }
-
-    private void removeChatListeners() {
         // Remove the listeners from the chat.
         if (chat != null) {
             chat.removeAllOnHeardListeners();
             chat.removeAllOnSayingChangedListeners();
             chat.removeAllOnStartedListeners();
         }
+    }
+
+    @Override
+    public void onRobotFocusRefused(String reason) {
+        // Nothing here.
     }
 
     @Override
