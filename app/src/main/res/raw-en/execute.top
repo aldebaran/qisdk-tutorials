@@ -4,4 +4,4 @@ concept:(execute) [execute executor]
 
 # Replying to speech
 proposal: %execute_proposal I can launch actions during a topic. Say  'execute'  or 'executor' to test it.
-u:(~execute) I've reached the execute ^execute(myExecutor, param1, param2) and now I continue.
+u:(~execute) I've reached the execute ^execute(myExecutor) and now I continue.

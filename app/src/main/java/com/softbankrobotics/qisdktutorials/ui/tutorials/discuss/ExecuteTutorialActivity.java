@@ -40,6 +40,7 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
 
     private static final String TAG = "ExecuteTutorialActivity";
     private ConversationView conversationView;
+    private Chat chat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,7 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
         chatbots.add(qiChatbot);
 
         // make chat with the chatbots
-        Chat chat = conversationService.makeChat(qiContext.getRobotContext(), chatbots);
+        chat = conversationService.makeChat(qiContext.getRobotContext(), chatbots);
         chat.addOnStartedListener(new Chat.OnStartedListener() {
             @Override
             public void onStarted() {
@@ -116,12 +117,23 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
 
     @Override
     public void onRobotFocusLost() {
-        // Nothing here.
+        Log.i(TAG, "Focus lost.");
+        removeChatListeners();
     }
 
     @Override
     public void onRobotFocusRefused(String reason) {
-        // Nothing here.
+        Log.i(TAG, "Focus refused.");
+        removeChatListeners();
+    }
+
+    private void removeChatListeners() {
+        // Remove the listeners from the chat.
+        if (chat != null) {
+            chat.removeAllOnHeardListeners();
+            chat.removeAllOnSayingChangedListeners();
+            chat.removeAllOnStartedListeners();
+        }
     }
 
     @Override
