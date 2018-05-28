@@ -17,7 +17,7 @@ import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
-import com.aldebaran.qi.sdk.object.camera.Camera;
+import com.aldebaran.qi.sdk.builder.TakePictureBuilder;
 import com.aldebaran.qi.sdk.object.camera.TakePicture;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.image.EncodedImage;
@@ -128,8 +128,6 @@ public class TakePictureTutorialActivity extends TutorialActivity implements Rob
         if (qiContext == null) {
             return;
         }
-        // Get Camera service
-        Camera cameraService = qiContext.getCamera();
 
         if (pictureBitmap != null) {
             pictureBitmap.recycle();
@@ -137,9 +135,9 @@ public class TakePictureTutorialActivity extends TutorialActivity implements Rob
             pictureView.setImageBitmap(null);
         }
 
-        Log.i(TAG, "make take picture");
+        Log.i(TAG, "build take picture");
         // Build the action.
-        Future<TakePicture> takePictureFuture = cameraService.async().makeTakePicture(qiContext.getRobotContext());
+        Future<TakePicture> takePictureFuture = TakePictureBuilder.with(qiContext).buildAsync();
         // Take picture
         takePictureFuture.andThenCompose(Qi.onUiThread(new Function<TakePicture, Future<TimestampedImageHandle>>() {
             @Override
