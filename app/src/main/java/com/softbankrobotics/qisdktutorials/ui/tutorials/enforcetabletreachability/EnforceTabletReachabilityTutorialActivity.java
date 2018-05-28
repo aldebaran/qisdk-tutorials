@@ -1,6 +1,5 @@
 package com.softbankrobotics.qisdktutorials.ui.tutorials.enforcetabletreachability;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +33,9 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
 
     // Store action button
     private Button enforceTabletReachabilityButton;
+
+    // Store action
+    private EnforceTabletReachability enforceTabletReachability;
 
     // Store action future
     private Future<Void> enforceTabletReachabilityFuture;
@@ -69,16 +71,20 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
 
         enforceTabletReachabilityFuture = makeEnforceTabletReachabilityFuture.andThenCompose(new Function<EnforceTabletReachability, Future<Void>>() {
             @Override
-            public Future<Void> execute(EnforceTabletReachability enforceTabletReachability) throws Throwable {
+            public Future<Void> execute(EnforceTabletReachability action) throws Throwable {
+                // Store action
+                enforceTabletReachability = action;
+
                 // On started listener
                 enforceTabletReachability.addOnStartedListener(new EnforceTabletReachability.OnStartedListener() {
-                       @Override
-                       public void onStarted() {
-                           // Display log
-                           String infoLog = "The EnforceTabletReachability action has started.";
-                           displayLine(infoLog, ConversationItemType.INFO_LOG);
-                       }
-                   }
+                                                                   @Override
+                                                                   public void onStarted() {
+                                                                       // Display log
+                                                                       String infoLog = "The EnforceTabletReachability action has started.";
+                                                                       displayLine(infoLog, ConversationItemType.INFO_LOG);
+                                                                       Log.i(TAG, infoLog);
+                                                                   }
+                                                               }
                 );
 
                 // On position reached listener
@@ -113,6 +119,9 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
         enforceTabletReachabilityFuture.thenConsume(new Consumer<Future<Void>>() {
             @Override
             public void consume(Future<Void> future) throws Throwable {
+                // Remove positionReached listeners
+                enforceTabletReachability.removeAllOnPositionReachedListeners();
+
                 // Display eventual errors
                 if (future.hasError()) {
                     String message = "The EnforceTabletReachability action finished with error.";
