@@ -9,6 +9,8 @@ import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.AnimateBuilder;
 import com.aldebaran.qi.sdk.builder.AnimationBuilder;
+import com.aldebaran.qi.sdk.builder.ChatBuilder;
+import com.aldebaran.qi.sdk.builder.QiChatbotBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
 import com.aldebaran.qi.sdk.object.actuation.Animate;
 import com.aldebaran.qi.sdk.object.actuation.Animation;
@@ -17,8 +19,6 @@ import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionValidity;
 import com.aldebaran.qi.sdk.object.conversation.BaseQiChatExecutor;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
-import com.aldebaran.qi.sdk.object.conversation.Chatbot;
-import com.aldebaran.qi.sdk.object.conversation.Conversation;
 import com.aldebaran.qi.sdk.object.conversation.Phrase;
 import com.aldebaran.qi.sdk.object.conversation.QiChatExecutor;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
@@ -28,7 +28,6 @@ import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,19 +60,13 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        // Get the conversation service.
-        Conversation conversationService = qiContext.getConversation();
         // Create a topic.
         final Topic topic = TopicBuilder.with(qiContext)
                 .withResource(R.raw.execute)
                 .build();
 
-        // Create a list of topics to pass it to qiChatbot
-        List<Topic> topics = new ArrayList<>();
-        topics.add(topic);
-
-        // Create qiChatbot
-        final QiChatbot qiChatbot = conversationService.makeQiChatbot(qiContext.getRobotContext(), topics);
+        // Create a qiChatbot
+        final QiChatbot qiChatbot = QiChatbotBuilder.with(qiContext).withTopic(topic).build();
         Map<String, QiChatExecutor> executors = new HashMap<>();
 
         // Map the executor name from the topic to our qiChatbotExecutor
@@ -81,11 +74,9 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
 
         // Set the executors to the qiChatbot
         qiChatbot.setExecutors(executors);
-        List<Chatbot> chatbots = new ArrayList<>();
-        chatbots.add(qiChatbot);
 
-        // make chat with the chatbots
-        chat = conversationService.makeChat(qiContext.getRobotContext(), chatbots);
+        // Build chat with the chatbots
+        chat = ChatBuilder.with(qiContext).withChatbot(qiChatbot).build();
         chat.addOnStartedListener(new Chat.OnStartedListener() {
             @Override
             public void onStarted() {
