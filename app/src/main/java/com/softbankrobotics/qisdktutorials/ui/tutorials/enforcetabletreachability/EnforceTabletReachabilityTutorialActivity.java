@@ -11,6 +11,7 @@ import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
+import com.aldebaran.qi.sdk.builder.EnforceTabletReachabilityBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.object.actuation.Actuation;
 import com.aldebaran.qi.sdk.object.actuation.EnforceTabletReachability;
@@ -63,13 +64,10 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
     }
 
     private void startEnforceTabletReachability() {
-        // Get actuation service
-        Actuation actuation = qiContext.getActuation();
-
         // Build EnforceTabletReachability action
-        Future<EnforceTabletReachability> makeEnforceTabletReachabilityFuture = actuation.async().makeEnforceTabletReachability(qiContext.getRobotContext());
+        Future<EnforceTabletReachability> buildEnforceTabletReachabilityFuture = EnforceTabletReachabilityBuilder.with(qiContext).buildAsync();
 
-        enforceTabletReachabilityFuture = makeEnforceTabletReachabilityFuture.andThenCompose(new Function<EnforceTabletReachability, Future<Void>>() {
+        enforceTabletReachabilityFuture = buildEnforceTabletReachabilityFuture.andThenCompose(new Function<EnforceTabletReachability, Future<Void>>() {
             @Override
             public Future<Void> execute(EnforceTabletReachability action) throws Throwable {
                 // Store action
