@@ -28,7 +28,7 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
     private static final String TAG = "TabletReachActivity";
     private ConversationView conversationView;
 
-    // Store QiContext
+    // Store qiContext
     private QiContext qiContext;
 
     // Store the action.
@@ -51,13 +51,15 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
             @Override
             public void onClick(View v) {
                 if (enforceTabletReachability == null) {
-                    String errorLog = "EnforceTabletReachability is null";
+                    String errorLog = "EnforceTabletReachability has not been built yet";
                     displayLine(errorLog, ConversationItemType.ERROR_LOG);
-                    Log.i(TAG, errorLog);
+                    Log.e(TAG, errorLog);
                 } else if (enforceTabletReachabilityFuture == null || enforceTabletReachabilityFuture.isDone()) {
-                    enforceTabletReachabilityFuture = startEnforceTabletReachability();
+                    // The EnforceTabletReachability action is not running
+                    startEnforceTabletReachability();
                 } else {
-                    enforceTabletReachabilityFuture.requestCancellation();
+                    // The EnforceTabletReachability action is running
+                    stopEnforceTabletReachability();
                 }
             }
         });
@@ -66,60 +68,19 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
         QiSDK.register(this, this);
     }
 
-    private Future<Void> startEnforceTabletReachability() {
-        // On started listener
-        Future<Void> startListenerFuture = enforceTabletReachability.async().addOnStartedListener(new EnforceTabletReachability.OnStartedListener() {
-               @Override
-               public void onStarted() {
-                   // Display log
-                   String infoLog = "The EnforceTabletReachability action has started.";
-                   displayLine(infoLog, ConversationItemType.INFO_LOG);
-                   Log.i(TAG, infoLog);
-               }
-           }
-        );
+    private void stopEnforceTabletReachability() {
+        enforceTabletReachabilityFuture.requestCancellation();
+    }
 
-        // On position reached listener
-        Future<Void> positionReachedListenerFuture = enforceTabletReachability.async().addOnPositionReachedListener(new EnforceTabletReachability.OnPositionReachedListener() {
-            @Override
-            public void onPositionReached() {
-                // Display log
-                String infoLog = "The tablet now is in position.";
-                displayLine(infoLog, ConversationItemType.INFO_LOG);
-                Log.i(TAG, infoLog);
+    private void startEnforceTabletReachability() {
 
-                // Update button text
-                setButtonText(getResources().getString(R.string.cancel_action));
-
-                // Say action
-                String textToSay = "My movements are now limited. Cancel the action to see the difference.";
-                displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
-
-                Say say = SayBuilder.with(qiContext)
-                        .withText(textToSay)
-                        .build();
-
-                say.run();
-            }
-        });
-
-        // Run the action after adding the listeners asynchronously
-        Future<Void> addListenerFuture = Future.waitAll(startListenerFuture, positionReachedListenerFuture);
-
-        Future<Void> enforceTabletReachabilityFuture = addListenerFuture.thenCompose(new Function<Future<Void>, Future<Void>>() {
-            @Override
-            public Future<Void> execute(Future<Void> voidFuture) throws Throwable {
-                return enforceTabletReachability.async().run();
-            }
-        });
+        // Run the action asynchronously
+        enforceTabletReachabilityFuture = enforceTabletReachability.async().run();
 
         // Handle the action's end
         enforceTabletReachabilityFuture.thenConsume(new Consumer<Future<Void>>() {
             @Override
             public void consume(Future<Void> future) throws Throwable {
-                // Remove all listeners
-                enforceTabletReachability.removeAllOnStartedListeners();
-                enforceTabletReachability.removeAllOnPositionReachedListeners();
 
                 // Display eventual errors
                 if (future.hasError()) {
@@ -147,7 +108,7 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
             }
         });
 
-        return enforceTabletReachabilityFuture;
+        return;
     }
 
     private void setButtonText(final String str) {
@@ -172,7 +133,9 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
     }
 
     @Override
-    public void onRobotFocusGained(QiContext qiContext) {
+    public void onRobotFocusGained(final QiContext qiContext) {
+
+        // Store qiContext
         this.qiContext = qiContext;
 
         // Build introduction Say
@@ -187,6 +150,43 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
 
         // Build EnforceTabletReachability action.
         enforceTabletReachability = EnforceTabletReachabilityBuilder.with(qiContext).build();
+
+        // On started listener
+        enforceTabletReachability.addOnStartedListener(new EnforceTabletReachability.OnStartedListener() {
+                @Override
+                public void onStarted() {
+                    // Display log
+                    String infoLog = "The EnforceTabletReachability action has started.";
+                    displayLine(infoLog, ConversationItemType.INFO_LOG);
+                    Log.i(TAG, infoLog);
+                }
+            }
+        );
+
+        // On position reached listener
+        enforceTabletReachability.addOnPositionReachedListener(new EnforceTabletReachability.OnPositionReachedListener() {
+            @Override
+            public void onPositionReached() {
+            // Display log
+            String infoLog = "The tablet now is in position.";
+            displayLine(infoLog, ConversationItemType.INFO_LOG);
+            Log.i(TAG, infoLog);
+
+            // Update button text
+            setButtonText(getResources().getString(R.string.cancel_action));
+
+            // Say action
+            String textToSay = "My movements are now limited. Cancel the action to see the difference.";
+            displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+
+            Say say = SayBuilder.with(qiContext)
+                    .withText(textToSay)
+                    .build();
+
+            say.run();
+            }
+        });
+
         enableButton();
     }
 
@@ -201,6 +201,10 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
 
     @Override
     public void onRobotFocusLost() {
+        // Remove all listeners
+        enforceTabletReachability.removeAllOnStartedListeners();
+        enforceTabletReachability.removeAllOnPositionReachedListeners();
+
         this.qiContext = null;
     }
 
