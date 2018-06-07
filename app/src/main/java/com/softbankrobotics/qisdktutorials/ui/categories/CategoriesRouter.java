@@ -12,10 +12,10 @@ import com.softbankrobotics.qisdktutorials.ui.tutorials.animate.AnimationLabelAc
 import com.softbankrobotics.qisdktutorials.ui.tutorials.animate.TrajectoryTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.autonomousabilities.AutonomousAbilitiesTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.BookmarksTutorialActivity;
-import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.QiChatbotTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.DynamicConceptsTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.ExecuteTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.QiChatVariablesTutorialActivity;
+import com.softbankrobotics.qisdktutorials.ui.tutorials.chat.QiChatbotTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.hellohuman.HelloHumanTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.listen.ListenTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.lookat.LookAtTutorialActivity;

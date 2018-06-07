@@ -9,10 +9,11 @@ import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
+import com.aldebaran.qi.sdk.builder.ChatBuilder;
+import com.aldebaran.qi.sdk.builder.QiChatbotBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
-import com.aldebaran.qi.sdk.object.conversation.Chatbot;
 import com.aldebaran.qi.sdk.object.conversation.Phrase;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Say;
@@ -21,8 +22,6 @@ import com.softbankrobotics.qisdktutorials.R;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
-
-import java.util.Collections;
 
 /**
  * The activity for the QiChatbot tutorial.
@@ -75,12 +74,14 @@ public class QiChatbotTutorialActivity extends TutorialActivity implements Robot
                                   .build(); // Build the topic.
 
         // Create a new QiChatbot.
-        QiChatbot qiChatbot = qiContext.getConversation()
-                .makeQiChatbot(qiContext.getRobotContext(), Collections.singletonList(topic));
+        QiChatbot qiChatbot = QiChatbotBuilder.with(qiContext)
+                .withTopic(topic)
+                .build();
 
         // Create a new Chat action.
-        chat = qiContext.getConversation()
-                .makeChat(qiContext.getRobotContext(), Collections.<Chatbot>singletonList(qiChatbot));
+        chat = ChatBuilder.with(qiContext)
+                .withChatbot(qiChatbot)
+                .build();
 
         // Add an on started listener to the Chat action.
         chat.addOnStartedListener(new Chat.OnStartedListener() {

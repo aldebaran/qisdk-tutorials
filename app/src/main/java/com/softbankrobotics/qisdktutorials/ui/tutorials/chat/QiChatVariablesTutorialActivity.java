@@ -13,13 +13,14 @@ import com.aldebaran.qi.Consumer;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
+import com.aldebaran.qi.sdk.builder.ChatBuilder;
+import com.aldebaran.qi.sdk.builder.QiChatbotBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
 import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionImportance;
 import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionValidity;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
-import com.aldebaran.qi.sdk.object.conversation.Chatbot;
 import com.aldebaran.qi.sdk.object.conversation.Phrase;
 import com.aldebaran.qi.sdk.object.conversation.QiChatVariable;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
@@ -30,8 +31,6 @@ import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 import com.softbankrobotics.qisdktutorials.utils.KeyboardUtils;
-
-import java.util.Collections;
 
 /**
  * The activity for the QiChatVariables tutorial.
@@ -111,13 +110,14 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
         readBookmark = topic.getBookmarks().get("read");
 
         // Create a new QiChatbot.
-        qiChatbot = qiContext.getConversation()
-                .makeQiChatbot(qiContext.getRobotContext(), Collections.singletonList(topic));
+        qiChatbot = QiChatbotBuilder.with(qiContext)
+                .withTopic(topic)
+                .build();
 
         // Create a new Chat action.
-        chat = qiContext.getConversation()
-                .makeChat(qiContext.getRobotContext(), Collections.<Chatbot>singletonList(qiChatbot));
-
+        chat = ChatBuilder.with(qiContext)
+                .withChatbot(qiChatbot)
+                .build();
 
         // Get the variable.
         variable = qiChatbot.variable("var");

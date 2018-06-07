@@ -12,6 +12,8 @@ import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.AnimateBuilder;
 import com.aldebaran.qi.sdk.builder.AnimationBuilder;
+import com.aldebaran.qi.sdk.builder.ChatBuilder;
+import com.aldebaran.qi.sdk.builder.QiChatbotBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
 import com.aldebaran.qi.sdk.object.actuation.Animate;
 import com.aldebaran.qi.sdk.object.actuation.Animation;
@@ -20,7 +22,6 @@ import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionValidity;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.BookmarkStatus;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
-import com.aldebaran.qi.sdk.object.conversation.Chatbot;
 import com.aldebaran.qi.sdk.object.conversation.Phrase;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
@@ -29,7 +30,6 @@ import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 
-import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -92,12 +92,14 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
                 .build();
 
         // Create a new QiChatbot.
-        qiChatbot = qiContext.getConversation()
-                .makeQiChatbot(qiContext.getRobotContext(), Collections.singletonList(topic));
+        qiChatbot = QiChatbotBuilder.with(qiContext)
+                .withTopic(topic)
+                .build();
 
         // Create a new Chat action.
-        chat = qiContext.getConversation()
-                .makeChat(qiContext.getRobotContext(), Collections.<Chatbot>singletonList(qiChatbot));
+        chat = ChatBuilder.with(qiContext)
+                .withChatbot(qiChatbot)
+                .build();
 
         // Get the bookmarks from the topic.
         Map<String, Bookmark> bookmarks = topic.getBookmarks();

@@ -9,11 +9,12 @@ import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
+import com.aldebaran.qi.sdk.builder.ChatBuilder;
+import com.aldebaran.qi.sdk.builder.QiChatbotBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
-import com.aldebaran.qi.sdk.object.conversation.Chatbot;
 import com.aldebaran.qi.sdk.object.conversation.QiChatVariable;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
@@ -24,7 +25,6 @@ import com.softbankrobotics.qisdktutorials.model.data.TutorialCategory;
 import com.softbankrobotics.qisdktutorials.model.data.TutorialLevel;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * The robot for the tutorial categories.
@@ -122,11 +122,13 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
                 .withResource(R.raw.smart_tutorials)
                 .build();
 
-        qiChatbot = qiContext.getConversation()
-                .makeQiChatbot(qiContext.getRobotContext(), Arrays.asList(commonTopic, talkTopic, moveTopic, smartTopic));
+        qiChatbot = QiChatbotBuilder.with(qiContext)
+                .withTopics(Arrays.asList(commonTopic, talkTopic, moveTopic, smartTopic))
+                .build();
 
-        Chat chat = qiContext.getConversation()
-                .makeChat(qiContext.getRobotContext(), Collections.<Chatbot>singletonList(qiChatbot));
+        Chat chat = ChatBuilder.with(qiContext)
+                .withChatbot(qiChatbot)
+                .build();
 
         talkTopicStatus = qiChatbot.topicStatus(talkTopic);
         moveTopicStatus = qiChatbot.topicStatus(moveTopic);
