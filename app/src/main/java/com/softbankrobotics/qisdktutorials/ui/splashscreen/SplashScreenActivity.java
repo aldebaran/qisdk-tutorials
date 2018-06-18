@@ -2,8 +2,9 @@ package com.softbankrobotics.qisdktutorials.ui.splashscreen;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
+import com.aldebaran.qi.sdk.design.activity.RobotActivity;
+import com.aldebaran.qi.sdk.design.activity.conversationstatus.SpeechBarDisplayStrategy;
 import com.softbankrobotics.qisdktutorials.R;
 import com.softbankrobotics.qisdktutorials.ui.categories.CategoriesActivity;
 
@@ -13,13 +14,15 @@ import java.util.TimerTask;
 /**
  * The splashscreen activity.
  */
-public class SplashScreenActivity extends AppCompatActivity {
+public class SplashScreenActivity extends RobotActivity {
 
     private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setSpeechBarDisplayStrategy(SpeechBarDisplayStrategy.OVERLAY);
         setContentView(R.layout.activity_splash_screen);
     }
 
