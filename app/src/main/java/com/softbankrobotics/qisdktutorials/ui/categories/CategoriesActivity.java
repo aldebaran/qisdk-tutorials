@@ -2,13 +2,13 @@ package com.softbankrobotics.qisdktutorials.ui.categories;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RadioButton;
 
+import com.aldebaran.qi.sdk.design.activity.RobotActivity;
 import com.softbankrobotics.qisdktutorials.R;
 import com.softbankrobotics.qisdktutorials.model.data.Tutorial;
 import com.softbankrobotics.qisdktutorials.model.data.TutorialCategory;
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * The activity showing the tutorial categories.
  */
-public class CategoriesActivity extends AppCompatActivity implements CategoriesContract.View, OnTutorialClickedListener {
+public class CategoriesActivity extends RobotActivity implements CategoriesContract.View, OnTutorialClickedListener {
 
     private CategoriesContract.Presenter presenter;
     private CategoriesContract.Robot robot;
