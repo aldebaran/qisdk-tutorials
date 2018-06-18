@@ -3,9 +3,9 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.aldebaran.qi.sdk.design.activity.RobotActivity;
 import com.softbankrobotics.qisdktutorials.R;
 import com.softbankrobotics.qisdktutorials.model.data.TutorialLevel;
 import com.softbankrobotics.qisdktutorials.ui.tutorialtoolbar.TutorialToolbar;
@@ -14,7 +14,7 @@ import com.softbankrobotics.qisdktutorials.utils.Constants;
 /**
  * Base class for a tutorial activity.
  */
-public abstract class TutorialActivity extends AppCompatActivity {
+public abstract class TutorialActivity extends RobotActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
