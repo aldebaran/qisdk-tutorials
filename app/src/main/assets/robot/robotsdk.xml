@@ -1,4 +1,4 @@
 <?xml version='1.0' encoding='utf-8'?>
 <robot>
-<users-robotsdk minSdkVersion='API 2' />
+<users-robotsdk minSdkVersion='API 3' />
 </robot>
