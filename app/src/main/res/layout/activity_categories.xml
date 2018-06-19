@@ -22,7 +22,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:drawableStart="@drawable/ic_img_btn_talk"
+                android:drawableStart="@drawable/ic_talk"
                 android:text="@string/let_s_talk"
                 android:checked="true"/>
 
@@ -32,7 +32,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:drawableStart="@drawable/ic_img_btn_move"
+                android:drawableStart="@drawable/ic_move"
                 android:text="@string/let_s_move"/>
 
             <RadioButton
@@ -41,7 +41,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:drawableStart="@drawable/ic_img_btn_smart"
+                android:drawableStart="@drawable/ic_brains"
                 android:text="@string/let_s_be_smart"/>
 
         </RadioGroup>
