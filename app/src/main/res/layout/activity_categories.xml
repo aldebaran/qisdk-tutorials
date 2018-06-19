@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="60dp"
         android:orientation="horizontal">
 
         <RadioGroup
@@ -48,7 +48,7 @@
 
         <ImageView
             android:id="@+id/close_button"
-            android:layout_width="100dp"
+            android:layout_width="73dp"
             android:layout_height="match_parent"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
             android:tint="@android:color/black"
