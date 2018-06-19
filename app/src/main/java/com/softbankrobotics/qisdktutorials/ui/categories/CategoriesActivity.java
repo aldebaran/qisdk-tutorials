@@ -176,6 +176,13 @@ public class CategoriesActivity extends RobotActivity implements CategoriesContr
                 robot.selectTopic(TutorialCategory.SMART);
             }
         });
+
+        findViewById(R.id.close_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishAffinity();
+            }
+        });
     }
 
     /**

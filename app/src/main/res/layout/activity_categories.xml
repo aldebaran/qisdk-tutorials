@@ -5,40 +5,57 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <RadioGroup
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:orientation="horizontal">
 
-        <RadioButton
-            style="@style/Category"
-            android:id="@+id/talk_button"
+        <RadioGroup
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_img_btn_talk"
-            android:text="@string/let_s_talk"
-            android:checked="true"/>
+            android:orientation="horizontal">
 
-        <RadioButton
-            style="@style/Category"
-            android:id="@+id/move_button"
-            android:layout_width="0dp"
+            <RadioButton
+                style="@style/Category"
+                android:id="@+id/talk_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/ic_img_btn_talk"
+                android:text="@string/let_s_talk"
+                android:checked="true"/>
+
+            <RadioButton
+                style="@style/Category"
+                android:id="@+id/move_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/ic_img_btn_move"
+                android:text="@string/let_s_move"/>
+
+            <RadioButton
+                style="@style/Category"
+                android:id="@+id/smart_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/ic_img_btn_smart"
+                android:text="@string/let_s_be_smart"/>
+
+        </RadioGroup>
+
+        <ImageView
+            android:id="@+id/close_button"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableStart="@drawable/ic_img_btn_move"
-            android:text="@string/let_s_move"/>
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:tint="@android:color/black"
+            android:scaleType="center"
+            android:background="@drawable/close_selector"/>
 
-        <RadioButton
-            style="@style/Category"
-            android:id="@+id/smart_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableStart="@drawable/ic_img_btn_smart"
-            android:text="@string/let_s_be_smart"/>
-
-    </RadioGroup>
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
