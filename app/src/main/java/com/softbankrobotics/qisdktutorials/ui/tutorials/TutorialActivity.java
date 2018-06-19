@@ -49,5 +49,12 @@ public abstract class TutorialActivity extends RobotActivity {
             toolbar.setName(nameResId);
             toolbar.setLevel(level);
         }
+
+        findViewById(R.id.close_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishAffinity();
+            }
+        });
     }
 }
