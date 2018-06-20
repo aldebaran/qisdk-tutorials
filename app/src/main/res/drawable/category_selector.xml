@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:drawable="@android:color/transparent"
+        android:drawable="@color/selected_category_gray"
         android:state_checked="true" />
     <item
-        android:drawable="@android:color/transparent"
+        android:drawable="@color/selected_category_gray"
         android:state_checked="false"
         android:state_pressed="true" />
     <item
-        android:drawable="@color/light_gray" />
+        android:drawable="@color/unselected_category_gray" />
 </selector>
