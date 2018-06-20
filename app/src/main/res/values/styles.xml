@@ -25,6 +25,7 @@
         <item name="android:background">@drawable/category_selector</item>
         <item name="android:paddingStart">45dp</item>
         <item name="android:button">@null</item>
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
         <item name="android:textSize">@dimen/category_text</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:gravity">center</item>

@@ -17,14 +17,14 @@
             android:orientation="horizontal">
 
             <RadioButton
-                style="@style/Category"
                 android:id="@+id/talk_button"
+                style="@style/Category"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:checked="true"
                 android:drawableStart="@drawable/ic_talk"
-                android:text="@string/let_s_talk"
-                android:checked="true"/>
+                android:text="@string/let_s_talk" />
 
             <RadioButton
                 style="@style/Category"
