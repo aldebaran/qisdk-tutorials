@@ -32,6 +32,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
                 android:drawableStart="@drawable/ic_move"
                 android:text="@string/let_s_move"/>
 
