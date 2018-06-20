@@ -194,7 +194,7 @@ public class CategoriesActivity extends RobotActivity implements CategoriesContr
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         recyclerview.setAdapter(tutorialAdapter);
 
-        Drawable drawable = getDrawable(R.drawable.empty_divider_small);
+        Drawable drawable = getDrawable(R.drawable.empty_divider_tutorials);
         if (drawable != null) {
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
             dividerItemDecoration.setDrawable(drawable);
