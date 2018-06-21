@@ -1,11 +1,10 @@
 package com.softbankrobotics.qisdktutorials.ui.categories;
 
-import android.support.annotation.DrawableRes;
-import android.support.v4.content.ContextCompat;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.softbankrobotics.qisdktutorials.R;
 import com.softbankrobotics.qisdktutorials.model.data.Tutorial;
@@ -17,7 +16,7 @@ import com.softbankrobotics.qisdktutorials.model.data.TutorialLevel;
 class TutorialViewHolder extends RecyclerView.ViewHolder {
 
     private final RadioButton bubble;
-    private final ImageView levelView;
+    private final TextView levelTextView;
 
     private OnTutorialClickedListener onTutorialClickedListener;
 
@@ -25,7 +24,7 @@ class TutorialViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         this.onTutorialClickedListener = onTutorialClickedListener;
         bubble = itemView.findViewById(R.id.bubble);
-        levelView = itemView.findViewById(R.id.levelView);
+        levelTextView = itemView.findViewById(R.id.levelTextView);
     }
 
     /**
@@ -47,29 +46,25 @@ class TutorialViewHolder extends RecyclerView.ViewHolder {
         });
 
         TutorialLevel tutorialLevel = tutorial.getTutorialLevel();
-        @DrawableRes int imageRes = imageResForTutorialLevel(tutorialLevel);
-        levelView.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), imageRes));
+        bindLevelView(tutorialLevel);
     }
 
     /**
-     * Provide the image resource identifier for the specified tutorial level.
+     * Bind the level view.
      * @param tutorialLevel the tutorial level
-     * @return The image resource identifier.
      */
-    @DrawableRes
-    private int imageResForTutorialLevel(TutorialLevel tutorialLevel) {
-        @DrawableRes int imageRes;
+    private void bindLevelView(@NonNull TutorialLevel tutorialLevel) {
         switch (tutorialLevel) {
             case BASICS:
-                imageRes = R.drawable.ic_img_btn_statusgreen;
+                levelTextView.setText(R.string.basic_level);
+                levelTextView.setBackgroundResource(R.drawable.basic_level_shape);
                 break;
             case ADVANCED:
-                imageRes = R.drawable.ic_img_btn_statusorange;
+                levelTextView.setText(R.string.advanced_level);
+                levelTextView.setBackgroundResource(R.drawable.advanced_level_shape);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown tutorial level: " + tutorialLevel);
         }
-
-        return imageRes;
     }
 }

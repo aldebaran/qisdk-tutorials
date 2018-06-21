@@ -68,5 +68,8 @@
     <string name="toolbar_basic_level">BASIC</string>
     <string name="toolbar_advanced_level">ADVANCED</string>
 
+    <!-- Tutorial levels -->
+    <string name="basic_level">&lt;/&gt;</string>
+    <string name="advanced_level">&lt;//&gt;</string>
 
 </resources>

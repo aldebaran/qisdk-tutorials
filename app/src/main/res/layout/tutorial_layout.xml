@@ -11,7 +11,7 @@
         style="@style/Bubble"
         android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="65dp"
+        android:layout_height="66dp"
         tools:text="&quot;Hello human&quot;"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -19,16 +19,20 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:gravity="center"/>
 
-    <ImageView
-        android:id="@+id/levelView"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintLeft_toLeftOf="@+id/bubble"
+    <TextView
+        android:id="@+id/levelTextView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/bubble"
-        app:layout_constraintTop_toTopOf="@+id/bubble"
+        android:layout_marginEnd="25dp"
         android:layout_marginTop="8dp"
-        tools:src="@drawable/ic_img_btn_statusgreen"/>
+        android:gravity="center"
+        tools:text="@string/advanced_level"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/open_sans_semibold"
+        tools:background="@drawable/advanced_level_shape"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/bubble"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

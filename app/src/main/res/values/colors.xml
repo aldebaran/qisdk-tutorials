@@ -7,8 +7,8 @@
     <color name="human_bubble">#c5f7b2</color>
     <color name="pepper_bubble">#f6dbfc</color>
 
-    <color name="basic_green">#42ea00</color>
-    <color name="advanced_orange">#ff9612</color>
+    <color name="basic_green">#00e676</color>
+    <color name="advanced_orange">#ff9100</color>
 
     <color name="sayable_blue">#1bbde2</color>
     <color name="non_sayable_blue">#2e86d0</color>
