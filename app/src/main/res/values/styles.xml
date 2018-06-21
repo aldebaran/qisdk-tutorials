@@ -10,7 +10,6 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:textSize">@dimen/big_text</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_img_btn_backarrow</item>
     </style>
 
     <style name="Bubble" parent="Base.Widget.AppCompat.CompoundButton.RadioButton">

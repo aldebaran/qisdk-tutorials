@@ -14,15 +14,15 @@
 
         <ImageView
             android:id="@+id/backArrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/back_selector"
+            android:layout_width="73dp"
+            android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="24dp"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:src="@drawable/ic_baseline_arrow_back"
+            android:background="@drawable/navigation_background_selector"
+            android:tint="@color/navigation_tint_selector"
+            android:scaleType="center" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/titleTextView"
@@ -108,10 +108,10 @@
             android:id="@+id/close_button"
             android:layout_width="73dp"
             android:layout_height="match_parent"
-            android:background="@drawable/close_selector"
+            android:background="@drawable/navigation_background_selector"
             android:scaleType="center"
             android:src="@drawable/ic_baseline_close"
-            android:tint="@color/close_tint_selector"
+            android:tint="@color/navigation_tint_selector"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
