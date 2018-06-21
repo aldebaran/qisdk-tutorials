@@ -110,7 +110,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/close_selector"
             android:scaleType="center"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:src="@drawable/ic_baseline_close"
             android:tint="@color/close_tint_selector"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
