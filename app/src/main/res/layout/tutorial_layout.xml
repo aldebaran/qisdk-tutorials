@@ -11,7 +11,7 @@
         style="@style/Bubble"
         android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="65dp"
         tools:text="&quot;Hello human&quot;"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
