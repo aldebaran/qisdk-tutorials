@@ -13,7 +13,8 @@
     <color name="sayable_blue">#1bbde2</color>
     <color name="non_sayable_blue">#2e86d0</color>
 
-    <color name="selection_green">#11ef54</color>
+    <color name="selected_green">#4caf50</color>
+    <color name="pressed_green">#1b5e20</color>
 
     <color name="gray">#888888</color>
     <color name="light_gray">#cccccccc</color>

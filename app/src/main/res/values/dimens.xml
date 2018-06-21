@@ -5,7 +5,8 @@
 
     <dimen name="category_text">24sp</dimen>
     <dimen name="big_text">30sp</dimen>
-    <dimen name="bubble_corner_radius">10dp</dimen>
+    <dimen name="bubble_stoke_width">2dp</dimen>
+    <dimen name="bubble_corner_radius">7dp</dimen>
     <dimen name="bubble_padding">10dp</dimen>
     <dimen name="button_corner_radius">10dp</dimen>
     <dimen name="button_padding">10dp</dimen>
