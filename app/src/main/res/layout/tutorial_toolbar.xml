@@ -111,7 +111,7 @@
             android:background="@drawable/close_selector"
             android:scaleType="center"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:tint="@android:color/black"
+            android:tint="@color/close_tint_selector"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
