@@ -7,52 +7,67 @@
     android:layout_height="match_parent">
 
     <com.softbankrobotics.qisdktutorials.ui.bilateralswitch.RoundedLayout
+        android:id="@+id/background_layer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/levelView"
+        app:layout_constraintEnd_toEndOf="@+id/second_section"
+        app:layout_constraintStart_toStartOf="@+id/first_section"
+        app:layout_constraintTop_toTopOf="@+id/levelView"
+        android:background="@color/unselected_category_gray" />
+
+    <com.softbankrobotics.qisdktutorials.ui.bilateralswitch.RoundedLayout
         android:id="@+id/color_layer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         tools:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="@+id/button"
+        app:layout_constraintBottom_toBottomOf="@+id/levelView"
+        app:layout_constraintEnd_toEndOf="@+id/levelView"
         app:layout_constraintStart_toStartOf="@+id/first_section"
-        app:layout_constraintTop_toTopOf="@+id/button" />
+        app:layout_constraintTop_toTopOf="@+id/levelView" />
 
     <TextView
         android:id="@+id/first_section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingEnd="8dp"
-        android:paddingStart="16dp"
+        android:paddingStart="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/levelView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="BASICS"
-        android:textSize="20sp"/>
+        tools:text="&quot;Basic&quot;"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/open_sans_semibold" />
 
-    <ImageView
-        android:id="@+id/button"
+    <TextView
+        android:id="@+id/levelView"
         android:layout_width="42dp"
         android:layout_height="42dp"
-        android:adjustViewBounds="true"
-        android:padding="2dp"
-        tools:src="@drawable/ic_img_btn_statusgreen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/second_section"
         app:layout_constraintStart_toEndOf="@id/first_section"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        tools:text="@string/basic_level"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/open_sans_semibold"
+        android:background="@drawable/switch_level_shape" />
 
     <TextView
         android:id="@+id/second_section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingEnd="16dp"
+        android:paddingEnd="32dp"
         android:paddingStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/button"
+        app:layout_constraintStart_toEndOf="@id/levelView"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="ADVANCED"
-        android:textSize="20sp" />
+        tools:text="&quot;Advanced&quot;"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/open_sans_semibold" />
 
     <com.softbankrobotics.qisdktutorials.ui.bilateralswitch.RoundedLayout
         android:id="@+id/button_hover"
@@ -61,10 +76,9 @@
         android:alpha="0.3"
         android:background="#000"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toTopOf="@+id/button" />
-
+        app:layout_constraintBottom_toBottomOf="@+id/levelView"
+        app:layout_constraintEnd_toEndOf="@+id/levelView"
+        app:layout_constraintStart_toStartOf="@+id/levelView"
+        app:layout_constraintTop_toTopOf="@+id/levelView" />
 
 </android.support.constraint.ConstraintLayout>

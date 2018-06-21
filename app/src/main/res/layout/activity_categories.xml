@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="22dp"
-        custom:first_section_name="BASICS"
-        custom:second_section_name="ADVANCED" />
+        custom:first_section_name="&quot;Basic&quot;"
+        custom:second_section_name="&quot;Advanced&quot;" />
 
 </LinearLayout>

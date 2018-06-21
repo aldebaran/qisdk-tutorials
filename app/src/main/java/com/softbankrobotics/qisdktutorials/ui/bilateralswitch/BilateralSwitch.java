@@ -2,7 +2,6 @@ package com.softbankrobotics.qisdktutorials.ui.bilateralswitch;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.transition.AutoTransition;
@@ -12,34 +11,28 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softbankrobotics.qisdktutorials.R;
 
 public class BilateralSwitch extends FrameLayout implements View.OnClickListener {
 
-    private final static int BASIC_TEXT_COLOR = Color.GRAY;
-    private final static int HOVERED_TEXT_COLOR = Color.WHITE;
+    private static final int BACKGROUND_FIRST_SECTION_COLOR = R.color.basic_green;
+    private static final int BACKGROUND_SECOND_SECTION_COLOR = R.color.advanced_orange;
 
-    private final static int BACKGROUND_FIRST_SECTION_COLOR = R.color.basic_green;
-    private final static int BACKGROUND_SECOND_SECTION_COLOR = R.color.advanced_orange;
+    private static final int TRANSITION_DURATION = 100;
 
-    private final static int TRANSITION_DURATION = 100;
-
-    private final static int FIRST_SECTION_IMAGE = R.drawable.ic_img_btn_statusgreen;
-    private final static int SECOND_SECTION_IMAGE = R.drawable.ic_img_btn_statusorange;
+    private static final int FIRST_SECTION_TEXT = R.string.basic_level;
+    private static final int SECOND_SECTION_TEXT = R.string.advanced_level;
 
     ConstraintLayout constraintLayout;
-    ImageView button;
+    TextView levelView;
     View buttonHover;
     View colorLayer;
 
     private boolean allowClick = true;
     private boolean isChecked = false;
     private boolean shouldNotifyListener = true;
-    private TextView firstSection;
-    private TextView secondSection;
 
     private OnCheckedChangeListener onCheckedChangeListener;
     private String firstSectionName;
@@ -75,18 +68,16 @@ public class BilateralSwitch extends FrameLayout implements View.OnClickListener
 
         constraintLayout = findViewById(R.id.layout);
 
-        button = findViewById(R.id.button);
+        levelView = findViewById(R.id.levelView);
         colorLayer = findViewById(R.id.color_layer);
-        firstSection = findViewById(R.id.first_section);
-        secondSection = findViewById(R.id.second_section);
         buttonHover = findViewById(R.id.button_hover);
+        TextView firstSection = findViewById(R.id.first_section);
+        TextView secondSection = findViewById(R.id.second_section);
 
         setOnClickListener(this);
 
-        button.setImageResource(FIRST_SECTION_IMAGE);
-        secondSection.setTextColor(BASIC_TEXT_COLOR);
+        levelView.setText(FIRST_SECTION_TEXT);
         colorLayer.setBackgroundResource(BACKGROUND_FIRST_SECTION_COLOR);
-        firstSection.setTextColor(HOVERED_TEXT_COLOR);
 
         if (firstSectionName != null) {
             firstSection.setText(firstSectionName);
@@ -126,11 +117,11 @@ public class BilateralSwitch extends FrameLayout implements View.OnClickListener
         cs.clone(constraintLayout);
 
         if (!isChecked) {
-            cs.connect(R.id.color_layer, ConstraintSet.START, R.id.button, ConstraintSet.START);
-            cs.connect(R.id.color_layer, ConstraintSet.END, R.id.button, ConstraintSet.END);
+            cs.connect(R.id.color_layer, ConstraintSet.START, R.id.levelView, ConstraintSet.START);
+            cs.connect(R.id.color_layer, ConstraintSet.END, R.id.levelView, ConstraintSet.END);
         } else {
-            cs.connect(R.id.color_layer, ConstraintSet.END, R.id.button, ConstraintSet.END);
-            cs.connect(R.id.color_layer, ConstraintSet.START, R.id.button, ConstraintSet.START);
+            cs.connect(R.id.color_layer, ConstraintSet.END, R.id.levelView, ConstraintSet.END);
+            cs.connect(R.id.color_layer, ConstraintSet.START, R.id.levelView, ConstraintSet.START);
         }
 
 
@@ -147,13 +138,9 @@ public class BilateralSwitch extends FrameLayout implements View.OnClickListener
                 buttonHover.setVisibility(GONE);
 
                 if (isChecked) {
-                    firstSection.setTextColor(HOVERED_TEXT_COLOR);
-                    secondSection.setTextColor(BASIC_TEXT_COLOR);
-                    button.setImageResource(FIRST_SECTION_IMAGE);
+                    levelView.setText(FIRST_SECTION_TEXT);
                 } else {
-                    firstSection.setTextColor(BASIC_TEXT_COLOR);
-                    secondSection.setTextColor(HOVERED_TEXT_COLOR);
-                    button.setImageResource(SECOND_SECTION_IMAGE);
+                    levelView.setText(SECOND_SECTION_TEXT);
                 }
 
                 transition.removeListener(this);
@@ -186,10 +173,10 @@ public class BilateralSwitch extends FrameLayout implements View.OnClickListener
 
         if (!isChecked) {
             cs.connect(R.id.color_layer, ConstraintSet.END, R.id.second_section, ConstraintSet.END);
-            cs.connect(R.id.color_layer, ConstraintSet.START, R.id.button, ConstraintSet.START);
+            cs.connect(R.id.color_layer, ConstraintSet.START, R.id.levelView, ConstraintSet.START);
             colorLayer.setBackgroundResource(BACKGROUND_SECOND_SECTION_COLOR);
         } else {
-            cs.connect(R.id.color_layer, ConstraintSet.END, R.id.button, ConstraintSet.END);
+            cs.connect(R.id.color_layer, ConstraintSet.END, R.id.levelView, ConstraintSet.END);
             cs.connect(R.id.color_layer, ConstraintSet.START, R.id.first_section, ConstraintSet.START);
             colorLayer.setBackgroundResource(BACKGROUND_FIRST_SECTION_COLOR);
         }
