@@ -65,8 +65,8 @@
     <string name="let_s_be_smart">\"Let\'s be smart\"</string>
 
     <!-- Toolbar -->
-    <string name="toolbar_basic_level">BASIC</string>
-    <string name="toolbar_advanced_level">ADVANCED</string>
+    <string name="toolbar_basic_level">Basic &lt;/&gt;</string>
+    <string name="toolbar_advanced_level">Advanced &lt;//&gt;</string>
 
     <!-- Tutorial levels -->
     <string name="basic_level">&lt;/&gt;</string>
