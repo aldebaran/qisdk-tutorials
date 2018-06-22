@@ -6,6 +6,7 @@
 
     <color name="human_bubble">#c5f7b2</color>
     <color name="pepper_bubble">#fce4ec</color>
+    <color name="error_log">#f44336</color>
 
     <color name="basic_green">#00e676</color>
     <color name="advanced_orange">#ff9100</color>

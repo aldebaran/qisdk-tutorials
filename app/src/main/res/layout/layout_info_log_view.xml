@@ -4,8 +4,6 @@
     android:id="@+id/textView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textStyle="italic"
-    tools:text="Console log"
-    android:textSize="24sp">
-
-</TextView>
+    android:fontFamily="@font/open_sans_light_italic"
+    android:textColor="@android:color/black"
+    tools:text="Console log" />

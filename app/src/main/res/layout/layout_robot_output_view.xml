@@ -24,6 +24,8 @@
         android:padding="16dp"
         android:background="@color/pepper_bubble"
         android:textColor="@android:color/black"
+        android:textSize="19sp"
+        android:fontFamily="@font/open_sans_bold"
         tools:text="I'm Pepper"/>
 
 </LinearLayout>

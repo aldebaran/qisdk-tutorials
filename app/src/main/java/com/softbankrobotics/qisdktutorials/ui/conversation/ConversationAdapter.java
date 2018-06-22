@@ -1,6 +1,7 @@
 package com.softbankrobotics.qisdktutorials.ui.conversation;
 
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,21 +17,23 @@ import java.util.List;
  */
 class ConversationAdapter extends RecyclerView.Adapter<ConversationViewHolder> {
 
-    private static final int LOG_VIEW_TYPE = 0;
-    private static final int ROBOT_OUTPUT_VIEW_TYPE = 1;
-    private static final int HUMAN_INPUT_VIEW_TYPE = 2;
+    private static final int INFO_LOG_VIEW_TYPE = 0;
+    private static final int ERROR_LOG_VIEW_TYPE = 1;
+    private static final int ROBOT_OUTPUT_VIEW_TYPE = 2;
+    private static final int HUMAN_INPUT_VIEW_TYPE = 3;
 
     private List<ConversationItem> items = new ArrayList<>();
 
+    @NonNull
     @Override
-    public ConversationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ConversationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         int layout = layoutFromViewType(viewType);
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
         return new ConversationViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ConversationViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ConversationViewHolder holder, int position) {
         ConversationItem conversationItem = items.get(position);
         holder.bind(conversationItem.getText());
     }
@@ -46,8 +49,9 @@ class ConversationAdapter extends RecyclerView.Adapter<ConversationViewHolder> {
         ConversationItemType type = conversationItem.getType();
         switch (type) {
             case INFO_LOG:
+                return INFO_LOG_VIEW_TYPE;
             case ERROR_LOG:
-                return LOG_VIEW_TYPE;
+                return ERROR_LOG_VIEW_TYPE;
             case HUMAN_INPUT:
                 return HUMAN_INPUT_VIEW_TYPE;
             case ROBOT_OUTPUT:
@@ -70,8 +74,10 @@ class ConversationAdapter extends RecyclerView.Adapter<ConversationViewHolder> {
     @LayoutRes
     private int layoutFromViewType(int viewType) {
         switch (viewType) {
-            case LOG_VIEW_TYPE:
-                return R.layout.layout_log_view;
+            case INFO_LOG_VIEW_TYPE:
+                return R.layout.layout_info_log_view;
+            case ERROR_LOG_VIEW_TYPE:
+                return R.layout.layout_error_log_view;
             case ROBOT_OUTPUT_VIEW_TYPE:
                 return R.layout.layout_robot_output_view;
             case HUMAN_INPUT_VIEW_TYPE:
