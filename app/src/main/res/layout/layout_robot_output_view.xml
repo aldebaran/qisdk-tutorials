@@ -12,8 +12,9 @@
         android:src="@drawable/ic_img_icon_pepper"/>
 
     <View
-        android:layout_width="16dp"
+        android:layout_width="60dp"
         android:layout_height="2dp"
+        android:layout_marginStart="6dp"
         android:background="@android:color/black"/>
 
     <TextView
