@@ -12,19 +12,19 @@
         <item name="android:textSize">@dimen/big_text</item>
     </style>
 
-    <style name="Bubble" parent="Base.Widget.AppCompat.CompoundButton.RadioButton">
-        <item name="android:background">@drawable/bubble_background_selector</item>
-        <item name="android:padding">@dimen/bubble_padding</item>
-        <item name="android:textColor">@color/bubble_text_color_selector</item>
+    <style name="RadioButton" parent="Base.Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:background">@drawable/button_background_selector</item>
+        <item name="android:padding">@dimen/button_padding</item>
+        <item name="android:textColor">@color/button_text_color_selector</item>
         <item name="android:fontFamily">@font/open_sans_semibold</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
 
     <style name="Button" parent="Base.Widget.AppCompat.Button">
-        <item name="android:background">@drawable/bubble_background_selector</item>
+        <item name="android:background">@drawable/button_background_selector</item>
         <item name="android:padding">@dimen/button_padding</item>
-        <item name="android:textColor">@color/bubble_text_color_selector</item>
+        <item name="android:textColor">@color/button_text_color_selector</item>
         <item name="android:fontFamily">@font/open_sans_semibold</item>
     </style>
 

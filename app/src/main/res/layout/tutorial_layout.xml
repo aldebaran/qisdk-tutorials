@@ -7,8 +7,8 @@
     android:layout_height="wrap_content">
 
     <RadioButton
-        android:id="@+id/bubble"
-        style="@style/Bubble"
+        android:id="@+id/radioButton"
+        style="@style/RadioButton"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="66dp"
@@ -32,7 +32,7 @@
         android:fontFamily="@font/open_sans_semibold"
         tools:background="@drawable/advanced_level_shape"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/bubble"
+        app:layout_constraintEnd_toEndOf="@+id/radioButton"
         app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

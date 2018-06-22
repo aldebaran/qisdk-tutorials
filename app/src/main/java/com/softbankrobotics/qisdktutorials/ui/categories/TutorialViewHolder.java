@@ -15,7 +15,7 @@ import com.softbankrobotics.qisdktutorials.model.data.TutorialLevel;
  */
 class TutorialViewHolder extends RecyclerView.ViewHolder {
 
-    private final RadioButton bubble;
+    private final RadioButton radioButton;
     private final TextView levelTextView;
 
     private OnTutorialClickedListener onTutorialClickedListener;
@@ -23,7 +23,7 @@ class TutorialViewHolder extends RecyclerView.ViewHolder {
     TutorialViewHolder(View itemView, OnTutorialClickedListener onTutorialClickedListener) {
         super(itemView);
         this.onTutorialClickedListener = onTutorialClickedListener;
-        bubble = itemView.findViewById(R.id.bubble);
+        radioButton = itemView.findViewById(R.id.radioButton);
         levelTextView = itemView.findViewById(R.id.levelTextView);
     }
 
@@ -32,11 +32,11 @@ class TutorialViewHolder extends RecyclerView.ViewHolder {
      * @param tutorial the tutorial to bind
      */
     void bind(final Tutorial tutorial) {
-        bubble.setChecked(tutorial.isSelected());
-        bubble.setEnabled(tutorial.isEnabled());
-        bubble.setText("\"" + itemView.getContext().getString(tutorial.getNameResId()) + "\"");
+        radioButton.setChecked(tutorial.isSelected());
+        radioButton.setEnabled(tutorial.isEnabled());
+        radioButton.setText("\"" + itemView.getContext().getString(tutorial.getNameResId()) + "\"");
 
-        bubble.setOnClickListener(new View.OnClickListener() {
+        radioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onTutorialClickedListener != null) {
