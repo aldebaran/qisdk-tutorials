@@ -42,12 +42,10 @@
         app:layout_constraintTop_toTopOf="@+id/editText" />
 
     <android.support.v7.widget.RecyclerView
+        style="@style/RecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/recyclerview"
-        android:scrollbars="vertical"
-        android:fadeScrollbars="false"
-        android:scrollbarStyle="outsideInset"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
@@ -68,14 +66,12 @@
         tools:layout_editor_absoluteX="481dp" />
 
     <com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
+        style="@style/RecyclerView"
         android:id="@+id/conversationView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:scrollbars="vertical"
-        android:fadeScrollbars="false"
-        android:scrollbarStyle="outsideInset"
         app:layout_constraintRight_toLeftOf="@+id/guideline"
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"

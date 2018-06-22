@@ -69,6 +69,7 @@
         tools:layout_editor_absoluteX="193dp" />
 
     <com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
+        style="@style/RecyclerView"
         android:id="@+id/conversationView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -82,9 +83,6 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:scrollbars="vertical"
-        android:fadeScrollbars="false"
-        android:scrollbarStyle="outsideInset" />
+        android:paddingEnd="8dp" />
 
 </android.support.constraint.ConstraintLayout>

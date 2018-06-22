@@ -15,7 +15,7 @@
         android:layout_height="wrap_content" />
 
     <com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/RecyclerView"
         android:id="@+id/conversationView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -25,10 +25,7 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:scrollbars="vertical"
-        android:fadeScrollbars="false"
-        android:scrollbarStyle="outsideInset"/>
+        android:paddingEnd="8dp"/>
 
     <Button
         style="@style/Button"

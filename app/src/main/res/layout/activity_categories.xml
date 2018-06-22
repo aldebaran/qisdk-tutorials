@@ -61,6 +61,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
+        style="@style/RecyclerView"
         android:id="@+id/recyclerview"
         android:layout_weight="1"
         android:layout_width="match_parent"
@@ -71,11 +72,6 @@
         android:layout_marginBottom="40dp"
         android:paddingStart="25dp"
         android:paddingEnd="25dp"
-        android:scrollbars="vertical"
-        android:fadeScrollbars="false"
-        android:scrollbarStyle="outsideInset"
-        android:scrollbarThumbVertical="@android:color/black"
-        android:scrollbarSize="9dp"
         tools:listitem="@layout/tutorial_layout" />
 
     <com.softbankrobotics.qisdktutorials.ui.bilateralswitch.BilateralSwitch

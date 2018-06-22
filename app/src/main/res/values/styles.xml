@@ -42,4 +42,12 @@
         <item name="colorControlActivated">@color/non_sayable_blue</item>
     </style>
 
+    <style name="RecyclerView">
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:scrollbarStyle">outsideInset</item>
+        <item name="android:scrollbarThumbVertical">@android:color/black</item>
+        <item name="android:scrollbarSize">9dp</item>
+    </style>
+
 </resources>
