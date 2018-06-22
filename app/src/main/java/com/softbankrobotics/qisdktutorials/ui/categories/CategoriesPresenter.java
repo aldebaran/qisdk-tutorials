@@ -15,7 +15,7 @@ class CategoriesPresenter implements CategoriesContract.Presenter {
     private final TutorialRepository tutorialRepository;
     private List<Tutorial> loadedTutorials;
     private TutorialCategory selectedCategory = TutorialCategory.TALK;
-    private TutorialLevel selectedLevel = TutorialLevel.BASICS;
+    private TutorialLevel selectedLevel = TutorialLevel.BASIC;
 
     CategoriesPresenter() {
         this.tutorialRepository = new TutorialRepository();

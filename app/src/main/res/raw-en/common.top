@@ -4,11 +4,11 @@ concept:(talk) ["let's talk"]
 concept:(move) ["let's move"]
 concept:(smart) ["{let's} be smart"]
 
-concept:(basics) [basics]
+concept:(basic) [basic]
 concept:(advanced) [advanced]
 
 u:(~talk) OK %talk
 u:(~move) OK %move
 u:(~smart) OK %smart
-u:(~basics) OK %basics
+u:(~basic) OK %basic
 u:(~advanced) OK %advanced

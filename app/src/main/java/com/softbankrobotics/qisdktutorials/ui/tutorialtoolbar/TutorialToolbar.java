@@ -51,7 +51,7 @@ public class TutorialToolbar extends Toolbar {
 
     public void setLevel(TutorialLevel level) {
         switch (level) {
-            case BASICS:
+            case BASIC:
                 levelTextView.setText(R.string.toolbar_basic_level);
                 backgroundView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.basic_green));
                 break;

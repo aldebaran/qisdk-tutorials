@@ -42,10 +42,10 @@ public class TutorialRepository {
         List<Tutorial> tutorials = new ArrayList<>();
 
         switch (tutorialLevel) {
-            case BASICS:
-                tutorials.add(new Tutorial(TutorialId.SAY, R.string.hello_human, "hello", TutorialLevel.BASICS));
-                tutorials.add(new Tutorial(TutorialId.QICHATBOT, R.string.qichatbot, "qichatbot", TutorialLevel.BASICS));
-                tutorials.add(new Tutorial(TutorialId.LISTEN, R.string.listen, "listen", TutorialLevel.BASICS));
+            case BASIC:
+                tutorials.add(new Tutorial(TutorialId.SAY, R.string.hello_human, "hello", TutorialLevel.BASIC));
+                tutorials.add(new Tutorial(TutorialId.QICHATBOT, R.string.qichatbot, "qichatbot", TutorialLevel.BASIC));
+                tutorials.add(new Tutorial(TutorialId.LISTEN, R.string.listen, "listen", TutorialLevel.BASIC));
                 break;
             case ADVANCED:
                 tutorials.add(new Tutorial(TutorialId.BOOKMARK, R.string.bookmarks, "bookmark", TutorialLevel.ADVANCED));
@@ -68,9 +68,9 @@ public class TutorialRepository {
         List<Tutorial> tutorials = new ArrayList<>();
 
         switch (tutorialLevel) {
-            case BASICS:
-                tutorials.add(new Tutorial(TutorialId.ANIMATION, R.string.animation, "animation", TutorialLevel.BASICS));
-                tutorials.add(new Tutorial(TutorialId.TRAJECTORY, R.string.trajectory, "trajectory", TutorialLevel.BASICS));
+            case BASIC:
+                tutorials.add(new Tutorial(TutorialId.ANIMATION, R.string.animation, "animation", TutorialLevel.BASIC));
+                tutorials.add(new Tutorial(TutorialId.TRAJECTORY, R.string.trajectory, "trajectory", TutorialLevel.BASIC));
                 break;
             case ADVANCED:
                 tutorials.add(new Tutorial(TutorialId.ANIMATION_LABEL, R.string.animation_label, "animation_label", TutorialLevel.ADVANCED));
@@ -93,11 +93,11 @@ public class TutorialRepository {
     private List<Tutorial> getSmartTutorials(TutorialLevel tutorialLevel) {
         List<Tutorial> tutorials = new ArrayList<>();
         switch (tutorialLevel) {
-            case BASICS:
-                tutorials.add(new Tutorial(TutorialId.TOUCH, R.string.touch, "touch", TutorialLevel.BASICS));
-                tutorials.add(new Tutorial(TutorialId.AUTONOMOUS_ABILITIES, R.string.autonomous_abilities, "autonomous", TutorialLevel.BASICS));
-                tutorials.add(new Tutorial(TutorialId.ENFORCE_TABLET_REACHABILITY, R.string.enforce_tablet_reachability, "enforce_tablet_reachability", TutorialLevel.BASICS));
-                tutorials.add(new Tutorial(TutorialId.TAKE_PICTURE, R.string.take_picture, "picture", TutorialLevel.BASICS));
+            case BASIC:
+                tutorials.add(new Tutorial(TutorialId.TOUCH, R.string.touch, "touch", TutorialLevel.BASIC));
+                tutorials.add(new Tutorial(TutorialId.AUTONOMOUS_ABILITIES, R.string.autonomous_abilities, "autonomous", TutorialLevel.BASIC));
+                tutorials.add(new Tutorial(TutorialId.ENFORCE_TABLET_REACHABILITY, R.string.enforce_tablet_reachability, "enforce_tablet_reachability", TutorialLevel.BASIC));
+                tutorials.add(new Tutorial(TutorialId.TAKE_PICTURE, R.string.take_picture, "picture", TutorialLevel.BASIC));
                 break;
             case ADVANCED:
                 tutorials.add(new Tutorial(TutorialId.CHARACTERISTICS, R.string.people_characteristics, "people_characteristics", TutorialLevel.ADVANCED));

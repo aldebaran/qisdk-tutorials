@@ -43,7 +43,7 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
     private QiChatbot qiChatbot;
     private Future<Void> chatFuture;
     private TutorialCategory selectedCategory = TutorialCategory.TALK;
-    private TutorialLevel selectedLevel = TutorialLevel.BASICS;
+    private TutorialLevel selectedLevel = TutorialLevel.BASIC;
     private QiChatVariable levelVariable;
     private boolean isFirstIntro = true;
 
@@ -156,9 +156,9 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
                         presenter.loadTutorials(TutorialCategory.SMART);
                         selectTopic(TutorialCategory.SMART);
                         break;
-                    case "basics":
-                        presenter.loadTutorials(TutorialLevel.BASICS);
-                        selectLevel(TutorialLevel.BASICS);
+                    case "basic":
+                        presenter.loadTutorials(TutorialLevel.BASIC);
+                        selectLevel(TutorialLevel.BASIC);
                         break;
                     case "advanced":
                         presenter.loadTutorials(TutorialLevel.ADVANCED);
@@ -244,7 +244,7 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
     private String levelValueFromLevel(TutorialLevel level) {
         String value;
         switch (level) {
-            case BASICS:
+            case BASIC:
                 value = LEVEL_BASIC;
                 break;
             case ADVANCED:

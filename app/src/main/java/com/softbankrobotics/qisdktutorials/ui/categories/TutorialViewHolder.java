@@ -55,7 +55,7 @@ class TutorialViewHolder extends RecyclerView.ViewHolder {
      */
     private void bindLevelView(@NonNull TutorialLevel tutorialLevel) {
         switch (tutorialLevel) {
-            case BASICS:
+            case BASIC:
                 levelTextView.setText(R.string.basic_level);
                 levelTextView.setBackgroundResource(R.drawable.basic_level_shape);
                 break;

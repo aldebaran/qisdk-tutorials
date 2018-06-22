@@ -125,7 +125,7 @@ public class CategoriesActivity extends RobotActivity implements CategoriesContr
             @Override
             public void run() {
                 switch (level) {
-                    case BASICS:
+                    case BASIC:
                         levelSwitch.setChecked(false);
                         break;
                     case ADVANCED:
@@ -215,8 +215,8 @@ public class CategoriesActivity extends RobotActivity implements CategoriesContr
                     presenter.loadTutorials(TutorialLevel.ADVANCED);
                     robot.selectLevel(TutorialLevel.ADVANCED);
                 } else {
-                    presenter.loadTutorials(TutorialLevel.BASICS);
-                    robot.selectLevel(TutorialLevel.BASICS);
+                    presenter.loadTutorials(TutorialLevel.BASIC);
+                    robot.selectLevel(TutorialLevel.BASIC);
                 }
             }
         });
