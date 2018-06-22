@@ -68,7 +68,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_check"
-        android:tint="@android:color/white"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/variable_editText"
         app:layout_constraintEnd_toEndOf="parent"

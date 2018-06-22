@@ -23,7 +23,6 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:src="@drawable/ic_delete"
-        android:tint="@android:color/white"
         android:scaleType="fitCenter" />
 
 </LinearLayout>
