@@ -22,7 +22,7 @@ android {
 dependencies {
     // dependencies versions
     ext.support_version = '27.1.1'
-    ext.constraint_layout = '1.1.0'
+    ext.constraint_layout = '1.1.2'
     // local libs
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     // support
