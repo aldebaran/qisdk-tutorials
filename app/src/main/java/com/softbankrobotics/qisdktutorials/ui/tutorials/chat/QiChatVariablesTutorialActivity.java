@@ -81,8 +81,8 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
 
     @Override
     protected void onDestroy() {
-        // Unregister all the RobotLifecycleCallbacks for this Activity.
-        QiSDK.unregister(this);
+        // Unregister the RobotLifecycleCallbacks for this Activity.
+        QiSDK.unregister(this, this);
         super.onDestroy();
     }
 

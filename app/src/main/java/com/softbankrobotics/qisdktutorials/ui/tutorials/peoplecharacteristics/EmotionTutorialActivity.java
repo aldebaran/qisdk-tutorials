@@ -48,8 +48,8 @@ public class EmotionTutorialActivity extends TutorialActivity implements RobotLi
         basicEmotionObserver.setListener(null);
         basicEmotionObserver = null;
 
-        // Unregister all the RobotLifecycleCallbacks for this Activity.
-        QiSDK.unregister(this);
+        // Unregister the RobotLifecycleCallbacks for this Activity.
+        QiSDK.unregister(this, this);
         super.onDestroy();
     }
 

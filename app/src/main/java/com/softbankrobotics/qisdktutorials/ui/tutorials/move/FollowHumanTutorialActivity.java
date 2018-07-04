@@ -90,7 +90,7 @@ public class FollowHumanTutorialActivity extends TutorialActivity implements Rob
 
     @Override
     protected void onDestroy() {
-        QiSDK.unregister(this);
+        QiSDK.unregister(this, this);
 
         super.onDestroy();
     }
