@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/activity_vertical_margin"
     android:gravity="center_horizontal"
-    tools:context=".ui.tutorials.lookat.LookAtTutorialActivity">
+    tools:context=".ui.tutorials.motion.lookat.LookAtTutorialActivity">
 
     <com.softbankrobotics.qisdktutorials.ui.tutorialtoolbar.TutorialToolbar
         android:id="@+id/toolbar"

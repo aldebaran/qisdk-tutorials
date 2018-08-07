@@ -18,26 +18,26 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.categories.CategoriesActivity" />
-        <activity android:name=".ui.tutorials.hellohuman.HelloHumanTutorialActivity" />
-        <activity android:name=".ui.tutorials.listen.ListenTutorialActivity" />
-        <activity android:name=".ui.tutorials.animate.AnimateTutorialActivity" />
-        <activity android:name=".ui.tutorials.move.GoToTutorialActivity" />
         <activity android:name=".ui.tutorials.autonomousabilities.AutonomousAbilitiesTutorialActivity" />
-        <activity android:name=".ui.tutorials.peoplecharacteristics.PeopleCharacteristicsTutorialActivity" />
-        <activity android:name=".ui.tutorials.chat.QiChatbotTutorialActivity" />
-        <activity android:name=".ui.tutorials.touch.TouchTutorialActivity" />
-        <activity android:name=".ui.tutorials.lookat.LookAtTutorialActivity" />
-        <activity android:name=".ui.tutorials.chat.BookmarksTutorialActivity" />
-        <activity android:name=".ui.tutorials.chat.DynamicConceptsTutorialActivity" />
-        <activity android:name=".ui.tutorials.move.GoToWorldTutorialActivity" />
-        <activity android:name=".ui.tutorials.move.FollowHumanTutorialActivity" />
-        <activity android:name=".ui.tutorials.chat.QiChatVariablesTutorialActivity" />
-        <activity android:name=".ui.tutorials.animate.TrajectoryTutorialActivity" />
-        <activity android:name=".ui.tutorials.peoplecharacteristics.EmotionTutorialActivity" />
-        <activity android:name=".ui.tutorials.animate.AnimationLabelActivity" />
-        <activity android:name=".ui.tutorials.takepicture.TakePictureTutorialActivity" />
-        <activity android:name=".ui.tutorials.chat.ExecuteTutorialActivity" />
-        <activity android:name=".ui.tutorials.enforcetabletreachability.EnforceTabletReachabilityTutorialActivity" />
+        <activity android:name=".ui.tutorials.conversation.bookmarks.BookmarksTutorialActivity" />
+        <activity android:name=".ui.tutorials.conversation.dynamicconcepts.DynamicConceptsTutorialActivity" />
+        <activity android:name=".ui.tutorials.conversation.execute.ExecuteTutorialActivity" />
+        <activity android:name=".ui.tutorials.conversation.listen.ListenTutorialActivity" />
+        <activity android:name=".ui.tutorials.conversation.qichatbot.QiChatbotTutorialActivity" />
+        <activity android:name=".ui.tutorials.conversation.qichatvariables.QiChatVariablesTutorialActivity" />
+        <activity android:name=".ui.tutorials.gettingstarted.HelloHumanTutorialActivity" />
+        <activity android:name=".ui.tutorials.motion.animate.AnimateTutorialActivity" />
+        <activity android:name=".ui.tutorials.motion.animationlabels.AnimationLabelActivity" />
+        <activity android:name=".ui.tutorials.motion.attachedframes.FollowHumanTutorialActivity" />
+        <activity android:name=".ui.tutorials.motion.enforcetabletreachability.EnforceTabletReachabilityTutorialActivity" />
+        <activity android:name=".ui.tutorials.motion.freeframes.GoToWorldTutorialActivity" />
+        <activity android:name=".ui.tutorials.motion.gotoframe.GoToTutorialActivity" />
+        <activity android:name=".ui.tutorials.motion.lookat.LookAtTutorialActivity" />
+        <activity android:name=".ui.tutorials.motion.trajectory.TrajectoryTutorialActivity" />
+        <activity android:name=".ui.tutorials.perceptions.emotiondetection.EmotionTutorialActivity" />
+        <activity android:name=".ui.tutorials.perceptions.humanawareness.PeopleCharacteristicsTutorialActivity" />
+        <activity android:name=".ui.tutorials.perceptions.takepicture.TakePictureTutorialActivity" />
+        <activity android:name=".ui.tutorials.perceptions.touch.TouchTutorialActivity" />
     </application>
 
 </manifest>

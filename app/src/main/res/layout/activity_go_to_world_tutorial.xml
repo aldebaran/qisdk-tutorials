@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
-    tools:context=".ui.tutorials.move.GoToWorldTutorialActivity"
+    tools:context=".ui.tutorials.motion.freeframes.GoToWorldTutorialActivity"
     tools:layout_editor_absoluteY="0dp"
     tools:layout_editor_absoluteX="0dp">
 

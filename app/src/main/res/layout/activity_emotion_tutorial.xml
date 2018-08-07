@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/activity_vertical_margin"
-    tools:context="com.softbankrobotics.qisdktutorials.ui.tutorials.peoplecharacteristics.EmotionTutorialActivity">
+    tools:context=".ui.tutorials.perceptions.emotiondetection.EmotionTutorialActivity">
 
     <com.softbankrobotics.qisdktutorials.ui.tutorialtoolbar.TutorialToolbar
         android:id="@+id/toolbar"

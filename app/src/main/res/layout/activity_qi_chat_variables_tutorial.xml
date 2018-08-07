@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
-    tools:context=".ui.tutorials.chat.QiChatVariablesTutorialActivity"
+    tools:context=".ui.tutorials.conversation.qichatvariables.QiChatVariablesTutorialActivity"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="0dp">
 
