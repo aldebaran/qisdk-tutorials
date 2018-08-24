@@ -6,7 +6,6 @@ import android.support.annotation.RawRes;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.aldebaran.qi.Consumer;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
@@ -22,7 +21,6 @@ import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionValidity;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.BookmarkStatus;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
-import com.aldebaran.qi.sdk.object.conversation.Phrase;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
 import com.softbankrobotics.qisdktutorials.R;
@@ -107,27 +105,14 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
         proposalBookmark = bookmarks.get("mimic_proposal");
 
         // Go to the proposal bookmark when the Chat action starts.
-        chat.addOnStartedListener(new Chat.OnStartedListener() {
-            @Override
-            public void onStarted() {
-                sayProposal();
-            }
-        });
+        chat.addOnStartedListener(this::sayProposal);
 
-        chat.addOnHeardListener(new Chat.OnHeardListener() {
-            @Override
-            public void onHeard(Phrase heardPhrase) {
-                displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT);
-            }
-        });
+        chat.addOnHeardListener(heardPhrase -> displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT));
 
-        chat.addOnSayingChangedListener(new Chat.OnSayingChangedListener() {
-            @Override
-            public void onSayingChanged(Phrase sayingPhrase) {
-                String text = sayingPhrase.getText();
-                if (!TextUtils.isEmpty(text)) {
-                    displayLine(text, ConversationItemType.ROBOT_OUTPUT);
-                }
+        chat.addOnSayingChangedListener(sayingPhrase -> {
+            String text = sayingPhrase.getText();
+            if (!TextUtils.isEmpty(text)) {
+                displayLine(text, ConversationItemType.ROBOT_OUTPUT);
             }
         });
 
@@ -140,20 +125,10 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
         elephantBookmarkStatus = qiChatbot.bookmarkStatus(elephantBookmark);
 
         // Mimic a dog when the dog mimic bookmark is reached.
-        dogBookmarkStatus.addOnReachedListener(new BookmarkStatus.OnReachedListener() {
-            @Override
-            public void onReached() {
-                mimicDog(qiContext);
-            }
-        });
+        dogBookmarkStatus.addOnReachedListener(() -> mimicDog(qiContext));
 
         // Mimic an elephant when the elephant mimic bookmark is reached.
-        elephantBookmarkStatus.addOnReachedListener(new BookmarkStatus.OnReachedListener() {
-            @Override
-            public void onReached() {
-                mimicElephant(qiContext);
-            }
-        });
+        elephantBookmarkStatus.addOnReachedListener(() -> mimicElephant(qiContext));
 
         // Run the Chat action asynchronously.
         chat.async().run();
@@ -207,26 +182,18 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
                 .withAnimation(animation)
                 .build();
 
-        animate.addOnStartedListener(new Animate.OnStartedListener() {
-            @Override
-            public void onStarted() {
-                if (mediaPlayer != null) {
-                    mediaPlayer.release();
-                    mediaPlayer = null;
-                }
-
-                mediaPlayer = MediaPlayer.create(BookmarksTutorialActivity.this, soundResource);
-                mediaPlayer.start();
+        animate.addOnStartedListener(() -> {
+            if (mediaPlayer != null) {
+                mediaPlayer.release();
+                mediaPlayer = null;
             }
+
+            mediaPlayer = MediaPlayer.create(BookmarksTutorialActivity.this, soundResource);
+            mediaPlayer.start();
         });
 
         // Run the animate action asynchronously.
-        animate.async().run().andThenConsume(new Consumer<Void>() {
-            @Override
-            public void consume(Void ignore) throws Throwable {
-                sayProposal();
-            }
-        });
+        animate.async().run().andThenConsume(ignore -> sayProposal());
     }
 
     private void sayProposal() {
@@ -234,11 +201,6 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine(text, type);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

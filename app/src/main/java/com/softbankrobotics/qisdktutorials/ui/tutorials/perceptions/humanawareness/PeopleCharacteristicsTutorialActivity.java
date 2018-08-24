@@ -7,10 +7,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 
-import com.aldebaran.qi.Consumer;
 import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
@@ -55,7 +53,7 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
     // The QiContext provided by the QiSDK.
     private QiContext qiContext;
 
-    List<HumanInfo> humanInfoList = new ArrayList<>();
+    private List<HumanInfo> humanInfoList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +70,9 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
 
         // Find humans around when refresh button clicked.
         Button refreshButton = findViewById(R.id.refresh_button);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (qiContext != null) {
-                    findHumansAround();
-                }
+        refreshButton.setOnClickListener(v -> {
+            if (qiContext != null) {
+                findHumansAround();
             }
         });
 
@@ -133,12 +128,9 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
             // Get the humans around the robot.
             Future<List<Human>> humansAroundFuture = humanAwareness.async().getHumansAround();
 
-            humansAroundFuture.andThenConsume(new Consumer<List<Human>>() {
-                @Override
-                public void consume(List<Human> humansAround) throws Throwable {
-                    Log.i(TAG, humansAround.size() + " human(s) around.");
-                    retrieveCharacteristics(humansAround);
-                }
+            humansAroundFuture.andThenConsume(humansAround -> {
+                Log.i(TAG, humansAround.size() + " human(s) around.");
+                retrieveCharacteristics(humansAround);
             });
         }
     }
@@ -226,20 +218,10 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
     }
 
     private void displayHumanInfoList(final List<HumanInfo> humanInfoList) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                humanInfoAdapter.updateList(humanInfoList);
-            }
-        });
+        runOnUiThread(() -> humanInfoAdapter.updateList(humanInfoList));
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine(text, type);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

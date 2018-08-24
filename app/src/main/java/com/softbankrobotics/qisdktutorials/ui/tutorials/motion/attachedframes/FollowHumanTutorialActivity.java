@@ -2,10 +2,8 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.motion.attachedframes;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 
-import com.aldebaran.qi.Consumer;
 import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
@@ -56,33 +54,22 @@ public class FollowHumanTutorialActivity extends TutorialActivity implements Rob
         stopButton = findViewById(R.id.stop_button);
 
         // Search humans on follow button clicked.
-        followButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (qiContext != null) {
-                    followButton.setEnabled(false);
-                    displayLine("Following in 3 seconds...", ConversationItemType.INFO_LOG);
-                    // Wait 3 seconds before following.
-                    FutureUtils.wait(3, TimeUnit.SECONDS).andThenConsume(new Consumer<Void>() {
-                        @Override
-                        public void consume(Void ignored) throws Throwable {
-                            searchHumans();
-                        }
-                    });
-                }
+        followButton.setOnClickListener(v -> {
+            if (qiContext != null) {
+                followButton.setEnabled(false);
+                displayLine("Following in 3 seconds...", ConversationItemType.INFO_LOG);
+                // Wait 3 seconds before following.
+                FutureUtils.wait(3, TimeUnit.SECONDS).andThenConsume(ignored -> searchHumans());
             }
         });
 
         // Stop moving on stop button clicked.
-        stopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopButton.setEnabled(false);
-                String message = "Stopping...";
-                Log.i(TAG, message);
-                displayLine(message, ConversationItemType.INFO_LOG);
-                stopMoving();
-            }
+        stopButton.setOnClickListener(v -> {
+            stopButton.setEnabled(false);
+            String message = "Stopping...";
+            Log.i(TAG, message);
+            displayLine(message, ConversationItemType.INFO_LOG);
+            stopMoving();
         });
 
         QiSDK.register(this, this);
@@ -138,12 +125,9 @@ public class FollowHumanTutorialActivity extends TutorialActivity implements Rob
         String message = "Waiting for order...";
         Log.i(TAG, message);
         displayLine(message, ConversationItemType.INFO_LOG);
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                stopButton.setEnabled(false);
-                followButton.setEnabled(true);
-            }
+        runOnUiThread(() -> {
+            stopButton.setEnabled(false);
+            followButton.setEnabled(true);
         });
     }
 
@@ -151,30 +135,24 @@ public class FollowHumanTutorialActivity extends TutorialActivity implements Rob
         String message = "Moving...";
         Log.i(TAG, message);
         displayLine(message, ConversationItemType.INFO_LOG);
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                followButton.setEnabled(false);
-                stopButton.setEnabled(true);
-            }
+        runOnUiThread(() -> {
+            followButton.setEnabled(false);
+            stopButton.setEnabled(true);
         });
     }
 
     private void searchHumans() {
         HumanAwareness humanAwareness = qiContext.getHumanAwareness();
         Future<List<Human>> humansAroundFuture = humanAwareness.async().getHumansAround();
-        humansAroundFuture.andThenConsume(new Consumer<List<Human>>() {
-            @Override
-            public void consume(List<Human> humans) throws Throwable {
-                // If humans found, follow the closest one.
-                if (!humans.isEmpty()) {
-                    Log.i(TAG, "Human found.");
-                    Human humanToFollow = getClosestHuman(humans);
-                    followHuman(humanToFollow);
-                } else {
-                    Log.i(TAG, "No human.");
-                    enterWaitingForOrderState();
-                }
+        humansAroundFuture.andThenConsume(humans -> {
+            // If humans found, follow the closest one.
+            if (!humans.isEmpty()) {
+                Log.i(TAG, "Human found.");
+                Human humanToFollow = getClosestHuman(humans);
+                followHuman(humanToFollow);
+            } else {
+                Log.i(TAG, "No human.");
+                enterWaitingForOrderState();
             }
         });
     }
@@ -189,30 +167,22 @@ public class FollowHumanTutorialActivity extends TutorialActivity implements Rob
                 .build();
 
         // Update UI when the GoTo action starts.
-        goTo.addOnStartedListener(new GoTo.OnStartedListener() {
-            @Override
-            public void onStarted() {
-                enterMovingState();
-            }
-        });
+        goTo.addOnStartedListener(this::enterMovingState);
 
         // Execute the GoTo action asynchronously.
         goToFuture = goTo.async().run();
 
         // Update UI when the GoTo action finishes.
-        goToFuture.thenConsume(new Consumer<Future<Void>>() {
-            @Override
-            public void consume(Future<Void> future) throws Throwable {
-                if (future.isSuccess()) {
-                    Log.i(TAG, "Target reached.");
-                    enterWaitingForOrderState();
-                } else if (future.isCancelled()) {
-                    Log.i(TAG, "Movement stopped.");
-                    enterWaitingForOrderState();
-                } else {
-                    Log.e(TAG, "Movement error.", future.getError());
-                    enterWaitingForOrderState();
-                }
+        goToFuture.thenConsume(future -> {
+            if (future.isSuccess()) {
+                Log.i(TAG, "Target reached.");
+                enterWaitingForOrderState();
+            } else if (future.isCancelled()) {
+                Log.i(TAG, "Movement stopped.");
+                enterWaitingForOrderState();
+            } else {
+                Log.e(TAG, "Movement error.", future.getError());
+                enterWaitingForOrderState();
             }
         });
     }
@@ -240,12 +210,7 @@ public class FollowHumanTutorialActivity extends TutorialActivity implements Rob
         final Frame robotFrame = qiContext.getActuation().robotFrame();
 
         // Compare humans using the distance.
-        Comparator<Human> comparator = new Comparator<Human>() {
-            @Override
-            public int compare(Human human1, Human human2) {
-                return Double.compare(getDistance(robotFrame, human1), getDistance(robotFrame, human2));
-            }
-        };
+        Comparator<Human> comparator = (human1, human2) -> Double.compare(getDistance(robotFrame, human1), getDistance(robotFrame, human2));
 
         // Return the closest human.
         return Collections.min(humans, comparator);
@@ -264,11 +229,6 @@ public class FollowHumanTutorialActivity extends TutorialActivity implements Rob
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine(text, type);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

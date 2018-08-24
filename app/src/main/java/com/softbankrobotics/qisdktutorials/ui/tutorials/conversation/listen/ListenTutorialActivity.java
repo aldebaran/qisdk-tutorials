@@ -108,11 +108,6 @@ public class ListenTutorialActivity extends TutorialActivity implements RobotLif
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine(text, type);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

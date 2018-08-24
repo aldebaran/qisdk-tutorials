@@ -33,18 +33,15 @@ public abstract class TutorialActivity extends RobotActivity {
         super.onResume();
 
         rootView = findViewById(android.R.id.content);
-        globalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect rect = new Rect();
-                rootView.getWindowVisibleDisplayFrame(rect);
-                int screenHeight = rootView.getHeight();
-                int keypadHeight = screenHeight - rect.bottom;
+        globalLayoutListener = () -> {
+            Rect rect = new Rect();
+            rootView.getWindowVisibleDisplayFrame(rect);
+            int screenHeight = rootView.getHeight();
+            int keypadHeight = screenHeight - rect.bottom;
 
-                // Hide system UI if keyboard is closed.
-                if (keypadHeight <= screenHeight * 0.30) {
-                    hideSystemUI();
-                }
+            // Hide system UI if keyboard is closed.
+            if (keypadHeight <= screenHeight * 0.30) {
+                hideSystemUI();
             }
         };
 
@@ -70,12 +67,7 @@ public abstract class TutorialActivity extends RobotActivity {
     private void setupToolbar() {
         TutorialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         int nameNotFound = -1;
         int nameResId = getIntent().getIntExtra(Constants.Intent.TUTORIAL_NAME_KEY, nameNotFound);
@@ -85,12 +77,7 @@ public abstract class TutorialActivity extends RobotActivity {
             toolbar.setLevel(level);
         }
 
-        findViewById(R.id.close_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finishAffinity();
-            }
-        });
+        findViewById(R.id.close_button).setOnClickListener(v -> finishAffinity());
     }
 
     private void hideSystemUI() {

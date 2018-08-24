@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.aldebaran.qi.Consumer;
 import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
@@ -14,7 +13,6 @@ import com.aldebaran.qi.sdk.builder.QiChatbotBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
-import com.aldebaran.qi.sdk.object.conversation.Phrase;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
@@ -84,44 +82,30 @@ public class QiChatbotTutorialActivity extends TutorialActivity implements Robot
                 .build();
 
         // Add an on started listener to the Chat action.
-        chat.addOnStartedListener(new Chat.OnStartedListener() {
-            @Override
-            public void onStarted() {
-                String message = "Discussion started.";
-                Log.i(TAG, message);
-                displayLine(message, ConversationItemType.INFO_LOG);
-            }
+        chat.addOnStartedListener(() -> {
+            String message = "Discussion started.";
+            Log.i(TAG, message);
+            displayLine(message, ConversationItemType.INFO_LOG);
         });
 
-        chat.addOnHeardListener(new Chat.OnHeardListener() {
-            @Override
-            public void onHeard(Phrase heardPhrase) {
-                displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT);
-            }
-        });
+        chat.addOnHeardListener(heardPhrase -> displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT));
 
-        chat.addOnSayingChangedListener(new Chat.OnSayingChangedListener() {
-            @Override
-            public void onSayingChanged(Phrase sayingPhrase) {
-                String text = sayingPhrase.getText();
-                if (!TextUtils.isEmpty(text)) {
-                    displayLine(text, ConversationItemType.ROBOT_OUTPUT);
-                }
+        chat.addOnSayingChangedListener(sayingPhrase -> {
+            String text = sayingPhrase.getText();
+            if (!TextUtils.isEmpty(text)) {
+                displayLine(text, ConversationItemType.ROBOT_OUTPUT);
             }
         });
 
         // Run the Chat action asynchronously.
         Future<Void> chatFuture = chat.async().run();
 
-        // Add a consumer to the action execution.
-        chatFuture.thenConsume(new Consumer<Future<Void>>() {
-            @Override
-            public void consume(Future<Void> future) throws Throwable {
-                if (future.hasError()) {
-                    String message = "Discussion finished with error.";
-                    Log.e(TAG, message, future.getError());
-                    displayLine(message, ConversationItemType.ERROR_LOG);
-                }
+        // Add a lambda to the action execution.
+        chatFuture.thenConsume(future -> {
+            if (future.hasError()) {
+                String message = "Discussion finished with error.";
+                Log.e(TAG, message, future.getError());
+                displayLine(message, ConversationItemType.ERROR_LOG);
             }
         });
     }
@@ -142,11 +126,6 @@ public class QiChatbotTutorialActivity extends TutorialActivity implements Robot
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine(text, type);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

@@ -85,12 +85,7 @@ public class EmotionTutorialActivity extends TutorialActivity implements RobotLi
     @Override
     public void onBasicEmotionChanged(final BasicEmotion basicEmotion) {
         // Update basic emotion image.
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                emotionView.setImageResource(emotionImageRes(basicEmotion));
-            }
-        });
+        runOnUiThread(() -> emotionView.setImageResource(emotionImageRes(basicEmotion)));
     }
 
     @DrawableRes
@@ -114,11 +109,6 @@ public class EmotionTutorialActivity extends TutorialActivity implements RobotLi
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine(text, type);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

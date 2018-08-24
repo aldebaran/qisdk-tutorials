@@ -3,7 +3,6 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.motion.animationlabels;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.aldebaran.qi.Consumer;
 import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
@@ -72,45 +71,36 @@ public class AnimationLabelActivity extends TutorialActivity implements RobotLif
                 .build(); // Build the animate action.
 
         // Say and display the name of the reached labels
-        animate.addOnLabelReachedListener(new Animate.OnLabelReachedListener() {
-            @Override
-            public void onLabelReached(String label, Long time) {
-                Say sayLabel = SayBuilder.with(qiContext)
-                        .withText(label)
-                        .build();
+        animate.addOnLabelReachedListener((label, time) -> {
+            Say sayLabel = SayBuilder.with(qiContext)
+                    .withText(label)
+                    .build();
 
-                sayLabel.async().run();
+            sayLabel.async().run();
 
-                displayLine(label, ConversationItemType.ROBOT_OUTPUT);
-            }
+            displayLine(label, ConversationItemType.ROBOT_OUTPUT);
         });
 
         // Add an on started listener to the animate action.
-        animate.addOnStartedListener(new Animate.OnStartedListener() {
-            @Override
-            public void onStarted() {
-                String message = "Animation started.";
-                Log.i(TAG, message);
-                displayLine(message, ConversationItemType.INFO_LOG);
-            }
+        animate.addOnStartedListener(() -> {
+            String message = "Animation started.";
+            Log.i(TAG, message);
+            displayLine(message, ConversationItemType.INFO_LOG);
         });
 
         // Run the animate action asynchronously.
         Future<Void> animateFuture = animate.async().run();
 
-        // Add a consumer to the action execution.
-        animateFuture.thenConsume(new Consumer<Future<Void>>() {
-            @Override
-            public void consume(Future<Void> future) throws Throwable {
-                if (future.isSuccess()) {
-                    String message = "Animation finished with success.";
-                    Log.i(TAG, message);
-                    displayLine(message, ConversationItemType.INFO_LOG);
-                } else if (future.hasError()) {
-                    String message = "Animation finished with error.";
-                    Log.e(TAG, message, future.getError());
-                    displayLine(message, ConversationItemType.ERROR_LOG);
-                }
+        // Add a lambda to the action execution.
+        animateFuture.thenConsume(future -> {
+            if (future.isSuccess()) {
+                String message = "Animation finished with success.";
+                Log.i(TAG, message);
+                displayLine(message, ConversationItemType.INFO_LOG);
+            } else if (future.hasError()) {
+                String message = "Animation finished with error.";
+                Log.e(TAG, message, future.getError());
+                displayLine(message, ConversationItemType.ERROR_LOG);
             }
         });
     }
@@ -130,11 +120,6 @@ public class AnimationLabelActivity extends TutorialActivity implements RobotLif
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine(text, type);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

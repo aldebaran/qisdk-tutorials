@@ -38,12 +38,7 @@ public class BasicEmotionObserver {
         updateObservedEmotion(humansAround);
 
         // Update the observed emotion when the humans around change.
-        humanAwareness.addOnHumansAroundChangedListener(new HumanAwareness.OnHumansAroundChangedListener() {
-            @Override
-            public void onHumansAroundChanged(List<Human> humansAround) {
-                updateObservedEmotion(humansAround);
-            }
-        });
+        humanAwareness.addOnHumansAroundChangedListener(this::updateObservedEmotion);
     }
 
     /**
@@ -85,24 +80,18 @@ public class BasicEmotionObserver {
             notifyListener();
 
             // Notify the listener when excitement changes.
-            observedEmotion.addOnExcitementChangedListener(new Emotion.OnExcitementChangedListener() {
-                @Override
-                public void onExcitementChanged(ExcitementState excitementState) {
-                    if (excitementState != lastExcitement) {
-                        lastExcitement = excitementState;
-                        notifyListener();
-                    }
+            observedEmotion.addOnExcitementChangedListener(excitementState -> {
+                if (excitementState != lastExcitement) {
+                    lastExcitement = excitementState;
+                    notifyListener();
                 }
             });
 
             // Notify the listener when pleasure changes.
-            observedEmotion.addOnPleasureChangedListener(new Emotion.OnPleasureChangedListener() {
-                @Override
-                public void onPleasureChanged(PleasureState pleasureState) {
-                    if (pleasureState != lastPleasure) {
-                        lastPleasure = pleasureState;
-                        notifyListener();
-                    }
+            observedEmotion.addOnPleasureChangedListener(pleasureState -> {
+                if (pleasureState != lastPleasure) {
+                    lastPleasure = pleasureState;
+                    notifyListener();
                 }
             });
         }

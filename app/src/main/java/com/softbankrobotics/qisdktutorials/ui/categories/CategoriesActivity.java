@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.RadioButton;
 
 import com.aldebaran.qi.sdk.design.activity.RobotActivity;
@@ -14,7 +13,6 @@ import com.softbankrobotics.qisdktutorials.model.data.Tutorial;
 import com.softbankrobotics.qisdktutorials.model.data.TutorialCategory;
 import com.softbankrobotics.qisdktutorials.model.data.TutorialLevel;
 import com.softbankrobotics.qisdktutorials.ui.bilateralswitch.BilateralSwitch;
-import com.softbankrobotics.qisdktutorials.ui.bilateralswitch.OnCheckedChangeListener;
 
 import java.util.List;
 
@@ -68,72 +66,53 @@ public class CategoriesActivity extends RobotActivity implements CategoriesContr
 
     @Override
     public void showTutorials(final List<Tutorial> tutorials) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                tutorialAdapter.updateTutorials(tutorials);
-            }
-        });
+        runOnUiThread(() -> tutorialAdapter.updateTutorials(tutorials));
     }
 
     @Override
     public void selectTutorial(final Tutorial tutorial) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                tutorialAdapter.selectTutorial(tutorial);
-                tutorialAdapter.setTutorialsEnabled(false);
-            }
+        runOnUiThread(() -> {
+            tutorialAdapter.selectTutorial(tutorial);
+            tutorialAdapter.setTutorialsEnabled(false);
         });
     }
 
     @Override
     public void goToTutorial(final Tutorial tutorial) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                router.goToTutorial(tutorial, CategoriesActivity.this);
-            }
-        });
+        runOnUiThread(() -> router.goToTutorial(tutorial, CategoriesActivity.this));
     }
 
     @Override
     public void selectCategory(final TutorialCategory category) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                switch (category) {
-                    case TALK:
-                        talkButton.setChecked(true);
-                        break;
-                    case MOVE:
-                        moveButton.setChecked(true);
-                        break;
-                    case SMART:
-                        smartButton.setChecked(true);
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Unknown tutorial category: " + category);
-                }
+        runOnUiThread(() -> {
+            switch (category) {
+                case TALK:
+                    talkButton.setChecked(true);
+                    break;
+                case MOVE:
+                    moveButton.setChecked(true);
+                    break;
+                case SMART:
+                    smartButton.setChecked(true);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown tutorial category: " + category);
             }
         });
     }
 
     @Override
     public void selectLevel(final TutorialLevel level) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                switch (level) {
-                    case BASIC:
-                        levelSwitch.setChecked(false);
-                        break;
-                    case ADVANCED:
-                        levelSwitch.setChecked(true);
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Unknown tutorial level: " + level);
-                }
+        runOnUiThread(() -> {
+            switch (level) {
+                case BASIC:
+                    levelSwitch.setChecked(false);
+                    break;
+                case ADVANCED:
+                    levelSwitch.setChecked(true);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown tutorial level: " + level);
             }
         });
     }
@@ -153,36 +132,22 @@ public class CategoriesActivity extends RobotActivity implements CategoriesContr
         moveButton = findViewById(R.id.move_button);
         smartButton = findViewById(R.id.smart_button);
 
-        talkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.loadTutorials(TutorialCategory.TALK);
-                robot.selectTopic(TutorialCategory.TALK);
-            }
+        talkButton.setOnClickListener(v -> {
+            presenter.loadTutorials(TutorialCategory.TALK);
+            robot.selectTopic(TutorialCategory.TALK);
         });
 
-        moveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.loadTutorials(TutorialCategory.MOVE);
-                robot.selectTopic(TutorialCategory.MOVE);
-            }
+        moveButton.setOnClickListener(v -> {
+            presenter.loadTutorials(TutorialCategory.MOVE);
+            robot.selectTopic(TutorialCategory.MOVE);
         });
 
-        smartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.loadTutorials(TutorialCategory.SMART);
-                robot.selectTopic(TutorialCategory.SMART);
-            }
+        smartButton.setOnClickListener(v -> {
+            presenter.loadTutorials(TutorialCategory.SMART);
+            robot.selectTopic(TutorialCategory.SMART);
         });
 
-        findViewById(R.id.close_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finishAffinity();
-            }
-        });
+        findViewById(R.id.close_button).setOnClickListener(v -> finishAffinity());
     }
 
     /**
@@ -208,16 +173,13 @@ public class CategoriesActivity extends RobotActivity implements CategoriesContr
     private void setupSwitch() {
         levelSwitch = findViewById(R.id.level_switch);
 
-        levelSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(boolean isChecked) {
-                if (isChecked) {
-                    presenter.loadTutorials(TutorialLevel.ADVANCED);
-                    robot.selectLevel(TutorialLevel.ADVANCED);
-                } else {
-                    presenter.loadTutorials(TutorialLevel.BASIC);
-                    robot.selectLevel(TutorialLevel.BASIC);
-                }
+        levelSwitch.setOnCheckedChangeListener(isChecked -> {
+            if (isChecked) {
+                presenter.loadTutorials(TutorialLevel.ADVANCED);
+                robot.selectLevel(TutorialLevel.ADVANCED);
+            } else {
+                presenter.loadTutorials(TutorialLevel.BASIC);
+                robot.selectLevel(TutorialLevel.BASIC);
             }
         });
     }

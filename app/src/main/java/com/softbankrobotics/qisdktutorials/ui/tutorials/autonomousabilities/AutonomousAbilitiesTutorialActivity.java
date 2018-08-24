@@ -1,7 +1,6 @@
 package com.softbankrobotics.qisdktutorials.ui.tutorials.autonomousabilities;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import com.aldebaran.qi.Consumer;
@@ -43,13 +42,10 @@ public class AutonomousAbilitiesTutorialActivity extends TutorialActivity implem
         // Find the button in the view.
         button = findViewById(R.id.button);
         // Set the button onClick listener.
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Check that the Activity owns the focus.
-                if (qiContext != null) {
-                    toggleAbilities();
-                }
+        button.setOnClickListener(v -> {
+            // Check that the Activity owns the focus.
+            if (qiContext != null) {
+                toggleAbilities();
             }
         });
 
@@ -119,18 +115,15 @@ public class AutonomousAbilitiesTutorialActivity extends TutorialActivity implem
         // Hold the abilities asynchronously.
         Future<Void> holdFuture = holder.async().hold();
 
-        // Chain the hold with a consumer on the UI thread.
-        holdFuture.andThenConsume(Qi.onUiThread(new Consumer<Void>() {
-            @Override
-            public void consume(Void ignore) throws Throwable {
-                displayLine("Abilities held.", ConversationItemType.INFO_LOG);
-                // Store the abilities status.
-                abilitiesHeld = true;
-                // Change the button text.
-                button.setText(R.string.release);
-                // Enable the button.
-                button.setEnabled(true);
-            }
+        // Chain the hold with a lambda on the UI thread.
+        holdFuture.andThenConsume(Qi.onUiThread((Consumer<Void>) ignore -> {
+            displayLine("Abilities held.", ConversationItemType.INFO_LOG);
+            // Store the abilities status.
+            abilitiesHeld = true;
+            // Change the button text.
+            button.setText(R.string.release);
+            // Enable the button.
+            button.setEnabled(true);
         }));
     }
 
@@ -138,27 +131,19 @@ public class AutonomousAbilitiesTutorialActivity extends TutorialActivity implem
         // Release the holder asynchronously.
         Future<Void> releaseFuture = holder.async().release();
 
-        // Chain the release with a consumer on the UI thread.
-        releaseFuture.andThenConsume(Qi.onUiThread(new Consumer<Void>() {
-            @Override
-            public void consume(Void ignore) throws Throwable {
-                displayLine("Abilities released.", ConversationItemType.INFO_LOG);
-                // Store the abilities status.
-                abilitiesHeld = false;
-                // Change the button text.
-                button.setText(getString(R.string.hold));
-                // Enable the button.
-                button.setEnabled(true);
-            }
+        // Chain the release with a lambda on the UI thread.
+        releaseFuture.andThenConsume(Qi.onUiThread((Consumer<Void>) ignore -> {
+            displayLine("Abilities released.", ConversationItemType.INFO_LOG);
+            // Store the abilities status.
+            abilitiesHeld = false;
+            // Change the button text.
+            button.setText(getString(R.string.hold));
+            // Enable the button.
+            button.setEnabled(true);
         }));
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine(text, type);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

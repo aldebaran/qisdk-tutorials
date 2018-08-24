@@ -2,7 +2,6 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.motion.freeframes;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
@@ -10,10 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-import com.aldebaran.qi.Consumer;
-import com.aldebaran.qi.Function;
 import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
@@ -73,35 +69,24 @@ public class GoToWorldTutorialActivity extends TutorialActivity implements Robot
         editText = findViewById(R.id.editText);
         final Spinner spinner = findViewById(R.id.spinner);
 
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    handleSaveClick();
-                }
-                return false;
+        editText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                handleSaveClick();
             }
+            return false;
         });
 
         // Save location on save button clicked.
         saveButton = findViewById(R.id.save_button);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleSaveClick();
-            }
-        });
+        saveButton.setOnClickListener(v -> handleSaveClick());
 
         // Go to location on go to button clicked.
         goToButton = findViewById(R.id.goto_button);
-        goToButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (selectedLocation != null) {
-                    goToButton.setEnabled(false);
-                    saveButton.setEnabled(false);
-                    goToLocation(selectedLocation);
-                }
+        goToButton.setOnClickListener(v -> {
+            if (selectedLocation != null) {
+                goToButton.setEnabled(false);
+                saveButton.setEnabled(false);
+                goToLocation(selectedLocation);
             }
         });
 
@@ -193,29 +178,23 @@ public class GoToWorldTutorialActivity extends TutorialActivity implements Robot
         String message = "Waiting for instructions...";
         Log.i(TAG, message);
         displayLine(message, ConversationItemType.INFO_LOG);
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                saveButton.setEnabled(true);
-                goToButton.setEnabled(true);
-            }
+        runOnUiThread(() -> {
+            saveButton.setEnabled(true);
+            goToButton.setEnabled(true);
         });
     }
 
     void saveLocation(final String location) {
         // Get the robot frame asynchronously.
         Future<Frame> robotFrameFuture = actuation.async().robotFrame();
-        robotFrameFuture.andThenConsume(new Consumer<Frame>() {
-            @Override
-            public void consume(Frame robotFrame) throws Throwable {
-                // Create a FreeFrame representing the current robot frame.
-                FreeFrame locationFrame = mapping.makeFreeFrame();
-                Transform transform = TransformBuilder.create().fromXTranslation(0);
-                locationFrame.update(robotFrame, transform, System.currentTimeMillis());
+        robotFrameFuture.andThenConsume(robotFrame -> {
+            // Create a FreeFrame representing the current robot frame.
+            FreeFrame locationFrame = mapping.makeFreeFrame();
+            Transform transform = TransformBuilder.create().fromXTranslation(0);
+            locationFrame.update(robotFrame, transform, System.currentTimeMillis());
 
-                // Store the FreeFrame.
-                savedLocations.put(location, locationFrame);
-            }
+            // Store the FreeFrame.
+            savedLocations.put(location, locationFrame);
         });
     }
 
@@ -225,47 +204,33 @@ public class GoToWorldTutorialActivity extends TutorialActivity implements Robot
 
         // Extract the Frame asynchronously.
         Future<Frame> frameFuture = freeFrame.async().frame();
-        frameFuture.andThenCompose(new Function<Frame, Future<Void>>() {
-            @Override
-            public Future<Void> execute(Frame frame) throws Throwable {
-                // Create a GoTo action.
-                goTo = GoToBuilder.with(qiContext)
-                        .withFrame(frame)
-                        .build();
+        frameFuture.andThenCompose(frame -> {
+            // Create a GoTo action.
+            goTo = GoToBuilder.with(qiContext)
+                    .withFrame(frame)
+                    .build();
 
-                // Display text when the GoTo action starts.
-                goTo.addOnStartedListener(new GoTo.OnStartedListener() {
-                    @Override
-                    public void onStarted() {
-                        String message = "Moving...";
-                        Log.i(TAG, message);
-                        displayLine(message, ConversationItemType.INFO_LOG);
-                    }
-                });
+            // Display text when the GoTo action starts.
+            goTo.addOnStartedListener(() -> {
+                String message = "Moving...";
+                Log.i(TAG, message);
+                displayLine(message, ConversationItemType.INFO_LOG);
+            });
 
-                // Execute the GoTo action asynchronously.
-                return goTo.async().run();
-            }
-        }).thenConsume(new Consumer<Future<Void>>() {
-            @Override
-            public void consume(Future<Void> future) throws Throwable {
-                if (future.isSuccess()) {
-                    Log.i(TAG, "Location reached: " + location);
-                    waitForInstructions();
-                } else if (future.hasError()) {
-                    Log.e(TAG, "Go to location error", future.getError());
-                    waitForInstructions();
-                }
+            // Execute the GoTo action asynchronously.
+            return goTo.async().run();
+        }).thenConsume(future -> {
+            if (future.isSuccess()) {
+                Log.i(TAG, "Location reached: " + location);
+                waitForInstructions();
+            } else if (future.hasError()) {
+                Log.e(TAG, "Go to location error", future.getError());
+                waitForInstructions();
             }
         });
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine(text, type);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

@@ -2,10 +2,8 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.motion.enforcetabletrea
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 
-import com.aldebaran.qi.Consumer;
 import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
@@ -46,20 +44,17 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
         conversationView = findViewById(R.id.conversationView);
 
         enforceTabletReachabilityButton = findViewById(R.id.tablet_reachability_button);
-        enforceTabletReachabilityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (enforceTabletReachability == null) {
-                    String errorLog = "EnforceTabletReachability has not been built yet";
-                    displayLine(errorLog, ConversationItemType.ERROR_LOG);
-                    Log.e(TAG, errorLog);
-                } else if (enforceTabletReachabilityFuture == null || enforceTabletReachabilityFuture.isDone()) {
-                    // The EnforceTabletReachability action is not running
-                    startEnforceTabletReachability();
-                } else {
-                    // The EnforceTabletReachability action is running
-                    stopEnforceTabletReachability();
-                }
+        enforceTabletReachabilityButton.setOnClickListener(v -> {
+            if (enforceTabletReachability == null) {
+                String errorLog = "EnforceTabletReachability has not been built yet";
+                displayLine(errorLog, ConversationItemType.ERROR_LOG);
+                Log.e(TAG, errorLog);
+            } else if (enforceTabletReachabilityFuture == null || enforceTabletReachabilityFuture.isDone()) {
+                // The EnforceTabletReachability action is not running
+                startEnforceTabletReachability();
+            } else {
+                // The EnforceTabletReachability action is running
+                stopEnforceTabletReachability();
             }
         });
 
@@ -72,51 +67,39 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
     }
 
     private void startEnforceTabletReachability() {
-
         // Run the action asynchronously
         enforceTabletReachabilityFuture = enforceTabletReachability.async().run();
 
         // Handle the action's end
-        enforceTabletReachabilityFuture.thenConsume(new Consumer<Future<Void>>() {
-            @Override
-            public void consume(Future<Void> future) throws Throwable {
-
-                // Display eventual errors
-                if (future.hasError()) {
-                    String message = "The EnforceTabletReachability action finished with error.";
-                    Log.e(TAG, message, future.getError());
-                    displayLine(message, ConversationItemType.ERROR_LOG);
-                } else {
-                    String message = "The EnforceTabletReachability action has finished.";
-                    Log.i(TAG, message);
-                    displayLine(message, ConversationItemType.INFO_LOG);
-                }
-
-                // Update button text
-                setButtonText(getResources().getString(R.string.enforce_tablet_reachability));
-
-                // Say text when the action is cancelled
-                String textToSay = "My movements are back to normal. Run the action again to see the difference.";
-                displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
-
-                Say say = SayBuilder.with(qiContext)
-                        .withText(textToSay)
-                        .build();
-
-                say.run();
+        enforceTabletReachabilityFuture.thenConsume(future -> {
+            // Display eventual errors
+            if (future.hasError()) {
+                String message = "The EnforceTabletReachability action finished with error.";
+                Log.e(TAG, message, future.getError());
+                displayLine(message, ConversationItemType.ERROR_LOG);
+            } else {
+                String message = "The EnforceTabletReachability action has finished.";
+                Log.i(TAG, message);
+                displayLine(message, ConversationItemType.INFO_LOG);
             }
-        });
 
-        return;
+            // Update button text
+            setButtonText(getResources().getString(R.string.enforce_tablet_reachability));
+
+            // Say text when the action is cancelled
+            String textToSay = "My movements are back to normal. Run the action again to see the difference.";
+            displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+
+            Say say = SayBuilder.with(qiContext)
+                    .withText(textToSay)
+                    .build();
+
+            say.run();
+        });
     }
 
     private void setButtonText(final String str) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                enforceTabletReachabilityButton.setText(str);
-            }
-        });
+        runOnUiThread(() -> enforceTabletReachabilityButton.setText(str));
     }
 
     @Override
@@ -151,21 +134,15 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
         enforceTabletReachability = EnforceTabletReachabilityBuilder.with(qiContext).build();
 
         // On started listener
-        enforceTabletReachability.addOnStartedListener(new EnforceTabletReachability.OnStartedListener() {
-                @Override
-                public void onStarted() {
-                    // Display log
-                    String infoLog = "The EnforceTabletReachability action has started.";
-                    displayLine(infoLog, ConversationItemType.INFO_LOG);
-                    Log.i(TAG, infoLog);
-                }
-            }
-        );
+        enforceTabletReachability.addOnStartedListener(() -> {
+            // Display log
+            String infoLog = "The EnforceTabletReachability action has started.";
+            displayLine(infoLog, ConversationItemType.INFO_LOG);
+            Log.i(TAG, infoLog);
+        });
 
         // On position reached listener
-        enforceTabletReachability.addOnPositionReachedListener(new EnforceTabletReachability.OnPositionReachedListener() {
-            @Override
-            public void onPositionReached() {
+        enforceTabletReachability.addOnPositionReachedListener(() -> {
             // Display log
             String infoLog = "The tablet now is in position.";
             displayLine(infoLog, ConversationItemType.INFO_LOG);
@@ -175,27 +152,21 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
             setButtonText(getResources().getString(R.string.cancel_action));
 
             // Say action
-            String textToSay = "My movements are now limited. Cancel the action to see the difference.";
-            displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+            String text = "My movements are now limited. Cancel the action to see the difference.";
+            displayLine(text, ConversationItemType.ROBOT_OUTPUT);
 
-            Say say = SayBuilder.with(qiContext)
-                    .withText(textToSay)
+            Say s = SayBuilder.with(qiContext)
+                    .withText(text)
                     .build();
 
-            say.run();
-            }
+            s.run();
         });
 
         enableButton();
     }
 
     private void enableButton() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                enforceTabletReachabilityButton.setEnabled(true);
-            }
-        });
+        runOnUiThread(() -> enforceTabletReachabilityButton.setEnabled(true));
     }
 
     @Override
@@ -213,11 +184,6 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine(text, type);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

@@ -3,7 +3,6 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.motion.gotoframe;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.aldebaran.qi.Consumer;
 import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
@@ -93,31 +92,25 @@ public class GoToTutorialActivity extends TutorialActivity implements RobotLifec
                                .build(); // Build the GoTo action.
 
         // Add an on started listener on the GoTo action.
-        goTo.addOnStartedListener(new GoTo.OnStartedListener() {
-            @Override
-            public void onStarted() {
-                String message = "GoTo action started.";
-                Log.i(TAG, message);
-                displayLine(message, ConversationItemType.INFO_LOG);
-            }
+        goTo.addOnStartedListener(() -> {
+            String message = "GoTo action started.";
+            Log.i(TAG, message);
+            displayLine(message, ConversationItemType.INFO_LOG);
         });
 
         // Execute the GoTo action asynchronously.
         Future<Void> goToFuture = goTo.async().run();
 
-        // Add a consumer to the action execution.
-        goToFuture.thenConsume(new Consumer<Future<Void>>() {
-            @Override
-            public void consume(Future<Void> future) throws Throwable {
-                if (future.isSuccess()) {
-                    String message = "GoTo action finished with success.";
-                    Log.i(TAG, message);
-                    displayLine(message, ConversationItemType.INFO_LOG);
-                } else if (future.hasError()) {
-                    String message = "GoTo action finished with error.";
-                    Log.e(TAG, message, future.getError());
-                    displayLine(message, ConversationItemType.ERROR_LOG);
-                }
+        // Add a lambda to the action execution.
+        goToFuture.thenConsume(future -> {
+            if (future.isSuccess()) {
+                String message = "GoTo action finished with success.";
+                Log.i(TAG, message);
+                displayLine(message, ConversationItemType.INFO_LOG);
+            } else if (future.hasError()) {
+                String message = "GoTo action finished with error.";
+                Log.e(TAG, message, future.getError());
+                displayLine(message, ConversationItemType.ERROR_LOG);
             }
         });
     }
@@ -136,11 +129,6 @@ public class GoToTutorialActivity extends TutorialActivity implements RobotLifec
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine(text, type);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

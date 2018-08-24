@@ -36,12 +36,9 @@ class TutorialViewHolder extends RecyclerView.ViewHolder {
         radioButton.setEnabled(tutorial.isEnabled());
         radioButton.setText("\"" + itemView.getContext().getString(tutorial.getNameResId()) + "\"");
 
-        radioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onTutorialClickedListener != null) {
-                    onTutorialClickedListener.onTutorialClicked(tutorial);
-                }
+        radioButton.setOnClickListener(v -> {
+            if (onTutorialClickedListener != null) {
+                onTutorialClickedListener.onTutorialClicked(tutorial);
             }
         });
 

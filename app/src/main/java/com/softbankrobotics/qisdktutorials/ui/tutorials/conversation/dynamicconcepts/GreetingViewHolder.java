@@ -31,12 +31,9 @@ class GreetingViewHolder extends RecyclerView.ViewHolder {
     void bind(final String greeting) {
         textView.setText(greeting);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onGreetingRemovedListener != null) {
-                    onGreetingRemovedListener.onGreetingRemoved(greeting);
-                }
+        button.setOnClickListener(v -> {
+            if (onGreetingRemovedListener != null) {
+                onGreetingRemovedListener.onGreetingRemoved(greeting);
             }
         });
     }

@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.util.Log;
 
-import com.aldebaran.qi.Consumer;
 import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
@@ -13,7 +12,6 @@ import com.aldebaran.qi.sdk.builder.ChatBuilder;
 import com.aldebaran.qi.sdk.builder.QiChatbotBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
-import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
 import com.aldebaran.qi.sdk.object.conversation.QiChatVariable;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
@@ -64,12 +62,9 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
     @Override
     public void stopDiscussion(final Tutorial tutorial) {
         if (chatFuture != null) {
-            chatFuture.thenConsume(new Consumer<Future<Void>>() {
-                @Override
-                public void consume(Future<Void> future) throws Throwable {
-                    if (future.isCancelled()) {
-                        presenter.goToTutorial(tutorial);
-                    }
+            chatFuture.thenConsume(future -> {
+                if (future.isCancelled()) {
+                    presenter.goToTutorial(tutorial);
                 }
             });
             chatFuture.requestCancellation();
@@ -139,41 +134,33 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
         enableLevel(selectedLevel);
         enableTopic(selectedCategory);
 
-        qiChatbot.addOnBookmarkReachedListener(new QiChatbot.OnBookmarkReachedListener() {
-            @Override
-            public void onBookmarkReached(Bookmark bookmark) {
-                String bookmarkName = bookmark.getName();
-                switch (bookmarkName) {
-                    case "talk":
-                        presenter.loadTutorials(TutorialCategory.TALK);
-                        selectTopic(TutorialCategory.TALK);
-                        break;
-                    case "move":
-                        presenter.loadTutorials(TutorialCategory.MOVE);
-                        selectTopic(TutorialCategory.MOVE);
-                        break;
-                    case "smart":
-                        presenter.loadTutorials(TutorialCategory.SMART);
-                        selectTopic(TutorialCategory.SMART);
-                        break;
-                    case "basic":
-                        presenter.loadTutorials(TutorialLevel.BASIC);
-                        selectLevel(TutorialLevel.BASIC);
-                        break;
-                    case "advanced":
-                        presenter.loadTutorials(TutorialLevel.ADVANCED);
-                        selectLevel(TutorialLevel.ADVANCED);
-                        break;
-                }
+        qiChatbot.addOnBookmarkReachedListener(bookmark -> {
+            String bookmarkName = bookmark.getName();
+            switch (bookmarkName) {
+                case "talk":
+                    presenter.loadTutorials(TutorialCategory.TALK);
+                    selectTopic(TutorialCategory.TALK);
+                    break;
+                case "move":
+                    presenter.loadTutorials(TutorialCategory.MOVE);
+                    selectTopic(TutorialCategory.MOVE);
+                    break;
+                case "smart":
+                    presenter.loadTutorials(TutorialCategory.SMART);
+                    selectTopic(TutorialCategory.SMART);
+                    break;
+                case "basic":
+                    presenter.loadTutorials(TutorialLevel.BASIC);
+                    selectLevel(TutorialLevel.BASIC);
+                    break;
+                case "advanced":
+                    presenter.loadTutorials(TutorialLevel.ADVANCED);
+                    selectLevel(TutorialLevel.ADVANCED);
+                    break;
             }
         });
 
-        qiChatbot.addOnEndedListener(new QiChatbot.OnEndedListener() {
-            @Override
-            public void onEnded(String tutorialQiChatbotId) {
-                presenter.goToTutorialForQiChatbotId(tutorialQiChatbotId);
-            }
-        });
+        qiChatbot.addOnEndedListener(presenter::goToTutorialForQiChatbotId);
 
         chatFuture = chat.async().run();
     }
@@ -206,22 +193,19 @@ class CategoriesRobot implements CategoriesContract.Robot, RobotLifecycleCallbac
         Future<Void> smartFuture = smartTopicStatus.async().setEnabled(false);
 
         Future.waitAll(talkFuture, moveFuture, smartFuture)
-                .andThenConsume(new Consumer<Void>() {
-                    @Override
-                    public void consume(Void ignore) throws Throwable {
-                        switch (category) {
-                            case TALK:
-                                talkTopicStatus.setEnabled(true);
-                                break;
-                            case MOVE:
-                                moveTopicStatus.setEnabled(true);
-                                break;
-                            case SMART:
-                                smartTopicStatus.setEnabled(true);
-                                break;
-                            default:
-                                throw new IllegalArgumentException("Unknown tutorial category: " + category);
-                        }
+                .andThenConsume(ignore -> {
+                    switch (category) {
+                        case TALK:
+                            talkTopicStatus.setEnabled(true);
+                            break;
+                        case MOVE:
+                            moveTopicStatus.setEnabled(true);
+                            break;
+                        case SMART:
+                            smartTopicStatus.setEnabled(true);
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Unknown tutorial category: " + category);
                     }
                 });
     }

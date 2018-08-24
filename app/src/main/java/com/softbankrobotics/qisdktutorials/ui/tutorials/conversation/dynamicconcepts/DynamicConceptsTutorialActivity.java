@@ -4,12 +4,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.aldebaran.qi.Consumer;
 import com.aldebaran.qi.sdk.Qi;
@@ -54,24 +51,16 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
         conversationView = findViewById(R.id.conversationView);
 
         greetingEditText = findViewById(R.id.editText);
-        greetingEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    handleAddClick();
-                }
-                return false;
+        greetingEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                handleAddClick();
             }
+            return false;
         });
 
         // Create adapter for recycler view.
-        greetingAdapter = new GreetingAdapter(new OnGreetingRemovedListener() {
-            @Override
-            public void onGreetingRemoved(String greeting) {
-                // Remove greeting.
-                removeGreeting(greeting);
-            }
-        });
+        // Remove greeting.
+        greetingAdapter = new GreetingAdapter(this::removeGreeting);
 
         // Setup recycler view.
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
@@ -80,12 +69,7 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
 
         // Add greeting on add button clicked.
         ImageButton addButton = findViewById(R.id.add_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleAddClick();
-            }
-        });
+        addButton.setOnClickListener(v -> handleAddClick());
 
         // Register the RobotLifecycleCallbacks to this Activity.
         QiSDK.register(this, this);
@@ -136,20 +120,12 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
         addGreeting("Hello");
         addGreeting("Hi");
 
-        chat.addOnHeardListener(new Chat.OnHeardListener() {
-            @Override
-            public void onHeard(Phrase heardPhrase) {
-                displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT);
-            }
-        });
+        chat.addOnHeardListener(heardPhrase -> displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT));
 
-        chat.addOnSayingChangedListener(new Chat.OnSayingChangedListener() {
-            @Override
-            public void onSayingChanged(Phrase sayingPhrase) {
-                String text = sayingPhrase.getText();
-                if (!TextUtils.isEmpty(text)) {
-                    displayLine(text, ConversationItemType.ROBOT_OUTPUT);
-                }
+        chat.addOnSayingChangedListener(sayingPhrase -> {
+            String text = sayingPhrase.getText();
+            if (!TextUtils.isEmpty(text)) {
+                displayLine(text, ConversationItemType.ROBOT_OUTPUT);
             }
         });
 
@@ -182,32 +158,19 @@ public class DynamicConceptsTutorialActivity extends TutorialActivity implements
 
     private void addGreeting(final String greeting) {
         if (greetings != null) {
-            greetings.async().addPhrases(Collections.singletonList(new Phrase(greeting))).andThenConsume(Qi.onUiThread(new Consumer<Void>() {
-                @Override
-                public void consume(Void ignore) throws Throwable {
-                    greetingAdapter.addGreeting(greeting);
-                }
-            }));
+            greetings.async().addPhrases(Collections.singletonList(new Phrase(greeting)))
+                    .andThenConsume(Qi.onUiThread((Consumer<Void>) ignore -> greetingAdapter.addGreeting(greeting)));
         }
     }
 
     private void removeGreeting(final String greeting) {
         if (greetings != null) {
-            greetings.async().removePhrases(Collections.singletonList(new Phrase(greeting))).andThenConsume(Qi.onUiThread(new Consumer<Void>() {
-                @Override
-                public void consume(Void ignore) throws Throwable {
-                    greetingAdapter.removeGreeting(greeting);
-                }
-            }));
+            greetings.async().removePhrases(Collections.singletonList(new Phrase(greeting)))
+                    .andThenConsume(Qi.onUiThread((Consumer<Void>) ignore -> greetingAdapter.removeGreeting(greeting)));
         }
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine(text, type);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

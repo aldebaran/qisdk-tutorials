@@ -2,10 +2,8 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.motion.lookat;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 
-import com.aldebaran.qi.Consumer;
 import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
@@ -50,12 +48,9 @@ public class LookAtTutorialActivity extends TutorialActivity implements RobotLif
         // Find the button in the view.
         Button cancelButton = findViewById(R.id.cancel_button);
         // Set the button onClick listener.
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (lookAtFuture != null) {
-                    lookAtFuture.requestCancellation();
-                }
+        cancelButton.setOnClickListener(v -> {
+            if (lookAtFuture != null) {
+                lookAtFuture.requestCancellation();
             }
         });
 
@@ -114,35 +109,29 @@ public class LookAtTutorialActivity extends TutorialActivity implements RobotLif
         lookAt.setPolicy(LookAtMovementPolicy.HEAD_ONLY);
 
         // Add an on started listener on the LookAt action.
-        lookAt.addOnStartedListener(new LookAt.OnStartedListener() {
-            @Override
-            public void onStarted() {
-                String message = "LookAt action started.";
-                Log.i(TAG, message);
-                displayLine(message, ConversationItemType.INFO_LOG);
-            }
+        lookAt.addOnStartedListener(() -> {
+            String message = "LookAt action started.";
+            Log.i(TAG, message);
+            displayLine(message, ConversationItemType.INFO_LOG);
         });
 
         // Run the LookAt action asynchronously.
         lookAtFuture = lookAt.async().run();
 
-        // Add a consumer to the action execution.
-        lookAtFuture.thenConsume(new Consumer<Future<Void>>() {
-            @Override
-            public void consume(Future<Void> future) throws Throwable {
-                if (future.isSuccess()) {
-                    String message = "LookAt action finished with success.";
-                    Log.i(TAG, message);
-                    displayLine(message, ConversationItemType.INFO_LOG);
-                } else if (future.isCancelled()) {
-                    String message = "LookAt action was cancelled.";
-                    Log.i(TAG, message);
-                    displayLine(message, ConversationItemType.INFO_LOG);
-                } else {
-                    String message = "LookAt action finished with error.";
-                    Log.e(TAG, message, future.getError());
-                    displayLine(message, ConversationItemType.ERROR_LOG);
-                }
+        // Add a lambda to the action execution.
+        lookAtFuture.thenConsume(future -> {
+            if (future.isSuccess()) {
+                String message = "LookAt action finished with success.";
+                Log.i(TAG, message);
+                displayLine(message, ConversationItemType.INFO_LOG);
+            } else if (future.isCancelled()) {
+                String message = "LookAt action was cancelled.";
+                Log.i(TAG, message);
+                displayLine(message, ConversationItemType.INFO_LOG);
+            } else {
+                String message = "LookAt action finished with error.";
+                Log.e(TAG, message, future.getError());
+                displayLine(message, ConversationItemType.ERROR_LOG);
             }
         });
     }
@@ -161,11 +150,6 @@ public class LookAtTutorialActivity extends TutorialActivity implements RobotLif
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine(text, type);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

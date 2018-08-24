@@ -19,7 +19,6 @@ import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionValidity;
 import com.aldebaran.qi.sdk.object.conversation.BaseQiChatExecutor;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
-import com.aldebaran.qi.sdk.object.conversation.Phrase;
 import com.aldebaran.qi.sdk.object.conversation.QiChatExecutor;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
@@ -77,33 +76,23 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
 
         // Build chat with the chatbots
         chat = ChatBuilder.with(qiContext).withChatbot(qiChatbot).build();
-        chat.addOnStartedListener(new Chat.OnStartedListener() {
-            @Override
-            public void onStarted() {
-                //Say proposal to user
-                Bookmark bookmark = topic.getBookmarks().get("execute_proposal");
-                qiChatbot.goToBookmark(bookmark, AutonomousReactionImportance.HIGH, AutonomousReactionValidity.IMMEDIATE);
-            }
+        chat.addOnStartedListener(() -> {
+            //Say proposal to user
+            Bookmark bookmark = topic.getBookmarks().get("execute_proposal");
+            qiChatbot.goToBookmark(bookmark, AutonomousReactionImportance.HIGH, AutonomousReactionValidity.IMMEDIATE);
         });
 
-        chat.addOnSayingChangedListener(new Chat.OnSayingChangedListener() {
-            @Override
-            public void onSayingChanged(Phrase sayingPhrase) {
-                // Show on screen what Pepper is saying
-                if (!TextUtils.isEmpty(sayingPhrase.getText())) {
-                    displayLine(sayingPhrase.getText(), ConversationItemType.ROBOT_OUTPUT);
-                }
+        chat.addOnSayingChangedListener(sayingPhrase -> {
+            // Show on screen what Pepper is saying
+            if (!TextUtils.isEmpty(sayingPhrase.getText())) {
+                displayLine(sayingPhrase.getText(), ConversationItemType.ROBOT_OUTPUT);
             }
         });
-        chat.addOnHeardListener(new Chat.OnHeardListener() {
-            @Override
-            public void onHeard(Phrase heardPhrase) {
-                // Show on screen what Pepper heard
-                displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT);
-            }
+        chat.addOnHeardListener(heardPhrase -> {
+            // Show on screen what Pepper heard
+            displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT);
         });
         chat.async().run();
-
     }
 
     @Override
@@ -129,12 +118,7 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
 
 
     private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine(text, type);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 
     class MyQiChatExecutor extends BaseQiChatExecutor {

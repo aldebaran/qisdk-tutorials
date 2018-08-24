@@ -65,11 +65,6 @@ public class HelloHumanTutorialActivity extends TutorialActivity implements Robo
     }
 
     private void displayHelloHuman() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine("Hello human!", ConversationItemType.ROBOT_OUTPUT);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine("Hello human!", ConversationItemType.ROBOT_OUTPUT));
     }
 }

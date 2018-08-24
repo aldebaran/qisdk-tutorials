@@ -2,14 +2,10 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.qichatvari
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
-import com.aldebaran.qi.Consumer;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
@@ -21,7 +17,6 @@ import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionImportance;
 import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionValidity;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
-import com.aldebaran.qi.sdk.object.conversation.Phrase;
 import com.aldebaran.qi.sdk.object.conversation.QiChatVariable;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Say;
@@ -56,24 +51,16 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
         conversationView = findViewById(R.id.conversationView);
 
         variableEditText = findViewById(R.id.variable_editText);
-        variableEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    retrieveAndAssignVariable();
-                }
-                return false;
+        variableEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                retrieveAndAssignVariable();
             }
+            return false;
         });
 
         // Assign variable on assign button clicked.
         ImageButton assignButton = findViewById(R.id.assign_button);
-        assignButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                retrieveAndAssignVariable();
-            }
-        });
+        assignButton.setOnClickListener(v -> retrieveAndAssignVariable());
 
         // Register the RobotLifecycleCallbacks to this Activity.
         QiSDK.register(this, this);
@@ -122,20 +109,12 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
         // Get the variable.
         variable = qiChatbot.variable("var");
 
-        chat.addOnHeardListener(new Chat.OnHeardListener() {
-            @Override
-            public void onHeard(Phrase heardPhrase) {
-                displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT);
-            }
-        });
+        chat.addOnHeardListener(heardPhrase -> displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT));
 
-        chat.addOnSayingChangedListener(new Chat.OnSayingChangedListener() {
-            @Override
-            public void onSayingChanged(Phrase sayingPhrase) {
-                String text = sayingPhrase.getText();
-                if (!TextUtils.isEmpty(text)) {
-                    displayLine(text, ConversationItemType.ROBOT_OUTPUT);
-                }
+        chat.addOnSayingChangedListener(sayingPhrase -> {
+            String text = sayingPhrase.getText();
+            if (!TextUtils.isEmpty(text)) {
+                displayLine(text, ConversationItemType.ROBOT_OUTPUT);
             }
         });
 
@@ -165,21 +144,13 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
 
     private void assignVariable(String value) {
         // Set the value.
-        variable.async().setValue(value).andThenConsume(new Consumer<Void>() {
-            @Override
-            public void consume(Void ignore) throws Throwable {
-                // Read the value.
-                qiChatbot.async().goToBookmark(readBookmark, AutonomousReactionImportance.HIGH, AutonomousReactionValidity.IMMEDIATE);
-            }
+        variable.async().setValue(value).andThenConsume(ignore -> {
+            // Read the value.
+            qiChatbot.async().goToBookmark(readBookmark, AutonomousReactionImportance.HIGH, AutonomousReactionValidity.IMMEDIATE);
         });
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine(text, type);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

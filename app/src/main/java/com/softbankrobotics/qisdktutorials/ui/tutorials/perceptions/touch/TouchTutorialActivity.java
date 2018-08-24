@@ -10,7 +10,6 @@ import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.touch.Touch;
 import com.aldebaran.qi.sdk.object.touch.TouchSensor;
-import com.aldebaran.qi.sdk.object.touch.TouchState;
 import com.softbankrobotics.qisdktutorials.R;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
@@ -67,13 +66,10 @@ public class TouchTutorialActivity extends TutorialActivity implements RobotLife
         // Get the head touch sensor.
         headTouchSensor = touch.getSensor("Head/Touch");
         // Add onStateChanged listener.
-        headTouchSensor.addOnStateChangedListener(new TouchSensor.OnStateChangedListener() {
-            @Override
-            public void onStateChanged(TouchState touchState) {
-                String message = "Sensor " + (touchState.getTouched() ? "touched" : "released") + " at " + touchState.getTime();
-                Log.i(TAG, message);
-                displayLine(message, ConversationItemType.INFO_LOG);
-            }
+        headTouchSensor.addOnStateChangedListener(touchState -> {
+            String message = "Sensor " + (touchState.getTouched() ? "touched" : "released") + " at " + touchState.getTime();
+            Log.i(TAG, message);
+            displayLine(message, ConversationItemType.INFO_LOG);
         });
     }
 
@@ -91,11 +87,6 @@ public class TouchTutorialActivity extends TutorialActivity implements RobotLife
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                conversationView.addLine(text, type);
-            }
-        });
+        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }
