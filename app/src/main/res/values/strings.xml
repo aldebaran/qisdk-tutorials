@@ -34,6 +34,10 @@
     <string name="value">Value</string>
     <string name="template">My robot is ______</string>
 
+    <!-- Chat language -->
+    <string name="english">EN</string>
+    <string name="japanese">JA</string>
+
     <!-- Tutorial names -->
     <string name="hello_human">Hello human</string>
     <string name="qichatbot">Listen and reply</string>
