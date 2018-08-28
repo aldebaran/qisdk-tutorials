@@ -57,6 +57,7 @@ public class TutorialRepository {
                 tutorials.add(new Tutorial(TutorialId.EXECUTE, R.string.execute, "execute", TutorialLevel.ADVANCED));
                 tutorials.add(new Tutorial(TutorialId.DYNAMIC_CONCEPT, R.string.dynamic_concepts, "dynamic_concept", TutorialLevel.ADVANCED));
                 tutorials.add(new Tutorial(TutorialId.QICHAT_VARIABLE, R.string.qichat_variables, "qichat_variable", TutorialLevel.ADVANCED));
+                tutorials.add(new Tutorial(TutorialId.CHAT_LANGUAGE, R.string.chat_language, "chat_language", TutorialLevel.ADVANCED));
                 break;
             default:
                 throw new IllegalArgumentException("Unknown tutorial level: " + tutorialLevel);
