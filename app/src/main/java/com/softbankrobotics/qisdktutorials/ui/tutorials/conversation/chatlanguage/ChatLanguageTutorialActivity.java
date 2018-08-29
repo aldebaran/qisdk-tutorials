@@ -76,9 +76,10 @@ public class ChatLanguageTutorialActivity extends TutorialActivity implements Ro
     protected void onResume() {
         super.onResume();
 
-        // Disable buttons and select English.
+        // Disable and uncheck buttons.
         disableButtons();
-        enButton.setChecked(true);
+        enButton.setChecked(false);
+        jaButton.setChecked(false);
     }
 
     @Override
@@ -109,8 +110,7 @@ public class ChatLanguageTutorialActivity extends TutorialActivity implements Ro
         buildEnglishChat(qiContext);
         buildJapaneseChat(qiContext);
 
-        // Run the English Chat.
-        runChat(chatEN);
+        enableButtons();
     }
 
     @Override
@@ -163,7 +163,7 @@ public class ChatLanguageTutorialActivity extends TutorialActivity implements Ro
 
         // Enable buttons when the Chat starts.
         chat.addOnStartedListener(() -> {
-            runOnUiThread(this::enableButtons);
+            enableButtons();
             String message = "Discussion is now in " + locale.getLanguage() + ".";
             Log.i(TAG, message);
             displayLine(message, ConversationItemType.INFO_LOG);
@@ -193,13 +193,17 @@ public class ChatLanguageTutorialActivity extends TutorialActivity implements Ro
     }
 
     private void disableButtons() {
-        enButton.setEnabled(false);
-        jaButton.setEnabled(false);
+        runOnUiThread(() -> {
+            enButton.setEnabled(false);
+            jaButton.setEnabled(false);
+        });
     }
 
     private void enableButtons() {
-        enButton.setEnabled(true);
-        jaButton.setEnabled(true);
+        runOnUiThread(() -> {
+            enButton.setEnabled(true);
+            jaButton.setEnabled(true);
+        });
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
