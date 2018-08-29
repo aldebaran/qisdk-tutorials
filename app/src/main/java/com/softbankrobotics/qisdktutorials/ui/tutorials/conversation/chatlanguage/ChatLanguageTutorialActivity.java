@@ -12,6 +12,9 @@ import com.aldebaran.qi.sdk.builder.ChatBuilder;
 import com.aldebaran.qi.sdk.builder.QiChatbotBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
+import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionImportance;
+import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionValidity;
+import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
 import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
@@ -149,6 +152,8 @@ public class ChatLanguageTutorialActivity extends TutorialActivity implements Ro
                 .withAsset(topicAssetName)
                 .build();
 
+        Bookmark startBookmark = topic.getBookmarks().get("start");
+
         // Create a new QiChatbot with the specified Locale.
         QiChatbot qiChatbot = QiChatbotBuilder.with(qiContext)
                 .withTopic(topic)
@@ -167,6 +172,7 @@ public class ChatLanguageTutorialActivity extends TutorialActivity implements Ro
             String message = "Discussion is now in " + locale.getLanguage() + ".";
             Log.i(TAG, message);
             displayLine(message, ConversationItemType.INFO_LOG);
+            qiChatbot.async().goToBookmark(startBookmark, AutonomousReactionImportance.HIGH, AutonomousReactionValidity.IMMEDIATE);
         });
 
         return chat;

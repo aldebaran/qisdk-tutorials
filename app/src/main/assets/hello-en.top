@@ -1,3 +1,5 @@
 topic: ~hello()
 
+proposal: %start Say hello to start the discussion.
+
 u:(hello) hello
