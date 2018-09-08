@@ -3,6 +3,7 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.detecthuman
 import android.os.Bundle;
 import android.util.Log;
 
+import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
@@ -24,6 +25,7 @@ public class DetectHumansWithLocalizationTutorialActivity extends TutorialActivi
 
     private ConversationView conversationView;
 
+    // Store the LocalizeAndMap action.
     private LocalizeAndMap localizeAndMap;
 
     @Override
@@ -59,8 +61,10 @@ public class DetectHumansWithLocalizationTutorialActivity extends TutorialActivi
 
         say.run();
 
+        // Create a LocalizeAndMap action.
         localizeAndMap = LocalizeAndMapBuilder.with(qiContext).build();
 
+        // Add an on status changed listener on the LocalizeAndMap action for the robot to say when he is localized.
         localizeAndMap.addOnStatusChangedListener(status -> {
             switch (status) {
                 case LOCALIZED:
@@ -82,7 +86,11 @@ public class DetectHumansWithLocalizationTutorialActivity extends TutorialActivi
         Log.i(TAG, message);
         displayLine(message, ConversationItemType.INFO_LOG);
 
-        localizeAndMap.async().run().thenConsume(future -> {
+        // Execute the LocalizeAndMap action asynchronously.
+        Future<Void> localization = localizeAndMap.async().run();
+
+        // Add a lambda to the action execution.
+        localization.thenConsume(future -> {
             if (future.hasError()) {
                 String errorMessage = "LocalizeAndMap action finished with error.";
                 Log.e(TAG, errorMessage, future.getError());
@@ -93,6 +101,7 @@ public class DetectHumansWithLocalizationTutorialActivity extends TutorialActivi
 
     @Override
     public void onRobotFocusLost() {
+        // Remove on status changed listeners from the LocalizeAndMap action.
         if (localizeAndMap != null) {
             localizeAndMap.removeAllOnStatusChangedListeners();
         }
