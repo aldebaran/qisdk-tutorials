@@ -28,6 +28,7 @@ import com.softbankrobotics.qisdktutorials.ui.tutorials.motion.freeframes.GoToWo
 import com.softbankrobotics.qisdktutorials.ui.tutorials.motion.gotoframe.GoToTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.motion.lookat.LookAtTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.motion.trajectory.TrajectoryTutorialActivity;
+import com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.detecthumanswithlocalization.DetectHumansWithLocalizationTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.emotiondetection.EmotionTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.humanawareness.PeopleCharacteristicsTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.takepicture.TakePictureTutorialActivity;
@@ -99,6 +100,8 @@ class CategoriesRouter implements CategoriesContract.Router {
                 return TakePictureTutorialActivity.class;
             case ANIMATION_LABEL:
                 return AnimationLabelActivity.class;
+            case DETECT_HUMANS_WITH_LOCALIZATION:
+                return DetectHumansWithLocalizationTutorialActivity.class;
             default:
                 throw new IllegalArgumentException("Unknown tutorial identifier: " + tutorialId);
         }

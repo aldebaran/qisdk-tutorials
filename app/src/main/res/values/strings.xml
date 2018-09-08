@@ -56,6 +56,7 @@
     <string name="animation_label">Mastering Animation labels</string>
     <string name="take_picture">Take a picture</string>
     <string name="enforce_tablet_reachability">Enforce tablet reachability</string>
+    <string name="detect_humans_with_localization">Detect humans with localization</string>
 
     <!-- Categories -->
     <string name="categories_intro_sentence">Please tell me or select on the tablet which demo you want me to show you</string>

@@ -107,6 +107,7 @@ public class TutorialRepository {
             case ADVANCED:
                 tutorials.add(new Tutorial(TutorialId.CHARACTERISTICS, R.string.people_characteristics, "people_characteristics", TutorialLevel.ADVANCED));
                 tutorials.add(new Tutorial(TutorialId.EMOTION, R.string.emotion, "emotion", TutorialLevel.ADVANCED));
+                tutorials.add(new Tutorial(TutorialId.DETECT_HUMANS_WITH_LOCALIZATION, R.string.detect_humans_with_localization, "detect_humans_with_localization", TutorialLevel.ADVANCED));
                 break;
             default:
                 throw new IllegalArgumentException("Unknown tutorial level: " + tutorialLevel);

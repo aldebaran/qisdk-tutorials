@@ -38,6 +38,7 @@
         <activity android:name=".ui.tutorials.perceptions.humanawareness.PeopleCharacteristicsTutorialActivity" />
         <activity android:name=".ui.tutorials.perceptions.takepicture.TakePictureTutorialActivity" />
         <activity android:name=".ui.tutorials.perceptions.touch.TouchTutorialActivity" />
+        <activity android:name=".ui.tutorials.perceptions.detecthumanswithlocalization.DetectHumansWithLocalizationTutorialActivity" />
     </application>
 
 </manifest>
