@@ -13,7 +13,6 @@ import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.object.actuation.ExplorationMap;
 import com.aldebaran.qi.sdk.object.actuation.Localize;
 import com.aldebaran.qi.sdk.object.actuation.LocalizeAndMap;
-import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.softbankrobotics.qisdktutorials.R;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
@@ -61,14 +60,8 @@ public class DetectHumansWithLocalizationTutorialActivity extends TutorialActivi
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        String textToSay = "I will start mapping my environment. Please be sure to be at least at 3 meters away from me while I scan the place.";
-        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
-
-        Say say = SayBuilder.with(qiContext)
-                .withText(textToSay)
-                .build();
-
-        say.run();
+        say(qiContext, "I will map my environment. Please be sure that my hatch is closed and that you are at least 3 meters away from me while I'm scanning the place.");
+        say(qiContext, "Ready? 5, 4, 3, 2, 1.");
 
         startMapping(qiContext);
     }
@@ -100,16 +93,11 @@ public class DetectHumansWithLocalizationTutorialActivity extends TutorialActivi
                 case LOCALIZED:
                     explorationMap = localizeAndMap.dumpMap();
 
-                    String message = "Robot mapped his environment.";
+                    String message = "Robot has mapped his environment.";
                     Log.i(TAG, message);
                     displayLine(message, ConversationItemType.INFO_LOG);
 
-                    String text = "I now have a map of my environment. I will use this map to localize myself.";
-                    displayLine(text, ConversationItemType.ROBOT_OUTPUT);
-                    SayBuilder.with(qiContext)
-                            .withText(text)
-                            .build()
-                            .run();
+                    say(qiContext, "I now have a map of my environment. I will use this map to localize myself.");
 
                     localizationAndMapping.requestCancellation();
                     break;
@@ -149,12 +137,7 @@ public class DetectHumansWithLocalizationTutorialActivity extends TutorialActivi
                     Log.i(TAG, message);
                     displayLine(message, ConversationItemType.INFO_LOG);
 
-                    String text = "I'm now localized. Try to come to me from the side and I will turn towards you.";
-                    displayLine(text, ConversationItemType.ROBOT_OUTPUT);
-                    SayBuilder.with(qiContext)
-                            .withText(text)
-                            .build()
-                            .run();
+                    say(qiContext, "I'm now localized and I have a 360° awareness thanks to my base sensors. Try to come from behind and I will detect you.");
                     break;
             }
         });
@@ -174,6 +157,14 @@ public class DetectHumansWithLocalizationTutorialActivity extends TutorialActivi
                 displayLine(errorMessage, ConversationItemType.ERROR_LOG);
             }
         });
+    }
+
+    private void say(QiContext qiContext, String text) {
+        displayLine(text, ConversationItemType.ROBOT_OUTPUT);
+        SayBuilder.with(qiContext)
+                .withText(text)
+                .build()
+                .run();
     }
 
     private void displayLine(final String text, final ConversationItemType type) {
