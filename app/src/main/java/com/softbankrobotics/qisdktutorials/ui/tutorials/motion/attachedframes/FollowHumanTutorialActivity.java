@@ -19,6 +19,7 @@ import com.aldebaran.qi.sdk.builder.TransformBuilder;
 import com.aldebaran.qi.sdk.object.actuation.AttachedFrame;
 import com.aldebaran.qi.sdk.object.actuation.Frame;
 import com.aldebaran.qi.sdk.object.actuation.GoTo;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.geometry.Transform;
 import com.aldebaran.qi.sdk.object.geometry.Vector3;
@@ -26,6 +27,7 @@ import com.aldebaran.qi.sdk.object.human.Human;
 import com.aldebaran.qi.sdk.object.humanawareness.HumanAwareness;
 import com.aldebaran.qi.sdk.util.FutureUtils;
 import com.softbankrobotics.qisdktutorials.R;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
@@ -40,6 +42,7 @@ public class FollowHumanTutorialActivity extends TutorialActivity implements Rob
     private static final String TAG = "FollowHumanActivity";
 
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
     private Button followButton;
     private Button stopButton;
 
@@ -98,11 +101,12 @@ public class FollowHumanTutorialActivity extends TutorialActivity implements Rob
         // Store the provided QiContext.
         this.qiContext = qiContext;
 
-        String textToSay = "Press \"Follow\" and I will follow you. Press \"Stop\" to stop me.";
-        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
 
         Say say = SayBuilder.with(qiContext)
-                .withText(textToSay)
+                .withText("Press \"Follow\" and I will follow you. Press \"Stop\" to stop me.")
                 .build();
 
         say.run();
@@ -113,6 +117,11 @@ public class FollowHumanTutorialActivity extends TutorialActivity implements Rob
     @Override
     public void onRobotFocusLost() {
         Log.i(TAG, "Focus lost.");
+
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
+
         // Remove the QiContext.
         this.qiContext = null;
         // Remove on started listeners from the GoTo action.

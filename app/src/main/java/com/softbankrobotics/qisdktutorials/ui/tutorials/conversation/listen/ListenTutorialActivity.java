@@ -14,12 +14,14 @@ import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.ListenBuilder;
 import com.aldebaran.qi.sdk.builder.PhraseSetBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.Listen;
 import com.aldebaran.qi.sdk.object.conversation.ListenResult;
 import com.aldebaran.qi.sdk.object.conversation.PhraseSet;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.util.PhraseSetUtil;
 import com.softbankrobotics.qisdktutorials.R;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
@@ -32,6 +34,7 @@ public class ListenTutorialActivity extends TutorialActivity implements RobotLif
     private static final String TAG = "ListenTutorialActivity";
 
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +60,12 @@ public class ListenTutorialActivity extends TutorialActivity implements RobotLif
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        String textToSay = "I can listen to you: say \"Yes\" or \"No\" to try.";
-        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
 
         Say say = SayBuilder.with(qiContext)
-                .withText(textToSay)
+                .withText("I can listen to you: say \"Yes\" or \"No\" to try.")
                 .build();
 
         say.run();
@@ -85,9 +89,7 @@ public class ListenTutorialActivity extends TutorialActivity implements RobotLif
         ListenResult listenResult = listen.run();
 
         String humanText = listenResult.getHeardPhrase().getText();
-        String message = "Heard phrase: " + humanText;
-        Log.i(TAG, message);
-        displayLine(humanText, ConversationItemType.HUMAN_INPUT);
+        Log.i(TAG, "Heard phrase: " + humanText);
 
         // Identify the matched phrase set.
         PhraseSet matchedPhraseSet = listenResult.getMatchedPhraseSet();
@@ -104,7 +106,9 @@ public class ListenTutorialActivity extends TutorialActivity implements RobotLif
 
     @Override
     public void onRobotFocusLost() {
-        // Nothing here.
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
     }
 
     @Override

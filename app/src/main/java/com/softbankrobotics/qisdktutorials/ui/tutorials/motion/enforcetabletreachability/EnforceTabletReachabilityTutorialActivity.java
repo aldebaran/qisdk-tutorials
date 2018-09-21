@@ -16,8 +16,10 @@ import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.EnforceTabletReachabilityBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.object.actuation.EnforceTabletReachability;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.softbankrobotics.qisdktutorials.R;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
@@ -29,6 +31,7 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
 
     private static final String TAG = "TabletReachActivity";
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
 
     // Store qiContext
     private QiContext qiContext;
@@ -92,11 +95,8 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
             setButtonText(getResources().getString(R.string.enforce_tablet_reachability));
 
             // Say text when the action is cancelled
-            String textToSay = "My movements are back to normal. Run the action again to see the difference.";
-            displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
-
             Say say = SayBuilder.with(qiContext)
-                    .withText(textToSay)
+                    .withText("My movements are back to normal. Run the action again to see the difference.")
                     .build();
 
             say.run();
@@ -121,16 +121,16 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
 
     @Override
     public void onRobotFocusGained(final QiContext qiContext) {
-
         // Store qiContext
         this.qiContext = qiContext;
 
-        // Build introduction Say
-        String textToSay = "I can enforce my tablet reachability by limiting my movements. Try it out!";
-        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
 
+        // Build introduction Say
         Say say = SayBuilder.with(qiContext)
-                .withText(textToSay)
+                .withText("I can enforce my tablet reachability by limiting my movements. Try it out!")
                 .build();
 
         say.run();
@@ -156,12 +156,8 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
             // Update button text
             setButtonText(getResources().getString(R.string.cancel_action));
 
-            // Say action
-            String text = "My movements are now limited. Cancel the action to see the difference.";
-            displayLine(text, ConversationItemType.ROBOT_OUTPUT);
-
             Say s = SayBuilder.with(qiContext)
-                    .withText(text)
+                    .withText("My movements are now limited. Cancel the action to see the difference.")
                     .build();
 
             s.run();
@@ -176,6 +172,10 @@ public class EnforceTabletReachabilityTutorialActivity extends TutorialActivity 
 
     @Override
     public void onRobotFocusLost() {
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
+
         // Remove all listeners
         enforceTabletReachability.removeAllOnStartedListeners();
         enforceTabletReachability.removeAllOnPositionReachedListeners();

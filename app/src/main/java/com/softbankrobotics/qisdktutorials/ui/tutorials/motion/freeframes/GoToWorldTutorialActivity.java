@@ -27,9 +27,11 @@ import com.aldebaran.qi.sdk.object.actuation.Frame;
 import com.aldebaran.qi.sdk.object.actuation.FreeFrame;
 import com.aldebaran.qi.sdk.object.actuation.GoTo;
 import com.aldebaran.qi.sdk.object.actuation.Mapping;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.geometry.Transform;
 import com.softbankrobotics.qisdktutorials.R;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
@@ -47,6 +49,7 @@ public class GoToWorldTutorialActivity extends TutorialActivity implements Robot
     private static final String TAG = "GoToWorldActivity";
 
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
     private Button goToButton;
     private Button saveButton;
     private ArrayAdapter<String> spinnerAdapter;
@@ -136,14 +139,16 @@ public class GoToWorldTutorialActivity extends TutorialActivity implements Robot
         Log.i(TAG, "Focus gained.");
         // Store the provided QiContext and services.
         this.qiContext = qiContext;
+
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
+
         actuation = qiContext.getActuation();
         mapping = qiContext.getMapping();
 
-        String textToSay = "I can store locations and go to them.";
-        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
-
         Say say = SayBuilder.with(qiContext)
-                .withText(textToSay)
+                .withText("I can store locations and go to them.")
                 .build();
 
         say.run();
@@ -156,6 +161,11 @@ public class GoToWorldTutorialActivity extends TutorialActivity implements Robot
         Log.i(TAG, "Focus lost.");
         // Remove the QiContext.
         qiContext = null;
+
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
+
         // Remove on started listeners from the GoTo action.
         if (goTo != null) {
             goTo.removeAllOnStartedListeners();

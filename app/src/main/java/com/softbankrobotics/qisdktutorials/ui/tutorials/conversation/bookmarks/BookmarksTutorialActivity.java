@@ -8,7 +8,6 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.bookmarks;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.RawRes;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.aldebaran.qi.sdk.QiContext;
@@ -26,9 +25,11 @@ import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionValidity;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.BookmarkStatus;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
 import com.softbankrobotics.qisdktutorials.R;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
@@ -43,6 +44,7 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
     private static final String TAG = "BookmarksActivity";
 
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
     private MediaPlayer mediaPlayer;
 
     // Store the QiChatbot.
@@ -89,6 +91,10 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
 
     @Override
     public void onRobotFocusGained(final QiContext qiContext) {
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
+
         // Create a topic.
         Topic topic = TopicBuilder.with(qiContext)
                 .withResource(R.raw.mimic_animal)
@@ -112,15 +118,6 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
         // Go to the proposal bookmark when the Chat action starts.
         chat.addOnStartedListener(this::sayProposal);
 
-        chat.addOnHeardListener(heardPhrase -> displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT));
-
-        chat.addOnSayingChangedListener(sayingPhrase -> {
-            String text = sayingPhrase.getText();
-            if (!TextUtils.isEmpty(text)) {
-                displayLine(text, ConversationItemType.ROBOT_OUTPUT);
-            }
-        });
-
         // Get the mimic bookmarks.
         Bookmark dogBookmark = bookmarks.get("dog_mimic");
         Bookmark elephantBookmark = bookmarks.get("elephant_mimic");
@@ -141,11 +138,13 @@ public class BookmarksTutorialActivity extends TutorialActivity implements Robot
 
     @Override
     public void onRobotFocusLost() {
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
+
         // Remove the listeners from the Chat action.
         if (chat != null) {
             chat.removeAllOnStartedListeners();
-            chat.removeAllOnHeardListeners();
-            chat.removeAllOnSayingChangedListeners();
         }
 
         // Remove the listeners on each BookmarkStatus.

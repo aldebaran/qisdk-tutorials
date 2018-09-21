@@ -13,7 +13,9 @@ import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.object.actuation.ExplorationMap;
 import com.aldebaran.qi.sdk.object.actuation.Localize;
 import com.aldebaran.qi.sdk.object.actuation.LocalizeAndMap;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.softbankrobotics.qisdktutorials.R;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
@@ -26,6 +28,7 @@ public class DetectHumansWithLocalizationTutorialActivity extends TutorialActivi
     private static final String TAG = "DetectHumansWithLoc";
 
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
 
     // Store the LocalizeAndMap action.
     private LocalizeAndMap localizeAndMap;
@@ -60,6 +63,10 @@ public class DetectHumansWithLocalizationTutorialActivity extends TutorialActivi
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
+
         say(qiContext, "I will map my environment. Please be sure that my hatch is closed and that you are at least 3 meters away from me while I'm scanning the place.");
         say(qiContext, "Ready? 5, 4, 3, 2, 1.");
 
@@ -68,6 +75,10 @@ public class DetectHumansWithLocalizationTutorialActivity extends TutorialActivi
 
     @Override
     public void onRobotFocusLost() {
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
+
         // Remove on status changed listeners from the LocalizeAndMap action.
         if (localizeAndMap != null) {
             localizeAndMap.removeAllOnStatusChangedListeners();
@@ -162,7 +173,6 @@ public class DetectHumansWithLocalizationTutorialActivity extends TutorialActivi
     }
 
     private void say(QiContext qiContext, String text) {
-        displayLine(text, ConversationItemType.ROBOT_OUTPUT);
         SayBuilder.with(qiContext)
                 .withText(text)
                 .build()

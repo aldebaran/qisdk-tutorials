@@ -16,10 +16,12 @@ import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.HolderBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.holder.AutonomousAbilitiesType;
 import com.aldebaran.qi.sdk.object.holder.Holder;
 import com.softbankrobotics.qisdktutorials.R;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
@@ -30,6 +32,7 @@ import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 public class AutonomousAbilitiesTutorialActivity extends TutorialActivity implements RobotLifecycleCallbacks {
 
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
     // The button used to toggle the abilities.
     private Button button;
     // A boolean used to store the abilities status.
@@ -75,11 +78,12 @@ public class AutonomousAbilitiesTutorialActivity extends TutorialActivity implem
         // Store the provided QiContext.
         this.qiContext = qiContext;
 
-        String textToSay = "My autonomous abilities can be disabled: click on the button to hold/release them.";
-        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
 
         Say say = SayBuilder.with(qiContext)
-                .withText(textToSay)
+                .withText("My autonomous abilities can be disabled: click on the button to hold/release them.")
                 .build();
 
         say.run();
@@ -87,6 +91,10 @@ public class AutonomousAbilitiesTutorialActivity extends TutorialActivity implem
 
     @Override
     public void onRobotFocusLost() {
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
+
         // Remove the QiContext.
         this.qiContext = null;
     }

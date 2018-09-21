@@ -21,6 +21,7 @@ import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.object.actuation.Actuation;
 import com.aldebaran.qi.sdk.object.actuation.Frame;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.geometry.Transform;
 import com.aldebaran.qi.sdk.object.geometry.TransformTime;
@@ -34,7 +35,7 @@ import com.aldebaran.qi.sdk.object.human.PleasureState;
 import com.aldebaran.qi.sdk.object.human.SmileState;
 import com.aldebaran.qi.sdk.object.humanawareness.HumanAwareness;
 import com.softbankrobotics.qisdktutorials.R;
-import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 
@@ -50,6 +51,7 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
     private static final String TAG = "CharacteristicsActivity";
 
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
 
     private HumanInfoAdapter humanInfoAdapter;
 
@@ -102,11 +104,12 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
         // Store the provided QiContext.
         this.qiContext = qiContext;
 
-        String textToSay = "I can display characteristics about the human I'm seeing.";
-        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
 
         Say say = SayBuilder.with(qiContext)
-                .withText(textToSay)
+                .withText("I can display characteristics about the human I'm seeing.")
                 .build();
 
         say.run();
@@ -121,6 +124,10 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
     public void onRobotFocusLost() {
         // Remove the QiContext.
         this.qiContext = null;
+
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
     }
 
     @Override
@@ -224,9 +231,5 @@ public class PeopleCharacteristicsTutorialActivity extends TutorialActivity impl
 
     private void displayHumanInfoList(final List<HumanInfo> humanInfoList) {
         runOnUiThread(() -> humanInfoAdapter.updateList(humanInfoList));
-    }
-
-    private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

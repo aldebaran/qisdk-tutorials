@@ -6,7 +6,6 @@
 package com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.qichatvariables;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -22,12 +21,13 @@ import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionImportance;
 import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionValidity;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.QiChatVariable;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
 import com.softbankrobotics.qisdktutorials.R;
-import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 import com.softbankrobotics.qisdktutorials.utils.KeyboardUtils;
@@ -39,13 +39,12 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
 
     private EditText variableEditText;
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
 
     // Store the variable.
     private QiChatVariable variable;
     // Store the QiChatbot.
     private QiChatbot qiChatbot;
-    // Store the Chat action.
-    private Chat chat;
     // Store the Bookmark used to read the variable.
     private Bookmark readBookmark;
 
@@ -85,11 +84,12 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        String textToSay = "Assign a value to the variable.";
-        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
 
         Say say = SayBuilder.with(qiContext)
-                .withText(textToSay)
+                .withText("Assign a value to the variable.")
                 .build();
 
         say.run();
@@ -107,21 +107,12 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
                 .build();
 
         // Create a new Chat action.
-        chat = ChatBuilder.with(qiContext)
+        Chat chat = ChatBuilder.with(qiContext)
                 .withChatbot(qiChatbot)
                 .build();
 
         // Get the variable.
         variable = qiChatbot.variable("var");
-
-        chat.addOnHeardListener(heardPhrase -> displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT));
-
-        chat.addOnSayingChangedListener(sayingPhrase -> {
-            String text = sayingPhrase.getText();
-            if (!TextUtils.isEmpty(text)) {
-                displayLine(text, ConversationItemType.ROBOT_OUTPUT);
-            }
-        });
 
         // Run the Chat action asynchronously.
         chat.async().run();
@@ -129,9 +120,8 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
 
     @Override
     public void onRobotFocusLost() {
-        if (chat != null) {
-            chat.removeAllOnHeardListeners();
-            chat.removeAllOnSayingChangedListeners();
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
         }
     }
 
@@ -153,9 +143,5 @@ public class QiChatVariablesTutorialActivity extends TutorialActivity implements
             // Read the value.
             qiChatbot.async().goToBookmark(readBookmark, AutonomousReactionImportance.HIGH, AutonomousReactionValidity.IMMEDIATE);
         });
-    }
-
-    private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

@@ -22,11 +22,12 @@ import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TakePictureBuilder;
 import com.aldebaran.qi.sdk.object.camera.TakePicture;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.image.EncodedImage;
 import com.aldebaran.qi.sdk.object.image.EncodedImageHandle;
 import com.softbankrobotics.qisdktutorials.R;
-import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 
@@ -40,6 +41,7 @@ public class TakePictureTutorialActivity extends TutorialActivity implements Rob
     private static final String TAG = "TakePictureActivity";
 
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
 
     // The QiContext provided by the QiSDK.
     private QiContext qiContext;
@@ -82,12 +84,15 @@ public class TakePictureTutorialActivity extends TutorialActivity implements Rob
     public void onRobotFocusGained(QiContext qiContext) {
         // Store the provided QiContext.
         this.qiContext = qiContext;
+
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
+
         runOnUiThread(() -> takePicButton.setEnabled(true));
-        String textToSay = "I can take pictures. Press the button to try!";
-        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
 
         Say say = SayBuilder.with(qiContext)
-                .withText(textToSay)
+                .withText("I can take pictures. Press the button to try!")
                 .build();
 
         say.run();
@@ -99,15 +104,14 @@ public class TakePictureTutorialActivity extends TutorialActivity implements Rob
         // Remove the QiContext.
         this.qiContext = null;
 
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
     }
 
     @Override
     public void onRobotFocusRefused(String reason) {
         Log.i(TAG, "onRobotFocusRefused: " + reason);
-    }
-
-    private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 
     private void takePic() {

@@ -13,9 +13,10 @@ import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.softbankrobotics.qisdktutorials.R;
-import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 
@@ -28,6 +29,7 @@ public class EmotionTutorialActivity extends TutorialActivity implements RobotLi
     private BasicEmotionObserver basicEmotionObserver;
 
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
     private ImageView emotionView;
 
     @Override
@@ -63,11 +65,12 @@ public class EmotionTutorialActivity extends TutorialActivity implements RobotLi
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        String textToSay = "I can display the basic emotions of the human I'm seeing. Try to express an emotion with your smile, your voice or by touching my sensors.";
-        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
 
         Say say = SayBuilder.with(qiContext)
-                .withText(textToSay)
+                .withText("I can display the basic emotions of the human I'm seeing. Try to express an emotion with your smile, your voice or by touching my sensors.")
                 .build();
 
         say.run();
@@ -78,6 +81,10 @@ public class EmotionTutorialActivity extends TutorialActivity implements RobotLi
 
     @Override
     public void onRobotFocusLost() {
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
+
         // Stop the basic emotion observation.
         basicEmotionObserver.stopObserving();
     }
@@ -111,9 +118,5 @@ public class EmotionTutorialActivity extends TutorialActivity implements RobotLi
             default:
                 throw new IllegalArgumentException("Unknown basic emotion: " + basicEmotion);
         }
-    }
-
-    private void displayLine(final String text, final ConversationItemType type) {
-        runOnUiThread(() -> conversationView.addLine(text, type));
     }
 }

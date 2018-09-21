@@ -17,8 +17,10 @@ import com.aldebaran.qi.sdk.builder.AnimationBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.object.actuation.Animate;
 import com.aldebaran.qi.sdk.object.actuation.Animation;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.softbankrobotics.qisdktutorials.R;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
@@ -31,6 +33,7 @@ public class TrajectoryTutorialActivity extends TutorialActivity implements Robo
     private static final String TAG = "TrajectoryActivity";
 
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
 
     // Store the Animate action.
     private Animate animate;
@@ -59,11 +62,12 @@ public class TrajectoryTutorialActivity extends TutorialActivity implements Robo
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        String textToSay = "I can perform trajectories: I will move forward.";
-        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
 
         Say say = SayBuilder.with(qiContext)
-                .withText(textToSay)
+                .withText("I can perform trajectories: I will move forward.")
                 .build();
 
         say.run();
@@ -104,6 +108,10 @@ public class TrajectoryTutorialActivity extends TutorialActivity implements Robo
 
     @Override
     public void onRobotFocusLost() {
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
+
         // Remove on started listeners from the animate action.
         if (animate != null) {
             animate.removeAllOnStartedListeners();

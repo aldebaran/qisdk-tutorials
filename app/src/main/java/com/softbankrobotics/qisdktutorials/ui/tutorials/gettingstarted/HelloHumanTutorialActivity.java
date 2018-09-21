@@ -11,10 +11,11 @@ import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.softbankrobotics.qisdktutorials.R;
-import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 
 /**
@@ -23,6 +24,7 @@ import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 public class HelloHumanTutorialActivity extends TutorialActivity implements RobotLifecycleCallbacks {
 
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,9 @@ public class HelloHumanTutorialActivity extends TutorialActivity implements Robo
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        displayHelloHuman();
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
 
         // Create a new say action.
         Say say = SayBuilder.with(qiContext) // Create the builder with the context.
@@ -61,15 +65,13 @@ public class HelloHumanTutorialActivity extends TutorialActivity implements Robo
 
     @Override
     public void onRobotFocusLost() {
-        // Nothing here.
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
     }
 
     @Override
     public void onRobotFocusRefused(String reason) {
         // Nothing here.
-    }
-
-    private void displayHelloHuman() {
-        runOnUiThread(() -> conversationView.addLine("Hello human!", ConversationItemType.ROBOT_OUTPUT));
     }
 }

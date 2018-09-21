@@ -6,7 +6,6 @@
 package com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.qichatbot;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.aldebaran.qi.Future;
@@ -18,10 +17,12 @@ import com.aldebaran.qi.sdk.builder.QiChatbotBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
 import com.softbankrobotics.qisdktutorials.R;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
@@ -34,6 +35,7 @@ public class QiChatbotTutorialActivity extends TutorialActivity implements Robot
     private static final String TAG = "QiChatbotActivity";
 
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
 
     // Store the Chat action.
     private Chat chat;
@@ -62,11 +64,12 @@ public class QiChatbotTutorialActivity extends TutorialActivity implements Robot
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        String textToSay = "Say \"Hello\" to start the discussion.";
-        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
 
         Say say = SayBuilder.with(qiContext)
-                .withText(textToSay)
+                .withText("Say \"Hello\" to start the discussion.")
                 .build();
 
         say.run();
@@ -93,15 +96,6 @@ public class QiChatbotTutorialActivity extends TutorialActivity implements Robot
             displayLine(message, ConversationItemType.INFO_LOG);
         });
 
-        chat.addOnHeardListener(heardPhrase -> displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT));
-
-        chat.addOnSayingChangedListener(sayingPhrase -> {
-            String text = sayingPhrase.getText();
-            if (!TextUtils.isEmpty(text)) {
-                displayLine(text, ConversationItemType.ROBOT_OUTPUT);
-            }
-        });
-
         // Run the Chat action asynchronously.
         Future<Void> chatFuture = chat.async().run();
 
@@ -117,11 +111,13 @@ public class QiChatbotTutorialActivity extends TutorialActivity implements Robot
 
     @Override
     public void onRobotFocusLost() {
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
+
         // Remove the listeners from the Chat action.
         if (chat != null) {
             chat.removeAllOnStartedListeners();
-            chat.removeAllOnHeardListeners();
-            chat.removeAllOnSayingChangedListeners();
         }
     }
 

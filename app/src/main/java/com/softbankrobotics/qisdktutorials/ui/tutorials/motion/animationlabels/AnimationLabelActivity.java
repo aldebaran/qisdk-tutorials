@@ -17,8 +17,10 @@ import com.aldebaran.qi.sdk.builder.AnimationBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.object.actuation.Animate;
 import com.aldebaran.qi.sdk.object.actuation.Animation;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.softbankrobotics.qisdktutorials.R;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
@@ -28,6 +30,7 @@ public class AnimationLabelActivity extends TutorialActivity implements RobotLif
     private static final String TAG = "AnimationLabelActivity";
 
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
 
     // Store the Animate action.
     private Animate animate;
@@ -56,11 +59,12 @@ public class AnimationLabelActivity extends TutorialActivity implements RobotLif
 
     @Override
     public void onRobotFocusGained(final QiContext qiContext) {
-        String textToSay = "I can trigger events using animation labels: I will synchronize my speech with my dance.";
-        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
 
         Say say = SayBuilder.with(qiContext)
-                .withText(textToSay)
+                .withText("I can trigger events using animation labels: I will synchronize my speech with my dance.")
                 .build();
 
         say.run();
@@ -82,8 +86,6 @@ public class AnimationLabelActivity extends TutorialActivity implements RobotLif
                     .build();
 
             sayLabel.async().run();
-
-            displayLine(label, ConversationItemType.ROBOT_OUTPUT);
         });
 
         // Add an on started listener to the animate action.
@@ -112,6 +114,10 @@ public class AnimationLabelActivity extends TutorialActivity implements RobotLif
 
     @Override
     public void onRobotFocusLost() {
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
+
         // Remove the signal listeners from the animate action.
         if (animate != null) {
             animate.removeAllOnStartedListeners();

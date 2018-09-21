@@ -7,12 +7,14 @@ package com.softbankrobotics.qisdktutorials.ui.conversation;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.softbankrobotics.qisdktutorials.R;
 
 public class ConversationView extends RecyclerView {
@@ -30,6 +32,13 @@ public class ConversationView extends RecyclerView {
     public ConversationView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setup();
+    }
+
+    @NonNull
+    public ConversationBinder bindConversationTo(@NonNull ConversationStatus conversationStatus) {
+        ConversationBinder binder = new ConversationBinder(conversationStatus);
+        binder.bind(this);
+        return binder;
     }
 
     public void addLine(String text, ConversationItemType type) {

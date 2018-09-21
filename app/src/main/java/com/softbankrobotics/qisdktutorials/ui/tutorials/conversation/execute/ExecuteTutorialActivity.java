@@ -6,7 +6,6 @@
 package com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.execute;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.aldebaran.qi.sdk.QiContext;
@@ -24,10 +23,12 @@ import com.aldebaran.qi.sdk.object.conversation.AutonomousReactionValidity;
 import com.aldebaran.qi.sdk.object.conversation.BaseQiChatExecutor;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.QiChatExecutor;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
 import com.softbankrobotics.qisdktutorials.R;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
@@ -43,6 +44,7 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
 
     private static final String TAG = "ExecuteTutorialActivity";
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
     private Chat chat;
 
     @Override
@@ -64,6 +66,10 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
+
         // Create a topic.
         final Topic topic = TopicBuilder.with(qiContext)
                 .withResource(R.raw.execute)
@@ -87,26 +93,19 @@ public class ExecuteTutorialActivity extends TutorialActivity implements RobotLi
             qiChatbot.goToBookmark(bookmark, AutonomousReactionImportance.HIGH, AutonomousReactionValidity.IMMEDIATE);
         });
 
-        chat.addOnSayingChangedListener(sayingPhrase -> {
-            // Show on screen what Pepper is saying
-            if (!TextUtils.isEmpty(sayingPhrase.getText())) {
-                displayLine(sayingPhrase.getText(), ConversationItemType.ROBOT_OUTPUT);
-            }
-        });
-        chat.addOnHeardListener(heardPhrase -> {
-            // Show on screen what Pepper heard
-            displayLine(heardPhrase.getText(), ConversationItemType.HUMAN_INPUT);
-        });
         chat.async().run();
     }
 
     @Override
     public void onRobotFocusLost() {
         Log.i(TAG, "Focus lost.");
+
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
+
         // Remove the listeners from the chat.
         if (chat != null) {
-            chat.removeAllOnHeardListeners();
-            chat.removeAllOnSayingChangedListeners();
             chat.removeAllOnStartedListeners();
         }
     }

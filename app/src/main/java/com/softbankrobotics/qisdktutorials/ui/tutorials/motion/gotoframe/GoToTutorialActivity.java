@@ -20,9 +20,11 @@ import com.aldebaran.qi.sdk.object.actuation.Frame;
 import com.aldebaran.qi.sdk.object.actuation.FreeFrame;
 import com.aldebaran.qi.sdk.object.actuation.GoTo;
 import com.aldebaran.qi.sdk.object.actuation.Mapping;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.geometry.Transform;
 import com.softbankrobotics.qisdktutorials.R;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
@@ -35,6 +37,7 @@ public class GoToTutorialActivity extends TutorialActivity implements RobotLifec
     private static final String TAG = "GoToTutorialActivity";
 
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
 
     // Store the GoTo action.
     private GoTo goTo;
@@ -63,11 +66,12 @@ public class GoToTutorialActivity extends TutorialActivity implements RobotLifec
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        String textToSay = "I can move around: I will go 1 meter forward.";
-        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
 
         Say say = SayBuilder.with(qiContext)
-                .withText(textToSay)
+                .withText("I can move around: I will go 1 meter forward.")
                 .build();
 
         say.run();
@@ -122,6 +126,10 @@ public class GoToTutorialActivity extends TutorialActivity implements RobotLifec
 
     @Override
     public void onRobotFocusLost() {
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
+
         // Remove on started listeners from the GoTo action.
         if (goTo != null) {
             goTo.removeAllOnStartedListeners();

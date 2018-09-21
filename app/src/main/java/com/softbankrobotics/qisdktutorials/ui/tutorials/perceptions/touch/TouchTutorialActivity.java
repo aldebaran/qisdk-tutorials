@@ -12,10 +12,12 @@ import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.touch.Touch;
 import com.aldebaran.qi.sdk.object.touch.TouchSensor;
 import com.softbankrobotics.qisdktutorials.R;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
@@ -28,6 +30,7 @@ public class TouchTutorialActivity extends TutorialActivity implements RobotLife
     private static final String TAG = "TouchTutorialActivity";
 
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
 
     // Store the head touch sensor.
     private TouchSensor headTouchSensor;
@@ -56,11 +59,12 @@ public class TouchTutorialActivity extends TutorialActivity implements RobotLife
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        String textToSay = "I have touch sensors: try to touch my head.";
-        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
 
         Say say = SayBuilder.with(qiContext)
-                .withText(textToSay)
+                .withText("I have touch sensors: try to touch my head.")
                 .build();
 
         say.run();
@@ -80,6 +84,10 @@ public class TouchTutorialActivity extends TutorialActivity implements RobotLife
 
     @Override
     public void onRobotFocusLost() {
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
+
         // Remove onStateChanged listeners.
         if (headTouchSensor != null) {
             headTouchSensor.removeAllOnStateChangedListeners();

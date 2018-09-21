@@ -22,9 +22,11 @@ import com.aldebaran.qi.sdk.object.actuation.FreeFrame;
 import com.aldebaran.qi.sdk.object.actuation.LookAt;
 import com.aldebaran.qi.sdk.object.actuation.LookAtMovementPolicy;
 import com.aldebaran.qi.sdk.object.actuation.Mapping;
+import com.aldebaran.qi.sdk.object.conversation.ConversationStatus;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.geometry.Transform;
 import com.softbankrobotics.qisdktutorials.R;
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType;
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
@@ -37,6 +39,7 @@ public class LookAtTutorialActivity extends TutorialActivity implements RobotLif
     private static final String TAG = "LookAtTutorialActivity";
 
     private ConversationView conversationView;
+    private ConversationBinder conversationBinder;
 
     // Store the LookAt action.
     private LookAt lookAt;
@@ -77,11 +80,12 @@ public class LookAtTutorialActivity extends TutorialActivity implements RobotLif
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        String textToSay = "I can look at things: I will look at the ground.";
-        displayLine(textToSay, ConversationItemType.ROBOT_OUTPUT);
+        // Bind the conversational events to the view.
+        ConversationStatus conversationStatus = qiContext.getConversation().status(qiContext.getRobotContext());
+        conversationBinder = conversationView.bindConversationTo(conversationStatus);
 
         Say say = SayBuilder.with(qiContext)
-                .withText(textToSay)
+                .withText("I can look at things: I will look at the ground.")
                 .build();
 
         say.run();
@@ -143,6 +147,10 @@ public class LookAtTutorialActivity extends TutorialActivity implements RobotLif
 
     @Override
     public void onRobotFocusLost() {
+        if (conversationBinder != null) {
+            conversationBinder.unbind();
+        }
+
         // Remove on started listeners from the LookAt action.
         if (lookAt != null) {
             lookAt.removeAllOnStartedListeners();
