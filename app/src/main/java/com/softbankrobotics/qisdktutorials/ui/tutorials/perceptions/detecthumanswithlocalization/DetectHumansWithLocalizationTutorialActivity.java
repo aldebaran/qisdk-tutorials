@@ -91,6 +91,7 @@ public class DetectHumansWithLocalizationTutorialActivity extends TutorialActivi
         localizeAndMap.addOnStatusChangedListener(status -> {
             switch (status) {
                 case LOCALIZED:
+                    // Dump the ExplorationMap.
                     explorationMap = localizeAndMap.dumpMap();
 
                     String message = "Robot has mapped his environment.";
@@ -99,6 +100,7 @@ public class DetectHumansWithLocalizationTutorialActivity extends TutorialActivi
 
                     say(qiContext, "I now have a map of my environment. I will use this map to localize myself.");
 
+                    // Cancel the LocalizeAndMap action.
                     localizationAndMapping.requestCancellation();
                     break;
             }
