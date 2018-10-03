@@ -15,25 +15,40 @@ public class ConversationBinder {
     @NonNull
     private final ConversationStatus conversationStatus;
 
-    ConversationBinder(@NonNull final ConversationStatus conversationStatus) {
+    private ConversationStatus.OnSayingChangedListener onSayingChangedListener;
+    private ConversationStatus.OnHeardListener onHeardListener;
+
+    private ConversationBinder(@NonNull final ConversationStatus conversationStatus) {
         this.conversationStatus = conversationStatus;
     }
 
-    void bind(@NonNull ConversationView conversationView) {
-        conversationStatus.addOnSayingChangedListener(sayingPhrase -> {
+    private void bind(@NonNull ConversationView conversationView) {
+        onSayingChangedListener = sayingPhrase -> {
             String text = sayingPhrase.getText();
             if (!TextUtils.isEmpty(text)) {
                 conversationView.post(() -> conversationView.addLine(text, ConversationItemType.ROBOT_OUTPUT));
             }
-        });
-        conversationStatus.addOnHeardListener(heardPhrase -> {
+        };
+        onHeardListener = heardPhrase -> {
             String text = heardPhrase.getText();
             conversationView.post(() -> conversationView.addLine(text, ConversationItemType.HUMAN_INPUT));
-        });
+        };
+
+        conversationStatus.addOnSayingChangedListener(onSayingChangedListener);
+        conversationStatus.addOnHeardListener(onHeardListener);
     }
 
     public void unbind() {
-        conversationStatus.removeAllOnSayingChangedListeners();
-        conversationStatus.removeAllOnHeardListeners();
+        conversationStatus.removeOnSayingChangedListener(onSayingChangedListener);
+        conversationStatus.removeOnHeardListener(onHeardListener);
+        onSayingChangedListener = null;
+        onHeardListener = null;
+    }
+
+    @NonNull
+    static ConversationBinder binding(@NonNull ConversationStatus conversationStatus, @NonNull ConversationView conversationView) {
+        ConversationBinder conversationBinder = new ConversationBinder(conversationStatus);
+        conversationBinder.bind(conversationView);
+        return conversationBinder;
     }
 }

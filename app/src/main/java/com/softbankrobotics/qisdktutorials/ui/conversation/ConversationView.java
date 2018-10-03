@@ -36,9 +36,7 @@ public class ConversationView extends RecyclerView {
 
     @NonNull
     public ConversationBinder bindConversationTo(@NonNull ConversationStatus conversationStatus) {
-        ConversationBinder binder = new ConversationBinder(conversationStatus);
-        binder.bind(this);
-        return binder;
+        return ConversationBinder.binding(conversationStatus, this);
     }
 
     public void addLine(String text, ConversationItemType type) {
