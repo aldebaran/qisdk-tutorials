@@ -10,7 +10,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        tools:src="@drawable/ic_icons_cute_anon_unknown" />
+        tools:src="@drawable/ic_icons_cute_anon_unknown"
+        android:contentDescription="@string/content_description_face_image" />
 
     <TextView
         android:id="@+id/age_textview"

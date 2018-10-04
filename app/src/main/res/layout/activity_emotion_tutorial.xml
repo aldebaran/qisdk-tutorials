@@ -40,7 +40,8 @@
             android:src="@drawable/ic_icons_cute_anon_unknown"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:contentDescription="@string/content_description_emotion_view" />
 
     </LinearLayout>
 

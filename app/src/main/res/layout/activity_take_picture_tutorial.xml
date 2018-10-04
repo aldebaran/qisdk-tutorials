@@ -35,7 +35,8 @@
         android:layout_above="@+id/take_pic"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:contentDescription="@string/content_description_picture_view" />
 
 
     <ProgressBar

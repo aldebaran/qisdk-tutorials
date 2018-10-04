@@ -70,7 +70,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/variable_editText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/variable_editText"
-        app:layout_constraintTop_toTopOf="@+id/variable_editText" />
+        app:layout_constraintTop_toTopOf="@+id/variable_editText"
+        android:contentDescription="@string/content_description_assign_button" />
 
     <TextView
         android:id="@+id/templateTextView"
