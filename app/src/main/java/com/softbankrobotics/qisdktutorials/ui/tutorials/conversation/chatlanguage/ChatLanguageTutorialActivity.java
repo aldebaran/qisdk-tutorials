@@ -179,23 +179,23 @@ public class ChatLanguageTutorialActivity extends TutorialActivity implements Ro
     }
 
     private void runChat(Chat chat) {
-        // Cancel the current discussion if any, and then run the specified Chat.
-        cancelFuture(discussion)
-                .andThenConsume(ignored -> {
-                    if (chat != null) {
-                        discussion = chat.async().run();
-                    }
-                });
-    }
-
-    // Utility method used to cancel a Future and to be notified when the cancellation is done.
-    private static Future<Void> cancelFuture(Future<?> futureToCancel) {
-        if (futureToCancel == null) {
-            return Future.of(null);
+        // If no current discussion, just run the Chat.
+        if (discussion == null) {
+            if (chat != null) {
+                discussion = chat.async().run();
+            }
+            return;
         }
 
-        futureToCancel.requestCancellation();
-        return futureToCancel.thenConsume(future -> {});
+        // Cancel the current discussion.
+        discussion.requestCancellation();
+        // Add a lambda to know when the discussion stops.
+        discussion.thenConsume(ignored -> {
+            // Run the Chat.
+            if (chat != null) {
+                discussion = chat.async().run();
+            }
+        });
     }
 
     private void disableButtons() {
