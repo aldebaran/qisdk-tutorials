@@ -59,7 +59,7 @@ public class ChatLanguageTutorialActivity extends TutorialActivity implements Ro
         enButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 disableButtons();
-                runChat(chatEN);
+                switchToChat(chatEN);
             }
         });
 
@@ -67,7 +67,7 @@ public class ChatLanguageTutorialActivity extends TutorialActivity implements Ro
         jaButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 disableButtons();
-                runChat(chatJA);
+                switchToChat(chatJA);
             }
         });
 
@@ -178,24 +178,21 @@ public class ChatLanguageTutorialActivity extends TutorialActivity implements Ro
         return chat;
     }
 
-    private void runChat(Chat chat) {
-        // If no current discussion, just run the Chat.
-        if (currentChatFuture == null) {
-            if (chat != null) {
-                currentChatFuture = chat.async().run();
-            }
-            return;
+    private void switchToChat(Chat chat) {
+        if (currentChatFuture != null) {
+            // Cancel the current discussion.
+            currentChatFuture.requestCancellation();
+            // Run the Chat when the discussion stops.
+            currentChatFuture.thenConsume(ignored -> runChat(chat));
+        } else {
+            // If no current discussion, just run the Chat.
+            runChat(chat);
         }
+    }
 
-        // Cancel the current discussion.
-        currentChatFuture.requestCancellation();
-        // Add a lambda to know when the discussion stops.
-        currentChatFuture.thenConsume(ignored -> {
-            // Run the Chat.
-            if (chat != null) {
-                currentChatFuture = chat.async().run();
-            }
-        });
+    private void runChat(Chat chat) {
+        if (chat == null) return;
+        currentChatFuture = chat.async().run();
     }
 
     private void disableButtons() {
