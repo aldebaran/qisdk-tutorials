@@ -7,7 +7,7 @@ concept:(bookmark) ["{Mastering} bookmark"]
 concept:(execute) ["{Mastering} execute"]
 concept:(dynamicconcept) ["{Mastering} dynamic concept"]
 concept:(qichatvariable) ["{Mastering} QiChat variable"]
-concept:(chatlanguage) ["{Mastering} Chat language"]
+concept:(chatlocale) ["{Mastering} Chat locale"]
 
 u: ("~hello $level==basic") ^endDiscuss(hello)
 u: ("~qichatbot $level==basic") ^endDiscuss(qichatbot)
@@ -16,5 +16,5 @@ u: ("~bookmark $level==advanced") ^endDiscuss(bookmark)
 u: ("~execute $level==advanced") ^endDiscuss(execute)
 u: ("~dynamicconcept $level==advanced") ^endDiscuss(dynamic_concept)
 u: ("~qichatvariable $level==advanced") ^endDiscuss(qichat_variable)
-u: ("~chatlanguage $level==advanced") ^endDiscuss(chat_language)
+u: ("~chatlocale $level==advanced") ^endDiscuss(chat_locale)
 

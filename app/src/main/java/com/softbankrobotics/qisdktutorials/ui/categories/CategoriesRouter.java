@@ -14,7 +14,7 @@ import com.softbankrobotics.qisdktutorials.model.data.TutorialId;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.autonomousabilities.AutonomousAbilitiesTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.bookmarks.BookmarksTutorialActivity;
-import com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.chatlanguage.ChatLanguageTutorialActivity;
+import com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.chatlocale.ChatLocaleTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.dynamicconcepts.DynamicConceptsTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.execute.ExecuteTutorialActivity;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.listen.ListenTutorialActivity;
@@ -103,8 +103,8 @@ class CategoriesRouter implements CategoriesContract.Router {
                 return AnimationLabelActivity.class;
             case DETECT_HUMANS_WITH_LOCALIZATION:
                 return DetectHumansWithLocalizationTutorialActivity.class;
-            case CHAT_LANGUAGE:
-                return ChatLanguageTutorialActivity.class;
+            case CHAT_LOCALE:
+                return ChatLocaleTutorialActivity.class;
             default:
                 throw new IllegalArgumentException("Unknown tutorial identifier: " + tutorialId);
         }

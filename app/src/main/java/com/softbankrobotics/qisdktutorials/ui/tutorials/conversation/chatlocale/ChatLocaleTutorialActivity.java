@@ -1,4 +1,4 @@
-package com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.chatlanguage;
+package com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.chatlocale;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -30,11 +30,11 @@ import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView;
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity;
 
 /**
- * The tutorial for choosing a language for a Chat.
+ * The tutorial for choosing a locale for a Chat.
  */
-public class ChatLanguageTutorialActivity extends TutorialActivity implements RobotLifecycleCallbacks {
+public class ChatLocaleTutorialActivity extends TutorialActivity implements RobotLifecycleCallbacks {
 
-    private static final String TAG = "ChatLanguageActivity";
+    private static final String TAG = "ChatLocaleActivity";
 
     private RadioButton enButton;
     private RadioButton jaButton;
@@ -55,7 +55,7 @@ public class ChatLanguageTutorialActivity extends TutorialActivity implements Ro
         jaButton = findViewById(R.id.jaButton);
         conversationView = findViewById(R.id.conversationView);
 
-        // Change the language to English when checked.
+        // Change the locale to English when checked.
         enButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 disableButtons();
@@ -63,7 +63,7 @@ public class ChatLanguageTutorialActivity extends TutorialActivity implements Ro
             }
         });
 
-        // Change the language to Japanese when checked.
+        // Change the locale to Japanese when checked.
         jaButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 disableButtons();
@@ -94,7 +94,7 @@ public class ChatLanguageTutorialActivity extends TutorialActivity implements Ro
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_chat_language_tutorial;
+        return R.layout.activity_chat_locale_tutorial;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class ChatLanguageTutorialActivity extends TutorialActivity implements Ro
         conversationBinder = conversationView.bindConversationTo(conversationStatus);
 
         Say say = SayBuilder.with(qiContext)
-                .withText("Select the language of the discussion and talk to me.")
+                .withText("Select the locale of the discussion and talk to me.")
                 .build();
 
         say.run();

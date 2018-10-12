@@ -39,7 +39,7 @@
         <activity android:name=".ui.tutorials.perceptions.takepicture.TakePictureTutorialActivity" />
         <activity android:name=".ui.tutorials.perceptions.touch.TouchTutorialActivity" />
         <activity android:name=".ui.tutorials.perceptions.detecthumanswithlocalization.DetectHumansWithLocalizationTutorialActivity" />
-        <activity android:name=".ui.tutorials.conversation.chatlanguage.ChatLanguageTutorialActivity" />
+        <activity android:name=".ui.tutorials.conversation.chatlocale.ChatLocaleTutorialActivity" />
     </application>
 
 </manifest>
