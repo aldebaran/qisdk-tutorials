@@ -45,7 +45,7 @@ public class ChatLanguageTutorialActivity extends TutorialActivity implements Ro
     private Chat chatEN;
     private Chat chatJA;
     // Store the action execution future.
-    private Future<Void> discussion;
+    private Future<Void> currentChatFuture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,20 +180,20 @@ public class ChatLanguageTutorialActivity extends TutorialActivity implements Ro
 
     private void runChat(Chat chat) {
         // If no current discussion, just run the Chat.
-        if (discussion == null) {
+        if (currentChatFuture == null) {
             if (chat != null) {
-                discussion = chat.async().run();
+                currentChatFuture = chat.async().run();
             }
             return;
         }
 
         // Cancel the current discussion.
-        discussion.requestCancellation();
+        currentChatFuture.requestCancellation();
         // Add a lambda to know when the discussion stops.
-        discussion.thenConsume(ignored -> {
+        currentChatFuture.thenConsume(ignored -> {
             // Run the Chat.
             if (chat != null) {
-                discussion = chat.async().run();
+                currentChatFuture = chat.async().run();
             }
         });
     }
