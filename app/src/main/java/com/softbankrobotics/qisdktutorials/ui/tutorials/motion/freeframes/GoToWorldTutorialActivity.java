@@ -206,7 +206,7 @@ public class GoToWorldTutorialActivity extends TutorialActivity implements Robot
             // Create a FreeFrame representing the current robot frame.
             FreeFrame locationFrame = mapping.makeFreeFrame();
             Transform transform = TransformBuilder.create().fromXTranslation(0);
-            locationFrame.update(robotFrame, transform, System.currentTimeMillis());
+            locationFrame.update(robotFrame, transform, 0L);
 
             // Store the FreeFrame.
             savedLocations.put(location, locationFrame);

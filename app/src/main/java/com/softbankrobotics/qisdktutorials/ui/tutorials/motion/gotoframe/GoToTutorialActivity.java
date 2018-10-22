@@ -93,7 +93,7 @@ public class GoToTutorialActivity extends TutorialActivity implements RobotLifec
         FreeFrame targetFrame = mapping.makeFreeFrame();
 
         // Update the target location relatively to Pepper's current location.
-        targetFrame.update(robotFrame, transform, System.currentTimeMillis());
+        targetFrame.update(robotFrame, transform, 0L);
 
         // Create a GoTo action.
         goTo = GoToBuilder.with(qiContext) // Create the builder with the QiContext.

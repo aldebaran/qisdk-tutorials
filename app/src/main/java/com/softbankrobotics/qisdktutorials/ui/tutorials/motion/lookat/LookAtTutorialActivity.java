@@ -107,7 +107,7 @@ public class LookAtTutorialActivity extends TutorialActivity implements RobotLif
         FreeFrame targetFrame = mapping.makeFreeFrame();
 
         // Update the target location relatively to Pepper's current location.
-        targetFrame.update(robotFrame, transform, System.currentTimeMillis());
+        targetFrame.update(robotFrame, transform, 0L);
 
         // Create a LookAt action.
         lookAt = LookAtBuilder.with(qiContext) // Create the builder with the context.
