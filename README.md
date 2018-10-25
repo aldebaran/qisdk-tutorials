@@ -1,7 +1,7 @@
 # QiSDK Tutorials
 
 **QiSDK Tutorials** is an Android application for Pepper the robot.
-It was developed using the QiSDK (http://android.ald.softbankrobotics.com).
+It was developed using the QiSDK (https://qisdk.softbankrobotics.com).
 
 This application provides an easy access to the tutorial sample codes.
 
@@ -19,7 +19,7 @@ advanced tools provided by QiSDK.
 ## Additional resources
 
 A step-by-step guide for these tutorials is available
-in the official [Pepper SDK for Android site](http://android.ald.softbankrobotics.com).
+in the official [Pepper SDK for Android site](https://qisdk.softbankrobotics.com).
 
 ## License
 
