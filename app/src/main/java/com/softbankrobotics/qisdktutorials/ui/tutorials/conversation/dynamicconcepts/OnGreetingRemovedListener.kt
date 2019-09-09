@@ -3,15 +3,15 @@
  * See COPYING for the license
  */
 
-package com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.dynamicconcepts;
+package com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.dynamicconcepts
 
 /**
  * The listener used to handle a greeting removal.
  */
-interface OnGreetingRemovedListener {
+internal interface OnGreetingRemovedListener {
     /**
      * Called when a greeting is removed.
      * @param greeting the greeting
      */
-    void onGreetingRemoved(String greeting);
+    fun onGreetingRemoved(greeting: String)
 }
