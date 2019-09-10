@@ -24,8 +24,8 @@ import com.aldebaran.qi.sdk.`object`.conversation.QiChatExecutor
 import com.softbankrobotics.qisdktutorials.R
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType
-import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity
+import kotlinx.android.synthetic.main.activity_autonomous_abilities_tutorial.*
 
 import java.util.HashMap
 
@@ -35,14 +35,11 @@ private const val TAG = "ExecuteTutorialActivity"
  * The activity for the Execute tutorial.
  */
 class ExecuteTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
-    private lateinit var conversationView: ConversationView
-    private var conversationBinder: ConversationBinder? = null
-    private var chat: Chat? = null
+    private lateinit var conversationBinder: ConversationBinder
+    private lateinit var chat: Chat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        conversationView = findViewById(R.id.conversationView)
 
         // Register the RobotLifecycleCallbacks to this Activity.
         QiSDK.register(this, this)
@@ -75,23 +72,24 @@ class ExecuteTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         qiChatbot.executors = executors
 
         // Build chat with the chatbots
-        chat = ChatBuilder.with(qiContext).withChatbot(qiChatbot).build()
-        chat?.addOnStartedListener {
+        val chat = ChatBuilder.with(qiContext).withChatbot(qiChatbot).build().also { chat = it }
+        chat.addOnStartedListener {
             //Say proposal to user
             val bookmark = topic.bookmarks["execute_proposal"]
             qiChatbot.goToBookmark(bookmark, AutonomousReactionImportance.HIGH, AutonomousReactionValidity.IMMEDIATE)
         }
 
-        chat?.async()?.run()
+        chat.async().run()
+        this.chat = chat
     }
 
     override fun onRobotFocusLost() {
         Log.i(TAG, "Focus lost.")
 
-        conversationBinder?.unbind()
+        conversationBinder.unbind()
 
         // Remove the listeners from the chat.
-        chat?.removeAllOnStartedListeners()
+        chat.removeAllOnStartedListeners()
     }
 
     override fun onRobotFocusRefused(reason: String) {

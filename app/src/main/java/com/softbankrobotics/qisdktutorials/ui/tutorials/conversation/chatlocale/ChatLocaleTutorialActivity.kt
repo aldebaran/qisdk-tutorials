@@ -7,7 +7,6 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.chatlocale
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.RadioButton
 
 import com.aldebaran.qi.Future
 import com.aldebaran.qi.sdk.QiContext
@@ -19,31 +18,23 @@ import com.aldebaran.qi.sdk.builder.SayBuilder
 import com.aldebaran.qi.sdk.builder.TopicBuilder
 import com.aldebaran.qi.sdk.`object`.conversation.AutonomousReactionImportance
 import com.aldebaran.qi.sdk.`object`.conversation.AutonomousReactionValidity
-import com.aldebaran.qi.sdk.`object`.conversation.Bookmark
 import com.aldebaran.qi.sdk.`object`.conversation.Chat
-import com.aldebaran.qi.sdk.`object`.conversation.ConversationStatus
-import com.aldebaran.qi.sdk.`object`.conversation.QiChatbot
-import com.aldebaran.qi.sdk.`object`.conversation.Say
-import com.aldebaran.qi.sdk.`object`.conversation.Topic
 import com.aldebaran.qi.sdk.`object`.locale.Language
 import com.aldebaran.qi.sdk.`object`.locale.Locale
 import com.aldebaran.qi.sdk.`object`.locale.Region
 import com.softbankrobotics.qisdktutorials.R
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType
-import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity
+import kotlinx.android.synthetic.main.activity_chat_locale_tutorial.*
 
-    private const val TAG = "ChatLocaleActivity"
+private const val TAG = "ChatLocaleActivity"
 
 /**
  * The tutorial for choosing a locale for a Chat.
  */
 class ChatLocaleTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
-    private var enButton: RadioButton? = null
-    private var jaButton: RadioButton? = null
-    private var conversationView: ConversationView? = null
     private var conversationBinder: ConversationBinder? = null
 
     // Store the Chat actions.
@@ -55,15 +46,11 @@ class ChatLocaleTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        enButton = findViewById(R.id.enButton)
-        jaButton = findViewById(R.id.jaButton)
-        conversationView = findViewById(R.id.conversationView)
-
         // Change the locale to English when checked.
         enButton?.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 disableButtons()
-                switchToChat(chatEN)
+                chatEN?.let { switchToChat(it) }
             }
         }
 
@@ -71,7 +58,7 @@ class ChatLocaleTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         jaButton?.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 disableButtons()
-                switchToChat(chatJA)
+                chatJA?.let { switchToChat(it) }
             }
         }
 
@@ -84,8 +71,8 @@ class ChatLocaleTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
         // Disable and uncheck buttons.
         disableButtons()
-        enButton?.isChecked = false
-        jaButton?.isChecked = false
+        enButton.isChecked = false
+        jaButton.isChecked = false
     }
 
     override fun onDestroy() {
@@ -169,12 +156,14 @@ class ChatLocaleTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         return chat
     }
 
-    private fun switchToChat(chat: Chat?) {
+    private fun switchToChat(chat: Chat) {
+        val currentChatFuture = currentChatFuture
         if (currentChatFuture != null) {
             // Cancel the current discussion.
-            currentChatFuture!!.requestCancellation()
+            currentChatFuture.requestCancellation()
             // Run the Chat when the discussion stops.
-            currentChatFuture!!.thenConsume { ignored -> runChat(chat) }
+            currentChatFuture.thenConsume { runChat(chat) }
+            this.currentChatFuture = currentChatFuture
         } else {
             // If no current discussion, just run the Chat.
             runChat(chat)
@@ -188,15 +177,15 @@ class ChatLocaleTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
     private fun disableButtons() {
         runOnUiThread {
-            enButton?.isEnabled = false
-            jaButton?.isEnabled = false
+            enButton.isEnabled = false
+            jaButton.isEnabled = false
         }
     }
 
     private fun enableButtons() {
         runOnUiThread {
-            enButton?.isEnabled = true
-            jaButton?.isEnabled = true
+            enButton.isEnabled = true
+            jaButton.isEnabled = true
         }
     }
 

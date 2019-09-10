@@ -14,13 +14,17 @@ import android.util.AttributeSet
 import com.aldebaran.qi.sdk.`object`.conversation.ConversationStatus
 import com.softbankrobotics.qisdktutorials.R
 
-class ConversationView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : RecyclerView(context, attrs, defStyle) {
+class ConversationView constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : RecyclerView(context, attrs, defStyle) {
 
-    private var adapter = ConversationAdapter()
+    private val adapter = ConversationAdapter()
 
     init {
         setup()
     }
+
+    constructor(context: Context, attrs: AttributeSet?): this(context, attrs, 0)
+
+    constructor(context: Context): this(context, null)
 
     fun bindConversationTo(conversationStatus: ConversationStatus): ConversationBinder = ConversationBinder.binding(conversationStatus, this)
 

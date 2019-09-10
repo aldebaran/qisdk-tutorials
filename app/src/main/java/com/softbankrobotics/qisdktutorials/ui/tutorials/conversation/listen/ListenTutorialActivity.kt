@@ -19,8 +19,8 @@ import com.aldebaran.qi.sdk.util.PhraseSetUtil
 import com.softbankrobotics.qisdktutorials.R
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType
-import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity
+import kotlinx.android.synthetic.main.activity_autonomous_abilities_tutorial.*
 
 private const val TAG = "ListenTutorialActivity"
 
@@ -29,13 +29,10 @@ private const val TAG = "ListenTutorialActivity"
  */
 class ListenTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
-    private lateinit var conversationView: ConversationView
-    private var conversationBinder: ConversationBinder? = null
+    private lateinit var conversationBinder: ConversationBinder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        conversationView = findViewById(R.id.conversationView)
 
         // Register the RobotLifecycleCallbacks to this Activity.
         QiSDK.register(this, this)
@@ -95,7 +92,7 @@ class ListenTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     }
 
     override fun onRobotFocusLost() {
-        conversationBinder?.unbind()
+        conversationBinder.unbind()
     }
 
     override fun onRobotFocusRefused(reason: String) {

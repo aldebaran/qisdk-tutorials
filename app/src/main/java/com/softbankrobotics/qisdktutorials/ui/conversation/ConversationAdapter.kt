@@ -12,8 +12,6 @@ import android.view.ViewGroup
 
 import com.softbankrobotics.qisdktutorials.R
 
-import java.util.ArrayList
-
 private const val INFO_LOG_VIEW_TYPE = 0
 private const val ERROR_LOG_VIEW_TYPE = 1
 private const val ROBOT_OUTPUT_VIEW_TYPE = 2
@@ -24,7 +22,7 @@ private const val HUMAN_INPUT_VIEW_TYPE = 3
  */
 internal class ConversationAdapter : RecyclerView.Adapter<ConversationViewHolder>() {
 
-    private val items = ArrayList<ConversationItem>()
+    private val items = mutableListOf<ConversationItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConversationViewHolder {
         val layout = layoutFromViewType(viewType)

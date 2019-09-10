@@ -41,9 +41,9 @@ class ConversationBinder private constructor(private val conversationStatus: Con
     companion object {
 
         internal fun binding(conversationStatus: ConversationStatus, conversationView: ConversationView): ConversationBinder {
-            val conversationBinder = ConversationBinder(conversationStatus)
-            conversationBinder.bind(conversationView)
-            return conversationBinder
+            return ConversationBinder(conversationStatus).apply {
+                bind(conversationView)
+            }
         }
     }
 }

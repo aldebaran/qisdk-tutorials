@@ -18,21 +18,17 @@ import com.aldebaran.qi.sdk.builder.AnimationBuilder
 import com.aldebaran.qi.sdk.builder.ChatBuilder
 import com.aldebaran.qi.sdk.builder.QiChatbotBuilder
 import com.aldebaran.qi.sdk.builder.TopicBuilder
-import com.aldebaran.qi.sdk.`object`.actuation.Animate
-import com.aldebaran.qi.sdk.`object`.actuation.Animation
 import com.aldebaran.qi.sdk.`object`.conversation.AutonomousReactionImportance
 import com.aldebaran.qi.sdk.`object`.conversation.AutonomousReactionValidity
 import com.aldebaran.qi.sdk.`object`.conversation.Bookmark
 import com.aldebaran.qi.sdk.`object`.conversation.BookmarkStatus
 import com.aldebaran.qi.sdk.`object`.conversation.Chat
-import com.aldebaran.qi.sdk.`object`.conversation.ConversationStatus
 import com.aldebaran.qi.sdk.`object`.conversation.QiChatbot
-import com.aldebaran.qi.sdk.`object`.conversation.Topic
 import com.softbankrobotics.qisdktutorials.R
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType
-import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity
+import kotlinx.android.synthetic.main.conversation_layout.*
 
 private const val TAG = "BookmarksActivity"
 
@@ -41,33 +37,30 @@ private const val TAG = "BookmarksActivity"
  */
 class BookmarksTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
-    private var conversationView: ConversationView? = null
-    private var conversationBinder: ConversationBinder? = null
+    private lateinit var conversationBinder: ConversationBinder
     private var mediaPlayer: MediaPlayer? = null
 
     // Store the QiChatbot.
-    private var qiChatbot: QiChatbot? = null
+    private lateinit var qiChatbot: QiChatbot
     // Store the Chat action.
-    private var chat: Chat? = null
+    private lateinit var chat: Chat
     // Store the proposal bookmark.
     private var proposalBookmark: Bookmark? = null
     // Store the dog BookmarkStatus.
-    private var dogBookmarkStatus: BookmarkStatus? = null
+    private lateinit var dogBookmarkStatus: BookmarkStatus
     // Store the elephant BookmarkStatus.
-    private var elephantBookmarkStatus: BookmarkStatus? = null
+    private lateinit var elephantBookmarkStatus: BookmarkStatus
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        conversationView = findViewById(R.id.conversationView)
 
         // Register the RobotLifecycleCallbacks to this Activity.
         QiSDK.register(this, this)
     }
 
     override fun onStop() {
-        if (mediaPlayer != null) {
-            mediaPlayer!!.release()
+        mediaPlayer?.let {
+            it.release()
             mediaPlayer = null
         }
         super.onStop()
@@ -84,22 +77,23 @@ class BookmarksTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Bind the conversational events to the view.
         val conversationStatus = qiContext.conversation.status(qiContext.robotContext)
-        conversationBinder = conversationView!!.bindConversationTo(conversationStatus)
+        conversationBinder = conversationView.bindConversationTo(conversationStatus)
 
         // Create a topic.
         val topic = TopicBuilder.with(qiContext)
                 .withResource(R.raw.mimic_animal)
                 .build()
 
-        // Create a new QiChatbot.
-        qiChatbot = QiChatbotBuilder.with(qiContext)
+        val qiChatbot = QiChatbotBuilder.with(qiContext)
                 .withTopic(topic)
                 .build()
+                .also { this.qiChatbot = it }
 
         // Create a new Chat action.
-        chat = ChatBuilder.with(qiContext)
+        val chat = ChatBuilder.with(qiContext)
                 .withChatbot(qiChatbot)
                 .build()
+                .also { this.chat = it }
 
         // Get the bookmarks from the topic.
         val bookmarks = topic.bookmarks
@@ -107,35 +101,38 @@ class BookmarksTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         proposalBookmark = bookmarks["mimic_proposal"]
 
         // Go to the proposal bookmark when the Chat action starts.
-        chat!!.addOnStartedListener { this.sayProposal() }
+        chat.addOnStartedListener(this::sayProposal)
 
         // Get the mimic bookmarks.
         val dogBookmark = bookmarks["dog_mimic"]
         val elephantBookmark = bookmarks["elephant_mimic"]
 
         // Create a BookmarkStatus for each bookmark.
-        dogBookmarkStatus = qiChatbot?.bookmarkStatus(dogBookmark)
-        elephantBookmarkStatus = qiChatbot?.bookmarkStatus(elephantBookmark)
+        val dogBookmarkStatus = qiChatbot.bookmarkStatus(dogBookmark)
+        val elephantBookmarkStatus = qiChatbot.bookmarkStatus(elephantBookmark)
 
         // Mimic a dog when the dog mimic bookmark is reached.
-        dogBookmarkStatus?.addOnReachedListener { mimicDog(qiContext) }
+        dogBookmarkStatus.addOnReachedListener { mimicDog(qiContext) }
+        this.dogBookmarkStatus = dogBookmarkStatus
 
         // Mimic an elephant when the elephant mimic bookmark is reached.
-        elephantBookmarkStatus?.addOnReachedListener { mimicElephant(qiContext) }
+        elephantBookmarkStatus.addOnReachedListener { mimicElephant(qiContext) }
+        this.elephantBookmarkStatus = elephantBookmarkStatus
 
         // Run the Chat action asynchronously.
-        chat?.async()?.run()
+        chat.async().run()
+        this.chat = chat
     }
 
     override fun onRobotFocusLost() {
-        conversationBinder?.unbind()
+        conversationBinder.unbind()
 
         // Remove the listeners from the Chat action.
-        chat?.removeAllOnStartedListeners()
+        chat.removeAllOnStartedListeners()
 
         // Remove the listeners on each BookmarkStatus.
-        dogBookmarkStatus?.removeAllOnReachedListeners()
-        elephantBookmarkStatus?.removeAllOnReachedListeners()
+        dogBookmarkStatus.removeAllOnReachedListeners()
+        elephantBookmarkStatus.removeAllOnReachedListeners()
     }
 
     override fun onRobotFocusRefused(reason: String) {
@@ -156,7 +153,7 @@ class BookmarksTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         mimic(R.raw.elephant_a001, R.raw.elephant_sound, qiContext)
     }
 
-    private fun mimic(@RawRes mimicResource: Int?, @RawRes soundResource: Int?, qiContext: QiContext) {
+    private fun mimic(@RawRes mimicResource: Int, @RawRes soundResource: Int, qiContext: QiContext) {
         // Create an animation from the mimic resource.
         val animation = AnimationBuilder.with(qiContext)
                 .withResources(mimicResource)
@@ -168,25 +165,25 @@ class BookmarksTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
                 .build()
 
         animate.addOnStartedListener {
-            if (mediaPlayer != null) {
-                mediaPlayer!!.release()
+            mediaPlayer?.let {
+                it.release()
                 mediaPlayer = null
             }
 
-            mediaPlayer = MediaPlayer.create(this@BookmarksTutorialActivity, soundResource!!)
+            mediaPlayer = MediaPlayer.create(this, soundResource). apply { start() }
             mediaPlayer?.start()
         }
 
         // Run the animate action asynchronously.
-        animate.async().run().andThenConsume { ignore -> sayProposal() }
+        animate.async().run().andThenConsume { sayProposal() }
     }
 
     private fun sayProposal() {
-        qiChatbot?.goToBookmark(proposalBookmark, AutonomousReactionImportance.HIGH, AutonomousReactionValidity.IMMEDIATE)
+        qiChatbot.goToBookmark(proposalBookmark, AutonomousReactionImportance.HIGH, AutonomousReactionValidity.IMMEDIATE)
     }
 
     private fun displayLine(text: String, type: ConversationItemType) {
-        runOnUiThread { conversationView?.addLine(text, type) }
+        runOnUiThread { conversationView.addLine(text, type) }
     }
 
 }

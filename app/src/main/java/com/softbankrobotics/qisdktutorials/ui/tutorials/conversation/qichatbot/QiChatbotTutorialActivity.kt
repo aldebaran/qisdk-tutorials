@@ -19,8 +19,8 @@ import com.aldebaran.qi.sdk.`object`.conversation.Chat
 import com.softbankrobotics.qisdktutorials.R
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType
-import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity
+import kotlinx.android.synthetic.main.activity_autonomous_abilities_tutorial.*
 
 private const val TAG = "QiChatbotActivity"
 
@@ -29,16 +29,13 @@ private const val TAG = "QiChatbotActivity"
  */
 class QiChatbotTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
-    private lateinit var conversationView: ConversationView
     private var conversationBinder: ConversationBinder? = null
 
     // Store the Chat action.
-    private var chat: Chat? = null
+    private lateinit var chat: Chat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        conversationView = findViewById(R.id.conversationView)
 
         // Register the RobotLifecycleCallbacks to this Activity.
         QiSDK.register(this, this)
@@ -74,22 +71,25 @@ class QiChatbotTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
                 .build()
 
         // Create a new Chat action.
-        chat = ChatBuilder.with(qiContext)
+        val chat = ChatBuilder.with(qiContext)
                 .withChatbot(qiChatbot)
                 .build()
+                .also { this.chat = it }
 
         // Add an on started listener to the Chat action.
-        chat?.addOnStartedListener {
+        chat.addOnStartedListener {
             val message = "Discussion started."
             Log.i(TAG, message)
             displayLine(message, ConversationItemType.INFO_LOG)
         }
 
+        this.chat = chat
+
         // Run the Chat action asynchronously.
-        val chatFuture = chat?.async()?.run()
+        val chatFuture = this.chat.async().run()
 
         // Add a lambda to the action execution.
-        chatFuture?.thenConsume { future ->
+        chatFuture.thenConsume { future ->
             if (future.hasError()) {
                 val message = "Discussion finished with error."
                 Log.e(TAG, message, future.error)
@@ -102,7 +102,7 @@ class QiChatbotTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         conversationBinder?.unbind()
 
         // Remove the listeners from the Chat action.
-        chat?.removeAllOnStartedListeners()
+        chat.removeAllOnStartedListeners()
     }
 
     override fun onRobotFocusRefused(reason: String) {
