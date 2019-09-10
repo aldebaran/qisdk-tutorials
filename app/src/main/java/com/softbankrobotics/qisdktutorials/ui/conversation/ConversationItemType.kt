@@ -3,12 +3,12 @@
  * See COPYING for the license
  */
 
-package com.softbankrobotics.qisdktutorials.ui.conversation;
+package com.softbankrobotics.qisdktutorials.ui.conversation
 
 /**
  * Represent a conversation item type.
  */
-public enum ConversationItemType {
+enum class ConversationItemType {
     INFO_LOG,
     ERROR_LOG,
     ROBOT_OUTPUT,
