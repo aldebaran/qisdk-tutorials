@@ -3,12 +3,12 @@
  * See COPYING for the license
  */
 
-package com.softbankrobotics.qisdktutorials.model.data;
+package com.softbankrobotics.qisdktutorials.model.data
 
 /**
  * Represents a tutorial identifier.
  */
-public enum TutorialId {
+enum class TutorialId {
     SAY,
     QICHATBOT,
     LISTEN,
@@ -30,5 +30,5 @@ public enum TutorialId {
     TAKE_PICTURE,
     ANIMATION_LABEL,
     DETECT_HUMANS_WITH_LOCALIZATION,
-    CHAT_LOCALE,
+    CHAT_LOCALE
 }

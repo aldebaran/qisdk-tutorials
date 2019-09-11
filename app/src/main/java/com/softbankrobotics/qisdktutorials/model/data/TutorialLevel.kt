@@ -3,12 +3,12 @@
  * See COPYING for the license
  */
 
-package com.softbankrobotics.qisdktutorials.model.data;
+package com.softbankrobotics.qisdktutorials.model.data
 
 /**
  * Represents a tutorial level.
  */
-public enum TutorialLevel {
+enum class TutorialLevel {
     BASIC,
     ADVANCED
 }
