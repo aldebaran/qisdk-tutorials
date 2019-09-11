@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
@@ -41,4 +43,6 @@ dependencies {
     // Pepper
     implementation 'com.aldebaran:qisdk:1.4.1'
     implementation 'com.aldebaran:qisdk-design:1.4.1'
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
