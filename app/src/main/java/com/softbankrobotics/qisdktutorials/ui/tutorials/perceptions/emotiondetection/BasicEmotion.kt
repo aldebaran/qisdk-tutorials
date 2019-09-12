@@ -3,16 +3,16 @@
  * See COPYING for the license
  */
 
-package com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.emotiondetection;
+package com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.emotiondetection
 
 /**
  * Represent a basic emotion.
  */
-public enum BasicEmotion {
+enum class BasicEmotion {
     UNKNOWN,
     NEUTRAL,
     CONTENT,
     JOYFUL,
     SAD,
-    ANGRY,
+    ANGRY
 }
