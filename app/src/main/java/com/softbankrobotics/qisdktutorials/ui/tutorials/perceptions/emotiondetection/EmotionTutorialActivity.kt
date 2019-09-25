@@ -25,7 +25,7 @@ class EmotionTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks, OnB
     // Store the basic emotion observer.
     private var basicEmotionObserver: BasicEmotionObserver? = null
 
-    private var conversationBinder: ConversationBinder? = null
+    private lateinit var conversationBinder: ConversationBinder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +66,7 @@ class EmotionTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks, OnB
     }
 
     override fun onRobotFocusLost() {
-        conversationBinder?.unbind()
+        conversationBinder.unbind()
 
         // Stop the basic emotion observation.
         basicEmotionObserver?.stopObserving()
@@ -78,7 +78,7 @@ class EmotionTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks, OnB
 
     override fun onBasicEmotionChanged(basicEmotion: BasicEmotion) {
         // Update basic emotion image.
-        runOnUiThread { emotionView!!.setImageResource(emotionImageRes(basicEmotion)) }
+        runOnUiThread { emotionView.setImageResource(emotionImageRes(basicEmotion)) }
     }
 
     @DrawableRes

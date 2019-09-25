@@ -27,16 +27,16 @@ private const val TAG = "DetectHumansWithLoc"
  */
 class DetectHumansWithLocalizationTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
-    private var conversationBinder: ConversationBinder? = null
+    private lateinit var conversationBinder: ConversationBinder
 
     // Store the LocalizeAndMap action.
-    private var localizeAndMap: LocalizeAndMap? = null
+    private lateinit var localizeAndMap: LocalizeAndMap
     // Store the map.
     private var explorationMap: ExplorationMap? = null
     // Store the LocalizeAndMap execution.
-    private var localizationAndMapping: Future<Void>? = null
+    private lateinit var localizationAndMapping: Future<Void>
     // Store the Localize action.
-    private var localize: Localize? = null
+    private lateinit var localize: Localize
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,13 +67,13 @@ class DetectHumansWithLocalizationTutorialActivity : TutorialActivity(), RobotLi
     }
 
     override fun onRobotFocusLost() {
-        conversationBinder?.unbind()
+        conversationBinder.unbind()
 
         // Remove on status changed listeners from the LocalizeAndMap action.
-        localizeAndMap?.removeAllOnStatusChangedListeners()
+        localizeAndMap.removeAllOnStatusChangedListeners()
 
         // Remove on status changed listeners from the Localize action.
-        localize?.removeAllOnStatusChangedListeners()
+        localize.removeAllOnStatusChangedListeners()
     }
 
     override fun onRobotFocusRefused(reason: String) {
@@ -85,24 +85,20 @@ class DetectHumansWithLocalizationTutorialActivity : TutorialActivity(), RobotLi
         localizeAndMap = LocalizeAndMapBuilder.with(qiContext).build()
 
         // Add an on status changed listener on the LocalizeAndMap action for the robot to say when he is localized.
-        localizeAndMap?.addOnStatusChangedListener { status ->
-            when (status) {
-                LOCALIZED -> {
-                    // Dump the ExplorationMap.
-                    explorationMap = localizeAndMap?.dumpMap()
+        localizeAndMap.addOnStatusChangedListener { status ->
+             if (status == LOCALIZED) {
+                        // Dump the ExplorationMap.
+                        explorationMap = localizeAndMap.dumpMap()
 
-                    val message = "Robot has mapped his environment."
-                    Log.i(TAG, message)
-                    displayLine(message, ConversationItemType.INFO_LOG)
+                        val message = "Robot has mapped his environment."
+                        Log.i(TAG, message)
+                        displayLine(message, ConversationItemType.INFO_LOG)
 
-                    say(qiContext, "I now have a map of my environment. I will use this map to localize myself.")
+                        say(qiContext, "I now have a map of my environment. I will use this map to localize myself.")
 
-                    // Cancel the LocalizeAndMap action.
-                    localizationAndMapping?.requestCancellation()
-                }
-                NOT_STARTED -> TODO()
-                SCANNING -> TODO()
-            }
+                        // Cancel the LocalizeAndMap action.
+                        localizationAndMapping.requestCancellation()
+             }
         }
 
         val message = "Mapping..."
@@ -110,10 +106,10 @@ class DetectHumansWithLocalizationTutorialActivity : TutorialActivity(), RobotLi
         displayLine(message, ConversationItemType.INFO_LOG)
 
         // Execute the LocalizeAndMap action asynchronously.
-        localizationAndMapping = localizeAndMap?.async()?.run()
+        localizationAndMapping = localizeAndMap.async().run()
 
         // Add a lambda to the action execution.
-        localizationAndMapping?.thenConsume { future ->
+        localizationAndMapping.thenConsume { future ->
             if (future.hasError()) {
                 val errorMessage = "LocalizeAndMap action finished with error."
                 Log.e(TAG, errorMessage, future.error)
@@ -131,17 +127,13 @@ class DetectHumansWithLocalizationTutorialActivity : TutorialActivity(), RobotLi
                 .build()
 
         // Add an on status changed listener on the Localize action for the robot to say when he is localized.
-        localize?.addOnStatusChangedListener { status ->
-            when (status) {
-                LOCALIZED -> {
+        localize.addOnStatusChangedListener { status ->
+            if (status == LOCALIZED) {
                     val message = "Robot is localized."
                     Log.i(TAG, message)
                     displayLine(message, ConversationItemType.INFO_LOG)
 
                     say(qiContext, "I'm now localized and I have a 360° awareness thanks to my base sensors. Try to come from behind and I will detect you.")
-                }
-                NOT_STARTED -> TODO()
-                SCANNING -> TODO()
             }
         }
 

@@ -10,8 +10,8 @@ import com.aldebaran.qi.sdk.`object`.human.Emotion
 import com.aldebaran.qi.sdk.`object`.human.ExcitementState
 import com.aldebaran.qi.sdk.`object`.human.Human
 import com.aldebaran.qi.sdk.`object`.human.PleasureState
-import com.aldebaran.qi.sdk.`object`.human.PleasureState.*
 import com.aldebaran.qi.sdk.`object`.humanawareness.HumanAwareness
+import kotlin.properties.Delegates
 
 /**
  * Observe the basic emotion of the first human seen by the robot.
@@ -24,10 +24,18 @@ class BasicEmotionObserver {
     private var humanAwareness: HumanAwareness? = null
     // Store the observed emotion.
     private var observedEmotion: Emotion? = null
-    // Store the last excitement, pleasure and basic emotion.
-    private var lastExcitement: ExcitementState? = null
-    private var lastPleasure: PleasureState? = null
-    private var lastBasicEmotion: BasicEmotion? = null
+    // Observe the last excitement state and notify the listener.
+    private var lastExcitement by Delegates.observable(ExcitementState.UNKNOWN) { _, _, _ ->
+        notifyListener()
+    }
+    // Observe the last pleasure state and notify the listener.
+    private var lastPleasure by Delegates.observable(PleasureState.UNKNOWN) { _, _, _ ->
+        notifyListener()
+    }
+    // Observe the last basic emotion state and change basic emotion.
+    private var lastBasicEmotion by Delegates.observable(BasicEmotion.UNKNOWN) { _, _, new ->
+        listener?.onBasicEmotionChanged(new)
+    }
 
     /**
      * Start the observation.
@@ -35,14 +43,16 @@ class BasicEmotionObserver {
      */
     fun startObserving(qiContext: QiContext) {
         // Get the HumanAwareness service.
-        humanAwareness = qiContext.humanAwareness
+        val humanAwareness = qiContext.humanAwareness
 
         // Retrieve the humans around and update the observed emotion.
-        val humansAround = humanAwareness!!.humansAround
+        val humansAround = humanAwareness.humansAround
         updateObservedEmotion(humansAround)
 
         // Update the observed emotion when the humans around change.
-        humanAwareness?.addOnHumansAroundChangedListener { this.updateObservedEmotion(it) }
+        humanAwareness.addOnHumansAroundChangedListener { this.updateObservedEmotion(it) }
+
+        this.humanAwareness = humanAwareness
     }
 
     /**
@@ -74,30 +84,27 @@ class BasicEmotionObserver {
         if (humansAround.isNotEmpty()) {
             // Update observed emotion.
             val observedHuman = humansAround[0]
-            observedEmotion = observedHuman.emotion
+            val observedEmotion = observedHuman.emotion
 
             // Get and store human excitement and pleasure.
-            lastExcitement = observedEmotion?.excitement
-            lastPleasure = observedEmotion?.pleasure
-
-            // Notify the listener.
-            notifyListener()
+            lastExcitement = observedEmotion.excitement
+            lastPleasure = observedEmotion.pleasure
 
             // Notify the listener when excitement changes.
-            observedEmotion?.addOnExcitementChangedListener { excitementState ->
+            observedEmotion.addOnExcitementChangedListener { excitementState ->
                 if (excitementState != lastExcitement) {
                     lastExcitement = excitementState
-                    notifyListener()
                 }
             }
 
             // Notify the listener when pleasure changes.
-            observedEmotion?.addOnPleasureChangedListener { pleasureState ->
+            observedEmotion.addOnPleasureChangedListener { pleasureState ->
                 if (pleasureState != lastPleasure) {
                     lastPleasure = pleasureState
-                    notifyListener()
                 }
             }
+
+            this.observedEmotion = observedEmotion
         }
     }
 
@@ -111,27 +118,25 @@ class BasicEmotionObserver {
 
     }
 
-    private fun computeBasicEmotion(excitement: ExcitementState?, pleasure: PleasureState?): BasicEmotion {
-        if (excitement == ExcitementState.UNKNOWN || pleasure == UNKNOWN) {
+    private fun computeBasicEmotion(excitement: ExcitementState, pleasure: PleasureState): BasicEmotion {
+        if (excitement == ExcitementState.UNKNOWN) {
             return BasicEmotion.UNKNOWN
         }
 
         return when (pleasure) {
-            POSITIVE -> if (excitement == ExcitementState.CALM) BasicEmotion.CONTENT else BasicEmotion.JOYFUL
-            NEGATIVE -> if (excitement == ExcitementState.CALM) BasicEmotion.SAD else BasicEmotion.ANGRY
-            UNKNOWN -> TODO()
-            NEUTRAL -> TODO()
-            null -> TODO()
+            PleasureState.UNKNOWN -> BasicEmotion.UNKNOWN
+            PleasureState.NEUTRAL -> BasicEmotion.NEUTRAL
+            PleasureState.POSITIVE -> if (excitement == ExcitementState.CALM) BasicEmotion.CONTENT else BasicEmotion.JOYFUL
+            PleasureState.NEGATIVE -> if (excitement == ExcitementState.CALM) BasicEmotion.SAD else BasicEmotion.ANGRY
         }
     }
 
     private fun notifyListener() {
         // Compute the basic emotion.
         val basicEmotion = computeBasicEmotion(lastExcitement, lastPleasure)
-        // Notify the listener only if the basic emotion changed.
-        if (basicEmotion !== lastBasicEmotion) {
+        // Changing only if the basic emotion changed.
+        if (basicEmotion != lastBasicEmotion) {
             lastBasicEmotion = basicEmotion
-            listener?.onBasicEmotionChanged(basicEmotion)
         }
     }
 }

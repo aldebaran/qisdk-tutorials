@@ -29,7 +29,7 @@ class TouchTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     private var conversationBinder: ConversationBinder? = null
 
     // Store the head touch sensor.
-    private var headTouchSensor: TouchSensor? = null
+    private lateinit var headTouchSensor: TouchSensor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,21 +61,21 @@ class TouchTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         val touch = qiContext.touch
 
         // Get the head touch sensor.
-        val localHeadTouchSensor = touch.getSensor("Head/Touch")
+        val headTouchSensor = touch.getSensor("Head/Touch")
         // Add onStateChanged listener.
-        localHeadTouchSensor.addOnStateChangedListener { touchState ->
+        headTouchSensor.addOnStateChangedListener { touchState ->
             val message = "Sensor " + (if (touchState.touched) "touched" else "released") + " at " + touchState.time
             Log.i(TAG, message)
             displayLine(message, ConversationItemType.INFO_LOG)
         }
-        headTouchSensor = localHeadTouchSensor
+        this.headTouchSensor = headTouchSensor
     }
 
     override fun onRobotFocusLost() {
         conversationBinder?.unbind()
 
         // Remove onStateChanged listeners.
-        headTouchSensor?.removeAllOnStateChangedListeners()
+        headTouchSensor.removeAllOnStateChangedListeners()
     }
 
     override fun onRobotFocusRefused(reason: String) {

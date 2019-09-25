@@ -35,7 +35,7 @@ private const val TAG = "CharacteristicsActivity"
  */
 class PeopleCharacteristicsTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
-    private var conversationBinder: ConversationBinder? = null
+    private lateinit var conversationBinder: ConversationBinder
 
     private lateinit var humanInfoAdapter: HumanInfoAdapter
 
@@ -80,7 +80,7 @@ class PeopleCharacteristicsTutorialActivity : TutorialActivity(), RobotLifecycle
 
         // Bind the conversational events to the view.
         val conversationStatus = qiContext.conversation.status(qiContext.robotContext)
-        conversationBinder = conversationView!!.bindConversationTo(conversationStatus)
+        conversationBinder = conversationView.bindConversationTo(conversationStatus)
 
         val say = SayBuilder.with(qiContext)
                 .withText("I can display characteristics about the human I'm seeing.")
@@ -98,7 +98,7 @@ class PeopleCharacteristicsTutorialActivity : TutorialActivity(), RobotLifecycle
         // Remove the QiContext.
         this.qiContext = null
 
-        conversationBinder?.unbind()
+        conversationBinder.unbind()
     }
 
     override fun onRobotFocusRefused(reason: String) {
@@ -174,8 +174,10 @@ class PeopleCharacteristicsTutorialActivity : TutorialActivity(), RobotLifecycle
                 Log.i(TAG, "Picture not available")
             }
 
-            val humanInfo = HumanInfo(age, gender, pleasureState, excitementState, engagementIntentionState, smileState, attentionState, distance!!, facePicture!!)
-            humanInfoList.add(humanInfo)
+            if (distance != null && facePicture != null) {
+                val humanInfo = HumanInfo(age, gender, pleasureState, excitementState, engagementIntentionState, smileState, attentionState, distance, facePicture)
+                humanInfoList.add(humanInfo)
+            }
         }
 
         displayHumanInfoList(humanInfoList)
