@@ -17,23 +17,21 @@ import com.aldebaran.qi.sdk.`object`.human.SmileState
 /**
  * Represents the human information.
  */
-class HumanInfo(val age: Int, val gender: Gender, val pleasureState: PleasureState, val excitementState: ExcitementState, val engagementIntentionState: EngagementIntentionState, val smileState: SmileState, val attentionState: AttentionState, val distance: Double, facePicture: Bitmap) {
-    var facePicture: Bitmap? = null
-        private set
-
-    init {
-        this.facePicture = facePicture
-    }
+data class HumanInfo(val age: Int, val gender: Gender, val pleasureState: PleasureState,
+                     val excitementState: ExcitementState, val engagementIntentionState: EngagementIntentionState,
+                     val smileState: SmileState, val attentionState: AttentionState, val distance: Double,  var facePicture: Bitmap? = null) {
 
     /**
      * To clear the memory before setting a new bitmap
      * [https://developer.android.com/reference/android/graphics/Bitmap.html#recycle()](https://developer.android.com/reference/android/graphics/Bitmap.html#recycle())
      */
     fun clearMemory() {
-        val localFacePicture = facePicture
-        if (localFacePicture != null && !localFacePicture.isRecycled) {
-            facePicture?.recycle()
-            facePicture = null
-        }
+        facePicture?.takeUnless { it.isRecycled }
+                ?.let {
+                    it.recycle()
+                    facePicture = it
+                    facePicture = null
+                }
     }
+
 }

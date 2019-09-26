@@ -19,7 +19,7 @@ import kotlin.properties.Delegates
 class BasicEmotionObserver {
 
     // Store the basic emotion listener.
-    private var listener: OnBasicEmotionChangedListener? = null
+    var listener: OnBasicEmotionChangedListener? = null
     // Store the HumanAwareness service.
     private var humanAwareness: HumanAwareness? = null
     // Store the observed emotion.
@@ -67,14 +67,6 @@ class BasicEmotionObserver {
             it.removeAllOnHumansAroundChangedListeners()
             humanAwareness = null
         }
-    }
-
-    /**
-     * Set the listener.
-     * @param listener the listener
-     */
-    fun setListener(listener: OnBasicEmotionChangedListener?) {
-        this.listener = listener
     }
 
     private fun updateObservedEmotion(humansAround: List<Human>) {

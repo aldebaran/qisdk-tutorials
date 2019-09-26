@@ -29,7 +29,7 @@ class TouchTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     private var conversationBinder: ConversationBinder? = null
 
     // Store the head touch sensor.
-    private lateinit var headTouchSensor: TouchSensor
+    private var headTouchSensor: TouchSensor? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +75,7 @@ class TouchTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         conversationBinder?.unbind()
 
         // Remove onStateChanged listeners.
-        headTouchSensor.removeAllOnStateChangedListeners()
+        headTouchSensor?.removeAllOnStateChangedListeners()
     }
 
     override fun onRobotFocusRefused(reason: String) {

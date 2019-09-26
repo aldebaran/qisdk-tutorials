@@ -32,7 +32,7 @@ class EmotionTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks, OnB
 
         // Create the basic emotion observer and listen to it.
         basicEmotionObserver = BasicEmotionObserver()
-        basicEmotionObserver?.setListener(this)
+        basicEmotionObserver?.listener = this
 
         // Register the RobotLifecycleCallbacks to this Activity.
         QiSDK.register(this, this)
@@ -40,7 +40,7 @@ class EmotionTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks, OnB
 
     override fun onDestroy() {
         // Stop listening to basic emotion observer and remove it.
-        basicEmotionObserver?.setListener(null)
+        basicEmotionObserver?.listener = null
         basicEmotionObserver = null
 
         // Unregister the RobotLifecycleCallbacks for this Activity.
@@ -90,7 +90,6 @@ class EmotionTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks, OnB
             BasicEmotion.JOYFUL -> R.drawable.ic_icons_cute_anon_joyful
             BasicEmotion.SAD -> R.drawable.ic_icons_cute_anon_sad
             BasicEmotion.ANGRY -> R.drawable.ic_icons_cute_anon_anger
-            else -> throw IllegalArgumentException("Unknown basic emotion: $basicEmotion")
         }
     }
 }

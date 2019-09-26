@@ -24,7 +24,6 @@ import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity
 import kotlinx.android.synthetic.main.activity_people_characteristics_tutorial.*
 
-import java.util.ArrayList
 import kotlin.math.sqrt
 
 private const val TAG = "CharacteristicsActivity"
@@ -44,7 +43,7 @@ class PeopleCharacteristicsTutorialActivity : TutorialActivity(), RobotLifecycle
     // The QiContext provided by the QiSDK.
     private var qiContext: QiContext? = null
 
-    private var humanInfoList: MutableList<HumanInfo> = ArrayList()
+    private val humanInfoList: MutableList<HumanInfo> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +56,7 @@ class PeopleCharacteristicsTutorialActivity : TutorialActivity(), RobotLifecycle
 
         // Find humans around when refresh button clicked.
         refresh_button.setOnClickListener {
-            if (qiContext != null) {
-                findHumansAround()
-            }
+            qiContext?.let { it -> findHumansAround(it) }
         }
 
         // Register the RobotLifecycleCallbacks to this Activity.
@@ -91,7 +88,7 @@ class PeopleCharacteristicsTutorialActivity : TutorialActivity(), RobotLifecycle
         // Get the HumanAwareness service from the QiContext.
         humanAwareness = qiContext.humanAwareness
 
-        findHumansAround()
+        findHumansAround(qiContext)
     }
 
     override fun onRobotFocusLost() {
@@ -105,30 +102,29 @@ class PeopleCharacteristicsTutorialActivity : TutorialActivity(), RobotLifecycle
         // Nothing here.
     }
 
-    private fun findHumansAround() {
-        if (humanAwareness != null) {
+    private fun findHumansAround(qiContext: QiContext) {
+        val humanAwareness = this.humanAwareness
             // Get the humans around the robot.
             val humansAroundFuture = humanAwareness?.async()?.humansAround
 
             humansAroundFuture?.andThenConsume { humansAround ->
                 Log.i(TAG, humansAround.size.toString() + " human(s) around.")
-                retrieveCharacteristics(humansAround)
+                retrieveCharacteristics(humansAround, qiContext)
             }
-        }
     }
 
-    private fun retrieveCharacteristics(humans: List<Human>) {
+    private fun retrieveCharacteristics(humans: List<Human>, qiContext: QiContext) {
         // Get the Actuation service from the QiContext.
-        val actuation = qiContext?.actuation
+        val actuation = qiContext.actuation
 
         // Get the robot frame.
-        val robotFrame = actuation?.robotFrame()
+        val robotFrame = actuation.robotFrame()
         //we clear memory used for human who are being showed
         for (h in humanInfoList) {
             h.clearMemory()
         }
 
-        humanInfoList = ArrayList()
+        humanInfoList.clear()
         for (i in humans.indices) {
             // Get the human.
             val human = humans[i]
