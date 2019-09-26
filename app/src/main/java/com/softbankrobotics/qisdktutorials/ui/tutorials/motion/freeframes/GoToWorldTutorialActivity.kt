@@ -49,7 +49,7 @@ private const val TAG = "GoToWorldActivity"
 class GoToWorldTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
     private var conversationBinder: ConversationBinder? = null
-    private var spinnerAdapter: ArrayAdapter<String>? = null
+    private lateinit var spinnerAdapter: ArrayAdapter<String>
 
     // Store the selected location.
     private var selectedLocation: String? = null
@@ -67,7 +67,7 @@ class GoToWorldTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        editText.setOnEditorActionListener { v, actionId, event ->
+        editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 handleSaveClick()
             }
@@ -101,7 +101,7 @@ class GoToWorldTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
         // Setup spinner adapter.
         spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, ArrayList())
-        spinnerAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = spinnerAdapter
 
         // Register the RobotLifecycleCallbacks to this Activity.
@@ -114,7 +114,7 @@ class GoToWorldTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         super.onDestroy()
     }
 
-    override fun getLayoutId() = R.layout.activity_go_to_world_tutorial
+    override val layoutId = R.layout.activity_go_to_world_tutorial
 
     override fun onRobotFocusGained(qiContext: QiContext) {
         Log.i(TAG, "Focus gained.")
@@ -158,7 +158,7 @@ class GoToWorldTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         KeyboardUtils.hideKeyboard(this)
         // Save location only if new.
         if (location.isNotEmpty() && !savedLocations.containsKey(location)) {
-            spinnerAdapter?.add(location)
+            spinnerAdapter.add(location)
             displayLine("Location added: $location", ConversationItemType.INFO_LOG)
             saveLocation(location)
         }

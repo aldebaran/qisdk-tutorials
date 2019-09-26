@@ -46,7 +46,7 @@ class AnimationLabelActivity : TutorialActivity(), RobotLifecycleCallbacks {
         super.onDestroy()
     }
 
-    override fun getLayoutId(): Int = R.layout.conversation_layout
+    override val layoutId = R.layout.conversation_layout
 
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Bind the conversational events to the view.
@@ -70,7 +70,7 @@ class AnimationLabelActivity : TutorialActivity(), RobotLifecycleCallbacks {
                 .build() // Build the animate action.
 
         // Say and display the name of the reached labels
-        animate.addOnLabelReachedListener { label, time ->
+        animate.addOnLabelReachedListener { label, _ ->
             val sayLabel = SayBuilder.with(qiContext)
                     .withText(label)
                     .build()

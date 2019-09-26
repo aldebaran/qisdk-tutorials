@@ -26,7 +26,6 @@ import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity
 import kotlinx.android.synthetic.main.activity_autonomous_abilities_tutorial.conversationView
 import kotlinx.android.synthetic.main.activity_follow_human_tutorial.*
 
-import java.util.Collections
 import java.util.concurrent.TimeUnit
 import kotlin.math.sqrt
 
@@ -50,10 +49,10 @@ class FollowHumanTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks 
         // Search humans on follow button clicked.
         follow_button.setOnClickListener {
             if (qiContext != null) {
-                conversationView.isEnabled = false
+                follow_button.isEnabled = false
                 displayLine("Following in 3 seconds...", ConversationItemType.INFO_LOG)
                 // Wait 3 seconds before following.
-                FutureUtils.wait(3, TimeUnit.SECONDS).andThenConsume { ignored -> searchHumans() }
+                FutureUtils.wait(3, TimeUnit.SECONDS).andThenConsume { searchHumans() }
             }
         }
 
@@ -75,7 +74,7 @@ class FollowHumanTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks 
         super.onDestroy()
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_follow_human_tutorial
+    override val layoutId = R.layout.activity_follow_human_tutorial
 
     override fun onRobotFocusGained(qiContext: QiContext) {
         Log.i(TAG, "Focus gained.")
@@ -131,17 +130,20 @@ class FollowHumanTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks 
     }
 
     private fun searchHumans() {
-        val humanAwareness = qiContext?.humanAwareness
-        val humansAroundFuture = humanAwareness?.async()?.humansAround
-        humansAroundFuture?.andThenConsume { humans ->
-            // If humans found, follow the closest one.
-            if (humans.isNotEmpty()) {
-                Log.i(TAG, "Human found.")
-                val humanToFollow = getClosestHuman(humans)
-                followHuman(humanToFollow)
-            } else {
-                Log.i(TAG, "No human.")
-                enterWaitingForOrderState()
+        val qiContext = qiContext
+        if(qiContext != null) {
+            val humanAwareness = qiContext.humanAwareness
+            val humansAroundFuture = humanAwareness.async().humansAround
+            humansAroundFuture.andThenConsume { humans ->
+                // If humans found, follow the closest one.
+                if (humans.isNotEmpty()) {
+                    Log.i(TAG, "Human found.")
+                    val humanToFollow = getClosestHuman(humans, qiContext)
+                    humanToFollow?.let { followHuman(it) }
+                } else {
+                    Log.i(TAG, "No human.")
+                    enterWaitingForOrderState()
+                }
             }
         }
     }
@@ -202,20 +204,17 @@ class FollowHumanTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks 
         goToFuture?.requestCancellation()
     }
 
-    private fun getClosestHuman(humans: List<Human>): Human {
+    private fun getClosestHuman(humans: List<Human>, qiContext: QiContext): Human? {
         // Get the robot frame.
-        val robotFrame = qiContext?.actuation?.robotFrame()
+        val robotFrame = qiContext.actuation.robotFrame()
 
-        // Compare humans using the distance.
-        val comparator = {
-            human1: Human, human2: Human -> getDistance(robotFrame, human1).compareTo(getDistance(robotFrame, human2))
+        // Return the closest human
+        return humans.minBy {
+            getDistance(robotFrame, it)
         }
-
-        // Return the closest human.
-        return Collections.min(humans, comparator)
     }
 
-    private fun getDistance(robotFrame: Frame?, human: Human): Double {
+    private fun getDistance(robotFrame: Frame, human: Human): Double {
         // Get the human head frame.
         val humanFrame = human.headFrame
         // Retrieve the translation between the robot and the human.

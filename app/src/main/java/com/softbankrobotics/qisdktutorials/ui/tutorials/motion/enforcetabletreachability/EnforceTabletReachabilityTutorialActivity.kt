@@ -104,7 +104,7 @@ class EnforceTabletReachabilityTutorialActivity : TutorialActivity(), RobotLifec
         super.onDestroy()
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_enforce_tablet_reachability_tutorial
+    override val layoutId = R.layout.activity_enforce_tablet_reachability_tutorial
 
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Store qiContext

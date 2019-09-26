@@ -19,8 +19,8 @@ import com.aldebaran.qi.sdk.`object`.actuation.Animate
 import com.softbankrobotics.qisdktutorials.R
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType
-import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity
+import kotlinx.android.synthetic.main.conversation_layout.*
 
 private const val TAG = "AnimateTutorialActivity"
 
@@ -29,7 +29,6 @@ private const val TAG = "AnimateTutorialActivity"
  */
 class AnimateTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
-    private lateinit var conversationView: ConversationView
     private var conversationBinder: ConversationBinder? = null
     private var mediaPlayer: MediaPlayer? = null
 
@@ -38,8 +37,6 @@ class AnimateTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        conversationView = findViewById(R.id.conversationView)
 
         // Register the RobotLifecycleCallbacks to this Activity.
         QiSDK.register(this, this)
@@ -62,7 +59,7 @@ class AnimateTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         super.onDestroy()
     }
 
-    override fun getLayoutId(): Int = R.layout.conversation_layout
+    override val layoutId = R.layout.conversation_layout
 
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Bind the conversational events to the view.

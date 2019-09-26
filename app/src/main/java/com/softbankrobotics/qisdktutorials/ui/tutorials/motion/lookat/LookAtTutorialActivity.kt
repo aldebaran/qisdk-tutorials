@@ -7,7 +7,6 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.motion.lookat
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 
 import com.aldebaran.qi.Future
 import com.aldebaran.qi.sdk.QiContext
@@ -22,7 +21,8 @@ import com.softbankrobotics.qisdktutorials.R
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity
-import kotlinx.android.synthetic.main.activity_autonomous_abilities_tutorial.*
+import kotlinx.android.synthetic.main.activity_autonomous_abilities_tutorial.conversationView
+import kotlinx.android.synthetic.main.activity_look_at_tutorial.*
 
 private const val TAG = "LookAtTutorialActivity"
 
@@ -42,10 +42,8 @@ class LookAtTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Find the button in the view.
-        val cancelButton = findViewById<Button>(R.id.cancel_button)
         // Set the button onClick listener.
-        cancelButton.setOnClickListener {
+        cancel_button.setOnClickListener {
             lookAtFuture?.requestCancellation()
         }
 
@@ -59,7 +57,7 @@ class LookAtTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         super.onDestroy()
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_look_at_tutorial
+    override val layoutId = R.layout.activity_look_at_tutorial
 
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Bind the conversational events to the view.
