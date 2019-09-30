@@ -52,7 +52,6 @@ class TutorialToolbar (context: Context, attrs: AttributeSet? = null, defStyleAt
                 levelTextView.setText(R.string.toolbar_advanced_level)
                 backgroundView.setBackgroundColor(ContextCompat.getColor(context, R.color.advanced_orange))
             }
-            else -> throw IllegalArgumentException("Unknown tutorial level: $level")
         }
 
         invalidate()

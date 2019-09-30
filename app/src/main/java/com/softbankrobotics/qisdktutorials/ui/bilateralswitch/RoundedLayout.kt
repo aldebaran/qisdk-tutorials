@@ -23,7 +23,7 @@ class RoundedLayout(context: Context, attrs: AttributeSet?, defStyle: Int) : Fra
 
     private var paint: Paint? = null
     private var maskPaint: Paint? = null
-    private var cornerRadius: Float = 0.toFloat()
+    private var cornerRadius: Float = 0f
 
     init {
         init(context)

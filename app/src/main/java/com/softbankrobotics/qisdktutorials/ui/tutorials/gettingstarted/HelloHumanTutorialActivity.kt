@@ -35,7 +35,7 @@ class HelloHumanTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         super.onDestroy()
     }
 
-    override val layoutId: Int = R.layout.conversation_layout //To change initializer of created properties use File | Settings | File Templates.
+    override val layoutId: Int = R.layout.conversation_layout
 
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Bind the conversational events to the view.

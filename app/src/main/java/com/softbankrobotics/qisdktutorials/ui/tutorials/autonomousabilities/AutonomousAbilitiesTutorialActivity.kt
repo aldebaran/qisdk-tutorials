@@ -56,7 +56,7 @@ class AutonomousAbilitiesTutorialActivity : TutorialActivity(), RobotLifecycleCa
         super.onDestroy()
     }
 
-    override val layoutId: Int = R.layout.activity_autonomous_abilities_tutorial //To change initializer of created properties use File | Settings | File Templates.
+    override val layoutId: Int = R.layout.activity_autonomous_abilities_tutorial
 
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Store the provided QiContext.
@@ -97,19 +97,20 @@ class AutonomousAbilitiesTutorialActivity : TutorialActivity(), RobotLifecycleCa
 
     private fun holdAbilities(qiContext: QiContext?) {
         // Build and store the holder for the abilities.
-        holder = HolderBuilder.with(qiContext)
+        val holder = HolderBuilder.with(qiContext)
                 .withAutonomousAbilities(
                         AutonomousAbilitiesType.BACKGROUND_MOVEMENT,
                         AutonomousAbilitiesType.BASIC_AWARENESS,
                         AutonomousAbilitiesType.AUTONOMOUS_BLINKING
                 )
                 .build()
+                .also { this.holder = it }
 
         // Hold the abilities asynchronously.
-        val holdFuture = holder?.async()?.hold()
+        val holdFuture = holder.async().hold()
 
         // Chain the hold with a lambda on the UI thread.
-        holdFuture?.andThenConsume(Qi.onUiThread(Consumer<Void> {
+        holdFuture.andThenConsume(Qi.onUiThread(Consumer<Void> {
             displayLine("Abilities held.", ConversationItemType.INFO_LOG)
             // Store the abilities status.
             abilitiesHeld = true

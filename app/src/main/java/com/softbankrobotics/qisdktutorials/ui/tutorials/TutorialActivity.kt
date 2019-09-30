@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.tutorial_toolbar.*
  */
 abstract class TutorialActivity : RobotActivity() {
 
-    private var rootView: View? = null
+    private lateinit var rootView: View
     private var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
     /**
@@ -45,23 +45,21 @@ abstract class TutorialActivity : RobotActivity() {
         rootView = findViewById(android.R.id.content)
         globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
             val rect = Rect()
-            rootView?.getWindowVisibleDisplayFrame(rect)
-            val screenHeight = rootView?.height
-            val keypadHeight = screenHeight?.minus(rect.bottom)
+            rootView.getWindowVisibleDisplayFrame(rect)
+            val screenHeight = rootView.height
+            val keypadHeight = screenHeight.minus(rect.bottom)
 
             // Hide system UI if keyboard is closed.
-            if (keypadHeight != null) {
-                if (keypadHeight <= screenHeight * 0.30) {
-                    hideSystemUI()
-                }
+            if (keypadHeight <= screenHeight * 0.30) {
+                hideSystemUI()
             }
         }
 
-        rootView?.viewTreeObserver?.addOnGlobalLayoutListener(globalLayoutListener)
+        rootView.viewTreeObserver?.addOnGlobalLayoutListener(globalLayoutListener)
     }
 
     override fun onPause() {
-        rootView?.viewTreeObserver?.removeOnGlobalLayoutListener(globalLayoutListener)
+        rootView.viewTreeObserver?.removeOnGlobalLayoutListener(globalLayoutListener)
         super.onPause()
     }
 

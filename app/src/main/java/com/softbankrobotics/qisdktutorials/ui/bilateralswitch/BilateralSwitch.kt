@@ -7,6 +7,7 @@ package com.softbankrobotics.qisdktutorials.ui.bilateralswitch
 
 import android.content.Context
 import android.support.constraint.ConstraintSet
+import android.support.v4.content.ContextCompat
 import android.transition.AutoTransition
 import android.transition.Transition
 import android.transition.TransitionManager
@@ -60,11 +61,11 @@ class BilateralSwitch (context: Context, attrs: AttributeSet? = null, defStyleAt
 
         setOnClickListener(this)
 
-        levelView.setText(FIRST_SECTION_TEXT)
+        levelView.text = FIRST_SECTION_TEXT.toString()
         color_layer.setBackgroundResource(BACKGROUND_FIRST_SECTION_COLOR)
 
-        first_section?.text = firstSectionName
-        second_section?.text = secondSectionName
+        first_section.text = firstSectionName
+        second_section.text = secondSectionName
     }
 
     fun setOnCheckedChangeListener(onCheckedChangeListener: OnCheckedChangeListener) {
@@ -90,6 +91,11 @@ class BilateralSwitch (context: Context, attrs: AttributeSet? = null, defStyleAt
         }
     }
 
+    private fun BilateralSwitch.collapseTransition() {
+    }
+
+
+
     private fun collapseTransition() {
         val cs = ConstraintSet()
         cs.clone(layout)
@@ -113,9 +119,9 @@ class BilateralSwitch (context: Context, attrs: AttributeSet? = null, defStyleAt
                 button_hover.visibility = View.GONE
 
                 if (isChecked) {
-                    levelView.setText(FIRST_SECTION_TEXT)
+                    levelView.text = FIRST_SECTION_TEXT.toString()
                 } else {
-                    levelView.setText(SECOND_SECTION_TEXT)
+                    levelView.text = SECOND_SECTION_TEXT.toString()
                 }
 
                 transition.removeListener(this)
@@ -143,11 +149,11 @@ class BilateralSwitch (context: Context, attrs: AttributeSet? = null, defStyleAt
         if (!isChecked) {
             cs.connect(R.id.color_layer, ConstraintSet.END, R.id.second_section, ConstraintSet.END)
             cs.connect(R.id.color_layer, ConstraintSet.START, R.id.levelView, ConstraintSet.START)
-            color_layer.setBackgroundResource(BACKGROUND_SECOND_SECTION_COLOR)
+            color_layer.setBackgroundColor(ContextCompat.getColor(context, BACKGROUND_SECOND_SECTION_COLOR))
         } else {
             cs.connect(R.id.color_layer, ConstraintSet.END, R.id.levelView, ConstraintSet.END)
             cs.connect(R.id.color_layer, ConstraintSet.START, R.id.first_section, ConstraintSet.START)
-            color_layer.setBackgroundResource(BACKGROUND_FIRST_SECTION_COLOR)
+            color_layer.setBackgroundColor(ContextCompat.getColor(context, BACKGROUND_FIRST_SECTION_COLOR))
         }
 
         val firstTransition = AutoTransition()
