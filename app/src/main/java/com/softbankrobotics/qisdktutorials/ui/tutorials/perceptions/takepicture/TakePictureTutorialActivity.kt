@@ -56,7 +56,7 @@ class TakePictureTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks 
         super.onDestroy()
     }
 
-    override fun getLayoutId() = R.layout.activity_take_picture_tutorial
+    override val layoutId = R.layout.activity_take_picture_tutorial
 
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Store the provided QiContext.

@@ -69,7 +69,7 @@ class PeopleCharacteristicsTutorialActivity : TutorialActivity(), RobotLifecycle
         super.onDestroy()
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_people_characteristics_tutorial
+    override val layoutId = R.layout.activity_people_characteristics_tutorial
 
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Store the provided QiContext.

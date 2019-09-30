@@ -44,7 +44,7 @@ class ListenTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         super.onDestroy()
     }
 
-    override fun getLayoutId(): Int = R.layout.conversation_layout
+    override val layoutId = R.layout.conversation_layout
 
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Bind the conversational events to the view.

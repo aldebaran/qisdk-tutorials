@@ -96,7 +96,7 @@ class ExecuteTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         // Nothing here.
     }
 
-    override fun getLayoutId(): Int = R.layout.conversation_layout
+    override val layoutId = R.layout.conversation_layout
 
 
     private fun displayLine(text: String, type: ConversationItemType) {

@@ -51,9 +51,7 @@ class DetectHumansWithLocalizationTutorialActivity : TutorialActivity(), RobotLi
         super.onDestroy()
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_detect_humans_with_localization_tutorial
-    }
+    override val layoutId = R.layout.activity_detect_humans_with_localization_tutorial
 
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Bind the conversational events to the view.

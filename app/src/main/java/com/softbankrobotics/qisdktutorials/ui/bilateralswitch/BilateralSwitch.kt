@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat
 import android.transition.AutoTransition
 import android.transition.Transition
 import android.transition.TransitionManager
+import android.transition.TransitionSet
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -61,8 +62,8 @@ class BilateralSwitch (context: Context, attrs: AttributeSet? = null, defStyleAt
 
         setOnClickListener(this)
 
-        levelView.text = FIRST_SECTION_TEXT.toString()
-        color_layer.setBackgroundResource(BACKGROUND_FIRST_SECTION_COLOR)
+        levelView.text = resources.getString(FIRST_SECTION_TEXT)
+        color_layer.setBackgroundColor(ContextCompat.getColor(context, BACKGROUND_FIRST_SECTION_COLOR))
 
         first_section.text = firstSectionName
         second_section.text = secondSectionName
@@ -91,11 +92,6 @@ class BilateralSwitch (context: Context, attrs: AttributeSet? = null, defStyleAt
         }
     }
 
-    private fun BilateralSwitch.collapseTransition() {
-    }
-
-
-
     private fun collapseTransition() {
         val cs = ConstraintSet()
         cs.clone(layout)
@@ -112,29 +108,18 @@ class BilateralSwitch (context: Context, attrs: AttributeSet? = null, defStyleAt
         val firstTransition = AutoTransition()
         firstTransition.duration = TRANSITION_DURATION.toLong()
 
-        firstTransition.addListener(object : Transition.TransitionListener {
-            override fun onTransitionStart(transition: Transition) {}
+        firstTransition.addEndListener { transition, listener ->
+            button_hover.visibility = View.GONE
 
-            override fun onTransitionEnd(transition: Transition) {
-                button_hover.visibility = View.GONE
-
-                if (isChecked) {
-                    levelView.text = FIRST_SECTION_TEXT.toString()
-                } else {
-                    levelView.text = SECOND_SECTION_TEXT.toString()
-                }
-
-                transition.removeListener(this)
-                expandTransition()
+            if (isChecked) {
+                levelView.text = resources.getString(FIRST_SECTION_TEXT)
+            } else {
+                levelView.text = resources.getString(SECOND_SECTION_TEXT)
             }
 
-            override fun onTransitionCancel(transition: Transition) {}
-
-            override fun onTransitionPause(transition: Transition) {}
-
-            override fun onTransitionResume(transition: Transition) {}
-        })
-
+            transition.removeListener(listener)
+            expandTransition()
+        }
         TransitionManager.beginDelayedTransition(
                 this,
                 firstTransition)
@@ -159,27 +144,17 @@ class BilateralSwitch (context: Context, attrs: AttributeSet? = null, defStyleAt
         val firstTransition = AutoTransition()
         firstTransition.duration = TRANSITION_DURATION.toLong()
 
-        firstTransition.addListener(object : Transition.TransitionListener {
-            override fun onTransitionStart(transition: Transition) {}
+        firstTransition.addEndListener { transition, listener ->
+            isChecked = !isChecked
+            transition.removeListener(listener)
+            allowClick = true
 
-            override fun onTransitionEnd(transition: Transition) {
-                isChecked = !isChecked
-                transition.removeListener(this)
-                allowClick = true
-
-                if (onCheckedChangeListener != null && shouldNotifyListener) {
-                    onCheckedChangeListener?.onCheckedChanged(isChecked)
-                }
-
-                shouldNotifyListener = true
+            if (onCheckedChangeListener != null && shouldNotifyListener) {
+                onCheckedChangeListener?.onCheckedChanged(isChecked)
             }
 
-            override fun onTransitionCancel(transition: Transition) {}
-
-            override fun onTransitionPause(transition: Transition) {}
-
-            override fun onTransitionResume(transition: Transition) {}
-        })
+            shouldNotifyListener = true
+        }
 
         TransitionManager.beginDelayedTransition(
                 this,
@@ -188,4 +163,20 @@ class BilateralSwitch (context: Context, attrs: AttributeSet? = null, defStyleAt
         cs.applyTo(layout)
     }
 
+    private inline fun TransitionSet.addEndListener(crossinline listener: (Transition, Transition.TransitionListener) -> Unit) {
+        this.addListener(object : Transition.TransitionListener {
+            override fun onTransitionEnd(transition: Transition) {
+                listener(transition, this)
+            }
+
+            override fun onTransitionResume(transition: Transition) {}
+
+            override fun onTransitionPause(transition: Transition) {}
+
+            override fun onTransitionCancel(transition: Transition) {}
+
+            override fun onTransitionStart(transition: Transition) {}
+
+        })
+    }
 }

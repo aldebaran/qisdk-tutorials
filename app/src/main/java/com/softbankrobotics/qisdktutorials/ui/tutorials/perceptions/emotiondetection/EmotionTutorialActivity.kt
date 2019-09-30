@@ -48,7 +48,7 @@ class EmotionTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks, OnB
         super.onDestroy()
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_emotion_tutorial
+    override val layoutId = R.layout.activity_emotion_tutorial
 
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Bind the conversational events to the view.
