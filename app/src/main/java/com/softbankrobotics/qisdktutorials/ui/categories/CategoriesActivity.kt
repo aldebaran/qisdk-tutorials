@@ -14,6 +14,7 @@ import com.softbankrobotics.qisdktutorials.R
 import com.softbankrobotics.qisdktutorials.model.data.Tutorial
 import com.softbankrobotics.qisdktutorials.model.data.TutorialCategory
 import com.softbankrobotics.qisdktutorials.model.data.TutorialLevel
+import com.softbankrobotics.qisdktutorials.ui.bilateralswitch.OnCheckedChangeListener
 import kotlinx.android.synthetic.main.activity_categories.*
 
 /**
@@ -25,7 +26,7 @@ class CategoriesActivity : RobotActivity(), CategoriesContract.View, OnTutorialC
     private lateinit var robot: CategoriesContract.Robot
     private lateinit var router: CategoriesContract.Router
 
-    private var tutorialAdapter: TutorialAdapter? = null
+    private lateinit var tutorialAdapter: TutorialAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +49,8 @@ class CategoriesActivity : RobotActivity(), CategoriesContract.View, OnTutorialC
 
     override fun onResume() {
         super.onResume()
-        tutorialAdapter?.unselectTutorials()
-        tutorialAdapter?.setTutorialsEnabled(true)
+        tutorialAdapter.unselectTutorials()
+        tutorialAdapter.setTutorialsEnabled(true)
     }
 
     override fun onDestroy() {
@@ -59,13 +60,13 @@ class CategoriesActivity : RobotActivity(), CategoriesContract.View, OnTutorialC
     }
 
     override fun showTutorials(tutorials: List<Tutorial>) {
-        runOnUiThread { tutorialAdapter?.updateTutorials(tutorials) }
+        runOnUiThread { tutorialAdapter.updateTutorials(tutorials) }
     }
 
     override fun selectTutorial(tutorial: Tutorial) {
         runOnUiThread {
-            tutorialAdapter?.selectTutorial(tutorial)
-            tutorialAdapter?.setTutorialsEnabled(false)
+            tutorialAdapter.selectTutorial(tutorial)
+            tutorialAdapter.setTutorialsEnabled(false)
         }
     }
 
@@ -93,8 +94,8 @@ class CategoriesActivity : RobotActivity(), CategoriesContract.View, OnTutorialC
     }
 
     override fun onTutorialClicked(tutorial: Tutorial) {
-        tutorialAdapter?.selectTutorial(tutorial)
-        tutorialAdapter?.setTutorialsEnabled(false)
+        tutorialAdapter.selectTutorial(tutorial)
+        tutorialAdapter.setTutorialsEnabled(false)
         robot.stopDiscussion(tutorial)
     }
 
@@ -140,7 +141,7 @@ class CategoriesActivity : RobotActivity(), CategoriesContract.View, OnTutorialC
      * Configure the level switch.
      */
     private fun setupSwitch() {
-        level_switch.setOnCheckedChangeListener { isChecked ->
+        level_switch.setOnCheckedChangeListener(OnCheckedChangeListener { isChecked ->
             if (isChecked) {
                 presenter.loadTutorials(TutorialLevel.ADVANCED)
                 robot.selectLevel(TutorialLevel.ADVANCED)
@@ -148,6 +149,6 @@ class CategoriesActivity : RobotActivity(), CategoriesContract.View, OnTutorialC
                 presenter.loadTutorials(TutorialLevel.BASIC)
                 robot.selectLevel(TutorialLevel.BASIC)
             }
-        }
+        })
     }
 }

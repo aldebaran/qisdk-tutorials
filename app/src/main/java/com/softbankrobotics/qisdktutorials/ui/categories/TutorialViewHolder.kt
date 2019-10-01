@@ -16,19 +16,21 @@ import kotlinx.android.synthetic.main.tutorial_layout.view.*
 /**
  * The view holder to show a tutorial.
  */
-internal class TutorialViewHolder(itemView: View, private val onTutorialClickedListener: OnTutorialClickedListener?) : RecyclerView.ViewHolder(itemView) {
+internal class TutorialViewHolder(itemView: View, private val onTutorialClickedListener: OnTutorialClickedListener) : RecyclerView.ViewHolder(itemView) {
 
     /**
      * Binds a tutorial to the views.
      * @param tutorial the tutorial to bind
      */
     fun bind(tutorial: Tutorial) {
-        itemView.radioButton.isChecked = tutorial.isSelected
-        itemView.radioButton.isEnabled = tutorial.isEnabled
-        itemView.radioButton.text = "\"" + itemView.context.getString(tutorial.nameResId) + "\""
 
-        itemView.radioButton.setOnClickListener {
-            onTutorialClickedListener?.onTutorialClicked(tutorial)
+        with(itemView.radioButton) {
+            isChecked = tutorial.isSelected
+            isEnabled = tutorial.isEnabled
+            text = "\"${itemView.context.getString(tutorial.nameResId)}\""
+            setOnClickListener {
+                onTutorialClickedListener.onTutorialClicked(tutorial)
+            }
         }
 
         val tutorialLevel = tutorial.tutorialLevel

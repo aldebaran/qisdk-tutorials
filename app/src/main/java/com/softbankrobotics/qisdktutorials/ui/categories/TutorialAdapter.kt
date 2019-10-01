@@ -19,7 +19,7 @@ import java.util.ArrayList
  */
 internal class TutorialAdapter(private val onTutorialClickedListener: OnTutorialClickedListener) : RecyclerView.Adapter<TutorialViewHolder>() {
 
-    private var tutorials: List<Tutorial> = ArrayList()
+    private var tutorials = listOf<Tutorial>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TutorialViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.tutorial_layout, parent, false)
@@ -55,8 +55,8 @@ internal class TutorialAdapter(private val onTutorialClickedListener: OnTutorial
      * Unselect all the tutorials.
      */
     fun unselectTutorials() {
-        for (tutorial in tutorials) {
-            tutorial.isSelected = false
+        tutorials.forEach {
+            it.isSelected = false
         }
         notifyDataSetChanged()
     }
@@ -66,8 +66,8 @@ internal class TutorialAdapter(private val onTutorialClickedListener: OnTutorial
      * @param enabled `true` to enable, `false` to disable
      */
     fun setTutorialsEnabled(enabled: Boolean) {
-        for (tutorial in tutorials) {
-            tutorial.isEnabled = enabled
+        tutorials.forEach {
+            it.isEnabled = enabled
         }
         notifyDataSetChanged()
     }

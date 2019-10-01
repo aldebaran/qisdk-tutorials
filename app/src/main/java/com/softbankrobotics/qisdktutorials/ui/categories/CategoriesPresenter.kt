@@ -16,7 +16,7 @@ import com.softbankrobotics.qisdktutorials.model.repository.TutorialRepository
 internal class CategoriesPresenter : CategoriesContract.Presenter {
     private var view: CategoriesContract.View? = null
     private val tutorialRepository: TutorialRepository = TutorialRepository()
-    private var loadedTutorials: List<Tutorial>? = null
+    private var loadedTutorials: MutableList<Tutorial> = mutableListOf()
     private var selectedCategory = TutorialCategory.TALK
     private var selectedLevel = TutorialLevel.BASIC
 
@@ -39,14 +39,11 @@ internal class CategoriesPresenter : CategoriesContract.Presenter {
     }
 
     override fun goToTutorialForQiChatbotId(tutorialQiChatbotId: String) {
-        val loadedTutorials = this.loadedTutorials
-        if (loadedTutorials != null) {
-            for (tutorial in loadedTutorials) {
-                if (tutorial.qiChatbotId == tutorialQiChatbotId) {
-                    view?.selectTutorial(tutorial)
-                    view?.goToTutorial(tutorial)
-                    break
-                }
+        for (tutorial in loadedTutorials) {
+            if (tutorial.qiChatbotId == tutorialQiChatbotId) {
+                view?.selectTutorial(tutorial)
+                view?.goToTutorial(tutorial)
+                break
             }
         }
     }
@@ -56,10 +53,9 @@ internal class CategoriesPresenter : CategoriesContract.Presenter {
     }
 
     private fun updateTutorials() {
-        val loadedTutorials = tutorialRepository.getTutorials(selectedCategory, selectedLevel)
+        loadedTutorials = tutorialRepository.getTutorials(selectedCategory, selectedLevel)
         view?.selectCategory(selectedCategory)
         view?.selectLevel(selectedLevel)
         view?.showTutorials(loadedTutorials)
-        this.loadedTutorials = loadedTutorials
     }
 }

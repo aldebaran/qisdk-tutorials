@@ -52,16 +52,18 @@ internal class CategoriesRobot(private val presenter: CategoriesContract.Present
     }
 
     override fun stopDiscussion(tutorial: Tutorial) {
+        val chatFuture = chatFuture
         if (chatFuture != null) {
-            chatFuture?.thenConsume { future ->
+            chatFuture.thenConsume { future ->
                 if (future.isCancelled) {
                     presenter.goToTutorial(tutorial)
                 }
             }
-            chatFuture?.requestCancellation()
+            chatFuture.requestCancellation()
         } else {
             presenter.goToTutorial(tutorial)
         }
+        this.chatFuture = chatFuture
     }
 
     override fun selectTopic(category: TutorialCategory) {
@@ -154,7 +156,6 @@ internal class CategoriesRobot(private val presenter: CategoriesContract.Present
     }
 
     override fun onRobotFocusLost() {
-
         qiChatbot?.let {
             it.removeAllOnBookmarkReachedListeners()
             it.removeAllOnEndedListeners()
