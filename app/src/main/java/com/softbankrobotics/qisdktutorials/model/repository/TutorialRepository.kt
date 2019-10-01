@@ -29,7 +29,6 @@ class TutorialRepository {
             TutorialCategory.TALK -> getTalkTutorials(tutorialLevel)
             TutorialCategory.MOVE -> getMoveTutorials(tutorialLevel)
             TutorialCategory.SMART -> getSmartTutorials(tutorialLevel)
-            else -> throw IllegalArgumentException("Unknown tutorial category: $tutorialCategory")
         }
     }
 
@@ -39,7 +38,7 @@ class TutorialRepository {
      * @return The list of tutorials for the talk category and the specified level.
      */
     private fun getTalkTutorials(tutorialLevel: TutorialLevel): List<Tutorial> {
-        val tutorials = ArrayList<Tutorial>()
+        val tutorials = mutableListOf<Tutorial>()
 
         when (tutorialLevel) {
             TutorialLevel.BASIC -> {
@@ -54,7 +53,6 @@ class TutorialRepository {
                 tutorials.add(Tutorial(TutorialId.QICHAT_VARIABLE, R.string.qichat_variables, "qichat_variable", TutorialLevel.ADVANCED))
                 tutorials.add(Tutorial(TutorialId.CHAT_LOCALE, R.string.chat_locale, "chat_locale", TutorialLevel.ADVANCED))
             }
-            else -> throw IllegalArgumentException("Unknown tutorial level: $tutorialLevel")
         }
         return tutorials
     }
@@ -65,7 +63,7 @@ class TutorialRepository {
      * @return The list of tutorials for the move category and the specified level.
      */
     private fun getMoveTutorials(tutorialLevel: TutorialLevel): List<Tutorial> {
-        val tutorials = ArrayList<Tutorial>()
+        val tutorials = mutableListOf<Tutorial>()
 
         when (tutorialLevel) {
             TutorialLevel.BASIC -> {
@@ -79,7 +77,6 @@ class TutorialRepository {
                 tutorials.add(Tutorial(TutorialId.GOTO_WORLD, R.string.go_to_world, "goto_world", TutorialLevel.ADVANCED))
                 tutorials.add(Tutorial(TutorialId.ATTACHED_FRAME, R.string.follow_human, "follow", TutorialLevel.ADVANCED))
             }
-            else -> throw IllegalArgumentException("Unknown tutorial level: $tutorialLevel")
         }
         return tutorials
     }
@@ -103,7 +100,6 @@ class TutorialRepository {
                 tutorials.add(Tutorial(TutorialId.EMOTION, R.string.emotion, "emotion", TutorialLevel.ADVANCED))
                 tutorials.add(Tutorial(TutorialId.DETECT_HUMANS_WITH_LOCALIZATION, R.string.detect_humans_with_localization, "detect_humans_with_localization", TutorialLevel.ADVANCED))
             }
-            else -> throw IllegalArgumentException("Unknown tutorial level: $tutorialLevel")
         }
         return tutorials
     }

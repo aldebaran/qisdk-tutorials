@@ -16,7 +16,7 @@ import com.softbankrobotics.qisdktutorials.model.repository.TutorialRepository
 internal class CategoriesPresenter : CategoriesContract.Presenter {
     private var view: CategoriesContract.View? = null
     private val tutorialRepository: TutorialRepository = TutorialRepository()
-    private var loadedTutorials: MutableList<Tutorial> = mutableListOf()
+    private var loadedTutorials = listOf<Tutorial>()
     private var selectedCategory = TutorialCategory.TALK
     private var selectedLevel = TutorialLevel.BASIC
 
