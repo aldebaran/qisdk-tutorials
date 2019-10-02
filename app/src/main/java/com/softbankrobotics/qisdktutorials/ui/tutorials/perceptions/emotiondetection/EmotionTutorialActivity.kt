@@ -53,7 +53,7 @@ class EmotionTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks, OnB
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Bind the conversational events to the view.
         val conversationStatus = qiContext.conversation.status(qiContext.robotContext)
-        conversationBinder = conversationView.bindConversationTo(conversationStatus)
+        conversationBinder = conversation_view.bindConversationTo(conversationStatus)
 
         val say = SayBuilder.with(qiContext)
                 .withText("I can display the basic emotions of the human I'm seeing. Try to express an emotion with your smile, your voice or by touching my sensors.")
@@ -78,7 +78,7 @@ class EmotionTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks, OnB
 
     override fun onBasicEmotionChanged(basicEmotion: BasicEmotion) {
         // Update basic emotion image.
-        runOnUiThread { emotionView.setImageResource(emotionImageRes(basicEmotion)) }
+        runOnUiThread { emotion_image_view.setImageResource(emotionImageRes(basicEmotion)) }
     }
 
     @DrawableRes

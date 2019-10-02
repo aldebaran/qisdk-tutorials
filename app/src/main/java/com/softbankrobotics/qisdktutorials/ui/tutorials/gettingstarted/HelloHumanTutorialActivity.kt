@@ -40,7 +40,7 @@ class HelloHumanTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Bind the conversational events to the view.
         val conversationStatus = qiContext.conversation.status(qiContext.robotContext)
-        conversationBinder = conversationView.bindConversationTo(conversationStatus)
+        conversationBinder = conversation_view.bindConversationTo(conversationStatus)
 
         // Create a new say action.
         val say = SayBuilder.with(qiContext) // Create the builder with the context.

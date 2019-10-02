@@ -112,7 +112,7 @@ class EnforceTabletReachabilityTutorialActivity : TutorialActivity(), RobotLifec
 
         // Bind the conversational events to the view.
         val conversationStatus = qiContext.conversation.status(qiContext.robotContext)
-        conversationBinder = conversationView.bindConversationTo(conversationStatus)
+        conversationBinder = conversation_view.bindConversationTo(conversationStatus)
 
         // Build introduction Say
         val say = SayBuilder.with(qiContext)
@@ -174,7 +174,7 @@ class EnforceTabletReachabilityTutorialActivity : TutorialActivity(), RobotLifec
     }
 
     private fun displayLine(text: String, type: ConversationItemType) {
-        runOnUiThread { conversationView.addLine(text, type) }
+        runOnUiThread { conversation_view.addLine(text, type) }
     }
 
 }

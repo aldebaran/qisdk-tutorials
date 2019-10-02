@@ -16,6 +16,7 @@ import com.softbankrobotics.qisdktutorials.R
 import com.softbankrobotics.qisdktutorials.model.data.TutorialLevel
 import com.softbankrobotics.qisdktutorials.ui.tutorialtoolbar.TutorialToolbar
 import com.softbankrobotics.qisdktutorials.utils.Constants
+import kotlinx.android.synthetic.main.activity_take_picture_tutorial.*
 import kotlinx.android.synthetic.main.tutorial_toolbar.*
 
 /**
@@ -54,7 +55,6 @@ abstract class TutorialActivity : RobotActivity() {
                 hideSystemUI()
             }
         }
-
         rootView.viewTreeObserver?.addOnGlobalLayoutListener(globalLayoutListener)
     }
 
@@ -67,7 +67,6 @@ abstract class TutorialActivity : RobotActivity() {
      * Configures the toolbar.
      */
     private fun setupToolbar() {
-        val toolbar = findViewById<TutorialToolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener { onBackPressed() }
 

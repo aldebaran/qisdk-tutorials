@@ -77,7 +77,7 @@ class BookmarksTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Bind the conversational events to the view.
         val conversationStatus = qiContext.conversation.status(qiContext.robotContext)
-        conversationBinder = conversationView.bindConversationTo(conversationStatus)
+        conversationBinder = conversation_view.bindConversationTo(conversationStatus)
 
         // Create a topic.
         val topic = TopicBuilder.with(qiContext)
@@ -183,7 +183,7 @@ class BookmarksTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     }
 
     private fun displayLine(text: String, type: ConversationItemType) {
-        runOnUiThread { conversationView.addLine(text, type) }
+        runOnUiThread { conversation_view.addLine(text, type) }
     }
 
 }

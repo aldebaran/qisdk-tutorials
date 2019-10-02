@@ -24,7 +24,7 @@ internal class TutorialViewHolder(itemView: View, private val onTutorialClickedL
      */
     fun bind(tutorial: Tutorial) {
 
-        with(itemView.radioButton) {
+        with(itemView.radio_button) {
             isChecked = tutorial.isSelected
             isEnabled = tutorial.isEnabled
             text = "\"${itemView.context.getString(tutorial.nameResId)}\""
@@ -44,12 +44,12 @@ internal class TutorialViewHolder(itemView: View, private val onTutorialClickedL
     private fun bindLevelView(tutorialLevel: TutorialLevel) {
         when (tutorialLevel) {
             TutorialLevel.BASIC -> {
-                itemView.levelTextView.setText(R.string.basic_level)
-                itemView.levelTextView.setBackgroundResource(R.drawable.basic_level_shape)
+                itemView.level_textview.setText(R.string.basic_level)
+                itemView.level_textview.setBackgroundResource(R.drawable.basic_level_shape)
             }
             TutorialLevel.ADVANCED -> {
-                itemView.levelTextView.setText(R.string.advanced_level)
-                itemView.levelTextView.setBackgroundResource(R.drawable.advanced_level_shape)
+                itemView.level_textview.setText(R.string.advanced_level)
+                itemView.level_textview.setBackgroundResource(R.drawable.advanced_level_shape)
             }
         }
     }

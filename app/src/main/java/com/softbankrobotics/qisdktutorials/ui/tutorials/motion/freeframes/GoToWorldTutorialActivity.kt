@@ -11,11 +11,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
 
-import com.aldebaran.qi.Future
 import com.aldebaran.qi.sdk.QiContext
 import com.aldebaran.qi.sdk.QiSDK
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks
@@ -23,17 +19,12 @@ import com.aldebaran.qi.sdk.builder.GoToBuilder
 import com.aldebaran.qi.sdk.builder.SayBuilder
 import com.aldebaran.qi.sdk.builder.TransformBuilder
 import com.aldebaran.qi.sdk.`object`.actuation.Actuation
-import com.aldebaran.qi.sdk.`object`.actuation.Frame
 import com.aldebaran.qi.sdk.`object`.actuation.FreeFrame
 import com.aldebaran.qi.sdk.`object`.actuation.GoTo
 import com.aldebaran.qi.sdk.`object`.actuation.Mapping
-import com.aldebaran.qi.sdk.`object`.conversation.ConversationStatus
-import com.aldebaran.qi.sdk.`object`.conversation.Say
-import com.aldebaran.qi.sdk.`object`.geometry.Transform
 import com.softbankrobotics.qisdktutorials.R
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder
 import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType
-import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity
 import com.softbankrobotics.qisdktutorials.utils.KeyboardUtils
 import kotlinx.android.synthetic.main.activity_go_to_world_tutorial.*
@@ -67,7 +58,7 @@ class GoToWorldTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        editText.setOnEditorActionListener { _, actionId, _ ->
+        add_item_edit.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 handleSaveClick()
             }
@@ -123,7 +114,7 @@ class GoToWorldTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
         // Bind the conversational events to the view.
         val conversationStatus = qiContext.conversation.status(qiContext.robotContext)
-        conversationBinder = conversationView.bindConversationTo(conversationStatus)
+        conversationBinder = conversation_view.bindConversationTo(conversationStatus)
 
         actuation = qiContext.actuation
         mapping = qiContext.mapping
@@ -153,8 +144,8 @@ class GoToWorldTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     }
 
     private fun handleSaveClick() {
-        val location = editText.text.toString()
-        editText.setText("")
+        val location = add_item_edit.text.toString()
+        add_item_edit.setText("")
         KeyboardUtils.hideKeyboard(this)
         // Save location only if new.
         if (location.isNotEmpty() && !savedLocations.containsKey(location)) {
@@ -224,6 +215,6 @@ class GoToWorldTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     }
 
     private fun displayLine(text: String, type: ConversationItemType) {
-        runOnUiThread { conversationView.addLine(text, type) }
+        runOnUiThread { conversation_view.addLine(text, type) }
     }
 }

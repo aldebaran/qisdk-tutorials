@@ -39,7 +39,7 @@ class AutonomousAbilitiesTutorialActivity : TutorialActivity(), RobotLifecycleCa
         super.onCreate(savedInstanceState)
 
         // Set the button onClick listener.
-        button.setOnClickListener {
+        button_switch_autonomous.setOnClickListener {
             // Check that the Activity owns the focus.
             if (qiContext != null) {
                 toggleAbilities()
@@ -64,7 +64,7 @@ class AutonomousAbilitiesTutorialActivity : TutorialActivity(), RobotLifecycleCa
 
         // Bind the conversational events to the view.
         val conversationStatus = qiContext.conversation.status(qiContext.robotContext)
-        conversationBinder = conversationView.bindConversationTo(conversationStatus)
+        conversationBinder = conversation_view.bindConversationTo(conversationStatus)
 
         val say = SayBuilder.with(qiContext)
                 .withText("My autonomous abilities can be disabled: click on the button to hold/release them.")
@@ -86,7 +86,7 @@ class AutonomousAbilitiesTutorialActivity : TutorialActivity(), RobotLifecycleCa
 
     private fun toggleAbilities() {
         // Disable the button.
-        button.isEnabled = false
+        button_switch_autonomous.isEnabled = false
 
         if (abilitiesHeld) {
             holder?.let { releaseAbilities(it) }
@@ -115,9 +115,9 @@ class AutonomousAbilitiesTutorialActivity : TutorialActivity(), RobotLifecycleCa
             // Store the abilities status.
             abilitiesHeld = true
             // Change the button text.
-            button.setText(R.string.release)
+            button_switch_autonomous.setText(R.string.release)
             // Enable the button.
-            button.isEnabled = true
+            button_switch_autonomous.isEnabled = true
         } ))
     }
 
@@ -131,13 +131,13 @@ class AutonomousAbilitiesTutorialActivity : TutorialActivity(), RobotLifecycleCa
             // Store the abilities status.
             abilitiesHeld = false
             // Change the button text.
-            button.text = getString(R.string.hold)
+            button_switch_autonomous.text = getString(R.string.hold)
             // Enable the button.
-            button.isEnabled = true
+            button_switch_autonomous.isEnabled = true
         }))
     }
 
     private fun displayLine(text: String, type: ConversationItemType) {
-        runOnUiThread { conversationView.addLine(text, type) }
+        runOnUiThread { conversation_view.addLine(text, type) }
     }
 }

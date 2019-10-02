@@ -22,7 +22,7 @@
 
         <com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
             style="@style/RecyclerView"
-            android:id="@+id/conversationView"
+            android:id="@+id/conversation_view"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -34,7 +34,7 @@
             android:paddingEnd="8dp"/>
 
         <ImageView
-            android:id="@+id/emotionView"
+            android:id="@+id/emotion_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_icons_cute_anon_unknown"

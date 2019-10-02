@@ -126,14 +126,14 @@ class CategoriesActivity : RobotActivity(), CategoriesContract.View, OnTutorialC
      */
     private fun setupRecyclerView() {
         tutorialAdapter = TutorialAdapter(this)
-        recyclerview.layoutManager = LinearLayoutManager(this)
-        recyclerview.adapter = tutorialAdapter
+        recycler_view.layoutManager = LinearLayoutManager(this)
+        recycler_view.adapter = tutorialAdapter
 
         val drawable = getDrawable(R.drawable.empty_divider_tutorials)
         if (drawable != null) {
             val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
             dividerItemDecoration.setDrawable(drawable)
-            recyclerview.addItemDecoration(dividerItemDecoration)
+            recycler_view.addItemDecoration(dividerItemDecoration)
         }
     }
 

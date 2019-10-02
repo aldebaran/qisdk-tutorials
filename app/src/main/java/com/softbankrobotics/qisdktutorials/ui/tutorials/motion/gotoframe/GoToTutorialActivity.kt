@@ -52,7 +52,7 @@ class GoToTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Bind the conversational events to the view.
         val conversationStatus = qiContext.conversation.status(qiContext.robotContext)
-        conversationBinder = conversationView.bindConversationTo(conversationStatus)
+        conversationBinder = conversation_view.bindConversationTo(conversationStatus)
 
         val say = SayBuilder.with(qiContext)
                 .withText("I can move around: I will go 1 meter forward.")
@@ -121,6 +121,6 @@ class GoToTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     }
 
     private fun displayLine(text: String, type: ConversationItemType) {
-        runOnUiThread { conversationView?.addLine(text, type) }
+        runOnUiThread { conversation_view?.addLine(text, type) }
     }
 }

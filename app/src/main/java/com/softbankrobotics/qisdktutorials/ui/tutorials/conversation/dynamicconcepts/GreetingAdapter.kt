@@ -18,11 +18,7 @@ import java.util.ArrayList
  */
 internal class GreetingAdapter(private val onGreetingRemovedListener: OnGreetingRemovedListener) : RecyclerView.Adapter<GreetingViewHolder>() {
 
-    private val greetings: MutableList<String>
-
-    init {
-        this.greetings = ArrayList()
-    }
+    private val greetings: MutableList<String> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GreetingViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.greeting_layout, parent,false)

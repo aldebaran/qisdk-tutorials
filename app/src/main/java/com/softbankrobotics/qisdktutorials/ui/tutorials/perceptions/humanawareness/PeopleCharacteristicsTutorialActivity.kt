@@ -49,14 +49,14 @@ class PeopleCharacteristicsTutorialActivity : TutorialActivity(), RobotLifecycle
         super.onCreate(savedInstanceState)
 
         val layoutManager = LinearLayoutManager(this)
-        recyclerview.layoutManager = layoutManager
-        recyclerview.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
+        recycler_view.layoutManager = layoutManager
+        recycler_view.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
         humanInfoAdapter = HumanInfoAdapter()
-        recyclerview.adapter = humanInfoAdapter
+        recycler_view.adapter = humanInfoAdapter
 
         // Find humans around when refresh button clicked.
         refresh_button.setOnClickListener {
-            qiContext?.let { it -> findHumansAround(it) }
+            qiContext?.let { findHumansAround(it) }
         }
 
         // Register the RobotLifecycleCallbacks to this Activity.
@@ -77,7 +77,7 @@ class PeopleCharacteristicsTutorialActivity : TutorialActivity(), RobotLifecycle
 
         // Bind the conversational events to the view.
         val conversationStatus = qiContext.conversation.status(qiContext.robotContext)
-        conversationBinder = conversationView.bindConversationTo(conversationStatus)
+        conversationBinder = conversation_view.bindConversationTo(conversationStatus)
 
         val say = SayBuilder.with(qiContext)
                 .withText("I can display characteristics about the human I'm seeing.")

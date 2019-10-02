@@ -20,6 +20,6 @@ internal class ConversationViewHolder(itemView: View) : RecyclerView.ViewHolder(
      * @param text the text
      */
     fun bind(text: String) {
-        itemView.textView.text = text
+        itemView.textview.text = text
     }
 }

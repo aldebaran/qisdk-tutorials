@@ -35,7 +35,7 @@ internal class ConversationAdapter : RecyclerView.Adapter<ConversationViewHolder
         holder.bind(conversationItem.text)
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount() = items.size
 
     override fun getItemViewType(position: Int): Int {
         val conversationItem = items[position]

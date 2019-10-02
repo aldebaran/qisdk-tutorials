@@ -47,7 +47,7 @@ class ChatLocaleTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         super.onCreate(savedInstanceState)
 
         // Change the locale to English when checked.
-        enButton?.setOnCheckedChangeListener { buttonView, isChecked ->
+        en_button.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 disableButtons()
                 chatEN?.let { switchToChat(it) }
@@ -55,7 +55,7 @@ class ChatLocaleTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         }
 
         // Change the locale to Japanese when checked.
-        jaButton?.setOnCheckedChangeListener { buttonView, isChecked ->
+        ja_button.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 disableButtons()
                 chatJA?.let { switchToChat(it) }
@@ -71,8 +71,8 @@ class ChatLocaleTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
         // Disable and uncheck buttons.
         disableButtons()
-        enButton.isChecked = false
-        jaButton.isChecked = false
+        en_button.isChecked = false
+        ja_button.isChecked = false
     }
 
     override fun onDestroy() {
@@ -86,7 +86,7 @@ class ChatLocaleTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Bind the conversational events to the view.
         val conversationStatus = qiContext.conversation.status(qiContext.robotContext)
-        conversationBinder = conversationView?.bindConversationTo(conversationStatus)
+        conversationBinder = conversation_view?.bindConversationTo(conversationStatus)
 
         val say = SayBuilder.with(qiContext)
                 .withText("Select the locale of the discussion and talk to me.")
@@ -177,20 +177,20 @@ class ChatLocaleTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
     private fun disableButtons() {
         runOnUiThread {
-            enButton.isEnabled = false
-            jaButton.isEnabled = false
+            en_button.isEnabled = false
+            ja_button.isEnabled = false
         }
     }
 
     private fun enableButtons() {
         runOnUiThread {
-            enButton.isEnabled = true
-            jaButton.isEnabled = true
+            en_button.isEnabled = true
+            ja_button.isEnabled = true
         }
     }
 
     private fun displayLine(text: String, type: ConversationItemType) {
-        runOnUiThread { conversationView?.addLine(text, type) }
+        runOnUiThread { conversation_view?.addLine(text, type) }
     }
 
 }

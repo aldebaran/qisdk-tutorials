@@ -27,17 +27,17 @@ class TutorialToolbar (context: Context, attrs: AttributeSet? = null, defStyleAt
     constructor(context: Context, attrs: AttributeSet?): this(context, attrs,0)
 
     override fun setNavigationOnClickListener(listener: OnClickListener) {
-        backArrow.setOnClickListener(listener)
+        back_arrow.setOnClickListener(listener)
     }
 
     fun setName(name: String) {
-        titleTextView.text = name
+        title_textview.text = name
         invalidate()
         requestLayout()
     }
 
     fun setName(@StringRes resId: Int) {
-        titleTextView.setText(resId)
+        title_textview.text = resources.getString((resId))
         invalidate()
         requestLayout()
     }
@@ -45,12 +45,12 @@ class TutorialToolbar (context: Context, attrs: AttributeSet? = null, defStyleAt
     fun setLevel(level: TutorialLevel) {
         when (level) {
             TutorialLevel.BASIC -> {
-                levelTextView.setText(R.string.toolbar_basic_level)
-                backgroundView.setBackgroundColor(ContextCompat.getColor(context, R.color.basic_green))
+                level_textview.setText(R.string.toolbar_basic_level)
+                background_view.setBackgroundColor(ContextCompat.getColor(context, R.color.basic_green))
             }
             TutorialLevel.ADVANCED -> {
-                levelTextView.setText(R.string.toolbar_advanced_level)
-                backgroundView.setBackgroundColor(ContextCompat.getColor(context, R.color.advanced_orange))
+                level_textview.setText(R.string.toolbar_advanced_level)
+                background_view.setBackgroundColor(ContextCompat.getColor(context, R.color.advanced_orange))
             }
         }
 

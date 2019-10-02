@@ -56,7 +56,7 @@ class DetectHumansWithLocalizationTutorialActivity : TutorialActivity(), RobotLi
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Bind the conversational events to the view.
         val conversationStatus = qiContext.conversation.status(qiContext.robotContext)
-        conversationBinder = conversationView.bindConversationTo(conversationStatus)
+        conversationBinder = conversation_view.bindConversationTo(conversationStatus)
 
         say(qiContext, "I will map my environment. Please be sure that my hatch is closed and that you are at least 3 meters away from me while I'm scanning the place.")
         say(qiContext, "Ready? 5, 4, 3, 2, 1.")
@@ -140,7 +140,7 @@ class DetectHumansWithLocalizationTutorialActivity : TutorialActivity(), RobotLi
         displayLine(message, ConversationItemType.INFO_LOG)
 
         // Execute the Localize action asynchronously.
-        val localization = localize?.async()?.run()
+        val localization = localize.async().run()
 
         // Add a lambda to the action execution.
         localization?.thenConsume { future ->
@@ -160,6 +160,6 @@ class DetectHumansWithLocalizationTutorialActivity : TutorialActivity(), RobotLi
     }
 
     private fun displayLine(text: String, type: ConversationItemType) {
-        runOnUiThread { conversationView.addLine(text, type) }
+        runOnUiThread { conversation_view.addLine(text, type) }
     }
 }

@@ -7,7 +7,7 @@
     android:gravity="center_vertical|end">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="16dp"

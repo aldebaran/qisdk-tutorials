@@ -42,8 +42,8 @@ class TakePictureTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        take_pic.isEnabled = false
-        take_pic.setOnClickListener { takePic() }
+        take_pic_button.isEnabled = false
+        take_pic_button.setOnClickListener { takePic() }
 
         // Register the RobotLifecycleCallbacks to this Activity.
         QiSDK.register(this, this)
@@ -64,9 +64,9 @@ class TakePictureTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks 
 
         // Bind the conversational events to the view.
         val conversationStatus = qiContext.conversation.status(qiContext.robotContext)
-        conversationBinder = conversationView.bindConversationTo(conversationStatus)
+        conversationBinder = conversation_view.bindConversationTo(conversationStatus)
 
-        runOnUiThread { take_pic.isEnabled = true }
+        runOnUiThread { take_pic_button.isEnabled = true }
 
         val say = SayBuilder.with(qiContext)
                 .withText("I can take pictures. Press the button to try!")
@@ -104,8 +104,8 @@ class TakePictureTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks 
         // Take picture
         takePictureFuture.andThenCompose<TimestampedImageHandle>(Qi.onUiThread<TakePicture, Future<TimestampedImageHandle>> { takePicture ->
             Log.i(TAG, "take picture launched!")
-            progressBar.visibility = View.VISIBLE
-            take_pic.isEnabled = false
+            progress_bar.visibility = View.VISIBLE
+            take_pic_button.isEnabled = false
             takePicture.async().run()
         }).andThenConsume { timestampedImageHandle ->
             //Consume take picture action when it's ready
@@ -117,8 +117,8 @@ class TakePictureTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks 
             Log.i(TAG, "PICTURE RECEIVED!")
 
             runOnUiThread {
-                progressBar.visibility = View.GONE
-                take_pic.isEnabled = true
+                progress_bar.visibility = View.GONE
+                take_pic_button.isEnabled = true
             }
 
             val buffer = encodedImage.getData()

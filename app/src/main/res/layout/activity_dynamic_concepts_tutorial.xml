@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/add_item_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -36,23 +36,23 @@
         android:layout_marginTop="8dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_add"
-        app:layout_constraintBottom_toBottomOf="@+id/editText"
-        app:layout_constraintLeft_toRightOf="@+id/editText"
+        app:layout_constraintBottom_toBottomOf="@+id/add_item_edit"
+        app:layout_constraintLeft_toRightOf="@+id/add_item_edit"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editText"
+        app:layout_constraintTop_toTopOf="@+id/add_item_edit"
         android:contentDescription="@string/content_description_add_button" />
 
     <android.support.v7.widget.RecyclerView
         style="@style/RecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:id="@+id/recyclerview"
+        android:id="@+id/recycler_view"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="@+id/guideline"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintTop_toBottomOf="@+id/add_item_edit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         android:layout_marginBottom="8dp" />
@@ -68,7 +68,7 @@
 
     <com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
         style="@style/RecyclerView"
-        android:id="@+id/conversationView"
+        android:id="@+id/conversation_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:paddingStart="8dp"

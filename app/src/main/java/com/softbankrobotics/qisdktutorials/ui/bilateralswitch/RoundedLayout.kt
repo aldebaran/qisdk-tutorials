@@ -21,8 +21,8 @@ private const val CORNER_RADIUS = 42.0f
 
 class RoundedLayout(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLayout(context, attrs, defStyle) {
 
-    private var paint: Paint? = null
-    private var maskPaint: Paint? = null
+    private lateinit var paint: Paint
+    private lateinit var maskPaint: Paint
     private var cornerRadius: Float = 0f
 
     init {
@@ -39,7 +39,7 @@ class RoundedLayout(context: Context, attrs: AttributeSet?, defStyle: Int) : Fra
         paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
         maskPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
-        maskPaint?.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+        maskPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
 
         setWillNotDraw(false)
     }

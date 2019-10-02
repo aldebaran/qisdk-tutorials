@@ -20,6 +20,6 @@ internal class GreetingViewHolder(itemView: View, private val onGreetingRemovedL
      */
     fun bind(greeting: String) {
         itemView.greeting_textview.text = greeting
-        itemView.delete_button.setOnClickListener {onGreetingRemovedListener?.onGreetingRemoved(greeting)}
+        itemView.delete_button.setOnClickListener { onGreetingRemovedListener?.onGreetingRemoved(greeting) }
     }
 }

@@ -34,7 +34,7 @@ class AnimationLabelActivity : TutorialActivity(), RobotLifecycleCallbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        conversationView = findViewById(R.id.conversationView)
+        conversationView = findViewById(R.id.conversation_view)
 
         // Register the RobotLifecycleCallbacks to this Activity.
         QiSDK.register(this, this)

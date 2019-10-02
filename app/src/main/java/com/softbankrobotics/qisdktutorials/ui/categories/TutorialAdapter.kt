@@ -12,8 +12,6 @@ import android.view.ViewGroup
 import com.softbankrobotics.qisdktutorials.R
 import com.softbankrobotics.qisdktutorials.model.data.Tutorial
 
-import java.util.ArrayList
-
 /**
  * The adapter used to show tutorials.
  */

@@ -62,7 +62,7 @@ class BilateralSwitch (context: Context, attrs: AttributeSet? = null, defStyleAt
 
         setOnClickListener(this)
 
-        levelView.text = resources.getString(FIRST_SECTION_TEXT)
+        level_view.text = resources.getString(FIRST_SECTION_TEXT)
         color_layer.setBackgroundColor(ContextCompat.getColor(context, BACKGROUND_FIRST_SECTION_COLOR))
 
         first_section.text = firstSectionName
@@ -97,11 +97,11 @@ class BilateralSwitch (context: Context, attrs: AttributeSet? = null, defStyleAt
         cs.clone(layout)
 
         if (!isChecked) {
-            cs.connect(R.id.color_layer, ConstraintSet.START, R.id.levelView, ConstraintSet.START)
-            cs.connect(R.id.color_layer, ConstraintSet.END, R.id.levelView, ConstraintSet.END)
+            cs.connect(R.id.color_layer, ConstraintSet.START, R.id.level_view, ConstraintSet.START)
+            cs.connect(R.id.color_layer, ConstraintSet.END, R.id.level_view, ConstraintSet.END)
         } else {
-            cs.connect(R.id.color_layer, ConstraintSet.END, R.id.levelView, ConstraintSet.END)
-            cs.connect(R.id.color_layer, ConstraintSet.START, R.id.levelView, ConstraintSet.START)
+            cs.connect(R.id.color_layer, ConstraintSet.END, R.id.level_view, ConstraintSet.END)
+            cs.connect(R.id.color_layer, ConstraintSet.START, R.id.level_view, ConstraintSet.START)
         }
 
 
@@ -112,9 +112,9 @@ class BilateralSwitch (context: Context, attrs: AttributeSet? = null, defStyleAt
             button_hover.visibility = View.GONE
 
             if (isChecked) {
-                levelView.text = resources.getString(FIRST_SECTION_TEXT)
+                level_view.text = resources.getString(FIRST_SECTION_TEXT)
             } else {
-                levelView.text = resources.getString(SECOND_SECTION_TEXT)
+                level_view.text = resources.getString(SECOND_SECTION_TEXT)
             }
 
             transition.removeListener(listener)
@@ -133,10 +133,10 @@ class BilateralSwitch (context: Context, attrs: AttributeSet? = null, defStyleAt
 
         if (!isChecked) {
             cs.connect(R.id.color_layer, ConstraintSet.END, R.id.second_section, ConstraintSet.END)
-            cs.connect(R.id.color_layer, ConstraintSet.START, R.id.levelView, ConstraintSet.START)
+            cs.connect(R.id.color_layer, ConstraintSet.START, R.id.level_view, ConstraintSet.START)
             color_layer.setBackgroundColor(ContextCompat.getColor(context, BACKGROUND_SECOND_SECTION_COLOR))
         } else {
-            cs.connect(R.id.color_layer, ConstraintSet.END, R.id.levelView, ConstraintSet.END)
+            cs.connect(R.id.color_layer, ConstraintSet.END, R.id.level_view, ConstraintSet.END)
             cs.connect(R.id.color_layer, ConstraintSet.START, R.id.first_section, ConstraintSet.START)
             color_layer.setBackgroundColor(ContextCompat.getColor(context, BACKGROUND_FIRST_SECTION_COLOR))
         }

@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
-        android:id="@+id/conversationView"
+        android:id="@+id/conversation_view"
         style="@style/RecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"

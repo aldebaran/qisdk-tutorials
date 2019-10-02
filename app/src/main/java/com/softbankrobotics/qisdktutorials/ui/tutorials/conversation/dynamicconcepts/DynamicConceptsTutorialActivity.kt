@@ -40,7 +40,7 @@ class DynamicConceptsTutorialActivity : TutorialActivity(), RobotLifecycleCallba
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        editText.setOnEditorActionListener { v, actionId, event ->
+        add_item_edit.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 handleAddClick()
             }
@@ -58,8 +58,8 @@ class DynamicConceptsTutorialActivity : TutorialActivity(), RobotLifecycleCallba
         greetingAdapter = GreetingAdapter(greetingRemovedListener)
 
         // Setup recycler view.
-        recyclerview.layoutManager = LinearLayoutManager(this)
-        recyclerview.adapter = greetingAdapter
+        recycler_view.layoutManager = LinearLayoutManager(this)
+        recycler_view.adapter = greetingAdapter
 
         // Add greeting on add button clicked.
         add_button.setOnClickListener { handleAddClick() }
@@ -79,7 +79,7 @@ class DynamicConceptsTutorialActivity : TutorialActivity(), RobotLifecycleCallba
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Bind the conversational events to the view.
         val conversationStatus = qiContext.conversation.status(qiContext.robotContext)
-        conversationBinder = conversationView.bindConversationTo(conversationStatus)
+        conversationBinder = conversation_view.bindConversationTo(conversationStatus)
 
         val say = SayBuilder.with(qiContext)
                 .withText("Add more greetings to my dynamic concept and say \"Hello\".")
@@ -122,8 +122,8 @@ class DynamicConceptsTutorialActivity : TutorialActivity(), RobotLifecycleCallba
     }
 
     private fun handleAddClick() {
-        val greeting = editText.text.toString()
-        editText.setText("")
+        val greeting = add_item_edit.text.toString()
+        add_item_edit.setText("")
         KeyboardUtils.hideKeyboard(this)
         // Add greeting only if new.
         if (greeting.isNotEmpty() && !greetingAdapter.containsGreeting(greeting)) {
