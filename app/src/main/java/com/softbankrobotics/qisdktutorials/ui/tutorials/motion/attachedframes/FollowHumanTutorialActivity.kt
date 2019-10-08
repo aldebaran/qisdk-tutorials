@@ -168,18 +168,18 @@ class FollowHumanTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks 
         val goToFuture = goTo.async().run()
 
         // Update UI when the GoTo action finishes.
-        goToFuture.thenConsume { future ->
+        goToFuture.thenConsume {
             when {
-                future.isSuccess -> {
+                it.isSuccess -> {
                     Log.i(TAG, "Target reached.")
                     enterWaitingForOrderState()
                 }
-                future.isCancelled -> {
+                it.isCancelled -> {
                     Log.i(TAG, "Movement stopped.")
                     enterWaitingForOrderState()
                 }
                 else -> {
-                    Log.e(TAG, "Movement error.", future.error)
+                    Log.e(TAG, "Movement error.", it.error)
                     enterWaitingForOrderState()
                 }
             }

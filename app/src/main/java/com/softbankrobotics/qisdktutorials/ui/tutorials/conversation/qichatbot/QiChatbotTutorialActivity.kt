@@ -89,10 +89,10 @@ class QiChatbotTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         val chatFuture = this.chat.async().run()
 
         // Add a lambda to the action execution.
-        chatFuture.thenConsume { future ->
-            if (future.hasError()) {
+        chatFuture.thenConsume {
+            if (it.hasError()) {
                 val message = "Discussion finished with error."
-                Log.e(TAG, message, future.error)
+                Log.e(TAG, message, it.error)
                 displayLine(message, ConversationItemType.ERROR_LOG)
             }
         }

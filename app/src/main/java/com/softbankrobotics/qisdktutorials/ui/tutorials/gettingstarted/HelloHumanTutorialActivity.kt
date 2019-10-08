@@ -35,7 +35,7 @@ class HelloHumanTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         super.onDestroy()
     }
 
-    override val layoutId: Int = R.layout.conversation_layout
+    override val layoutId = R.layout.conversation_layout
 
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Bind the conversational events to the view.

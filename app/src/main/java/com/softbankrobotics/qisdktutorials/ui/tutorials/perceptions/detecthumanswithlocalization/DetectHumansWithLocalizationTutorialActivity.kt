@@ -83,8 +83,8 @@ class DetectHumansWithLocalizationTutorialActivity : TutorialActivity(), RobotLi
         localizeAndMap = LocalizeAndMapBuilder.with(qiContext).build()
 
         // Add an on status changed listener on the LocalizeAndMap action for the robot to say when he is localized.
-        localizeAndMap.addOnStatusChangedListener { status ->
-             if (status == LOCALIZED) {
+        localizeAndMap.addOnStatusChangedListener {
+             if (it == LOCALIZED) {
                         // Dump the ExplorationMap.
                         explorationMap = localizeAndMap.dumpMap()
 
@@ -107,12 +107,12 @@ class DetectHumansWithLocalizationTutorialActivity : TutorialActivity(), RobotLi
         localizationAndMapping = localizeAndMap.async().run()
 
         // Add a lambda to the action execution.
-        localizationAndMapping.thenConsume { future ->
-            if (future.hasError()) {
+        localizationAndMapping.thenConsume {
+            if (it.hasError()) {
                 val errorMessage = "LocalizeAndMap action finished with error."
-                Log.e(TAG, errorMessage, future.error)
+                Log.e(TAG, errorMessage, it.error)
                 displayLine(errorMessage, ConversationItemType.ERROR_LOG)
-            } else if (future.isCancelled) {
+            } else if (it.isCancelled) {
                 startLocalizing(qiContext)
             }
         }
@@ -125,8 +125,8 @@ class DetectHumansWithLocalizationTutorialActivity : TutorialActivity(), RobotLi
                 .build()
 
         // Add an on status changed listener on the Localize action for the robot to say when he is localized.
-        localize.addOnStatusChangedListener { status ->
-            if (status == LOCALIZED) {
+        localize.addOnStatusChangedListener {
+            if (it == LOCALIZED) {
                     val message = "Robot is localized."
                     Log.i(TAG, message)
                     displayLine(message, ConversationItemType.INFO_LOG)
@@ -143,10 +143,10 @@ class DetectHumansWithLocalizationTutorialActivity : TutorialActivity(), RobotLi
         val localization = localize.async().run()
 
         // Add a lambda to the action execution.
-        localization?.thenConsume { future ->
-            if (future.hasError()) {
+        localization?.thenConsume {
+            if (it.hasError()) {
                 val errorMessage = "Localize action finished with error."
-                Log.e(TAG, errorMessage, future.error)
+                Log.e(TAG, errorMessage, it.error)
                 displayLine(errorMessage, ConversationItemType.ERROR_LOG)
             }
         }

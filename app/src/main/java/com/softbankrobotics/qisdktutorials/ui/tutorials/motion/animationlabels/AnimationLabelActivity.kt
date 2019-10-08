@@ -91,14 +91,14 @@ class AnimationLabelActivity : TutorialActivity(), RobotLifecycleCallbacks {
         this.animate = animate
 
         // Add a lambda to the action execution.
-        animateFuture.thenConsume { future ->
-            if (future.isSuccess) {
+        animateFuture.thenConsume {
+            if (it.isSuccess) {
                 val message = "Animation finished with success."
                 Log.i(TAG, message)
                 displayLine(message, ConversationItemType.INFO_LOG)
-            } else if (future.hasError()) {
+            } else if (it.hasError()) {
                 val message = "Animation finished with error."
-                Log.e(TAG, message, future.error)
+                Log.e(TAG, message, it.error)
                 displayLine(message, ConversationItemType.ERROR_LOG)
             }
         }

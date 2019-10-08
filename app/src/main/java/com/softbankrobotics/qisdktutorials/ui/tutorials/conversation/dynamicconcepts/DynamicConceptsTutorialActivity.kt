@@ -123,7 +123,7 @@ class DynamicConceptsTutorialActivity : TutorialActivity(), RobotLifecycleCallba
 
     private fun handleAddClick() {
         val greeting = add_item_edit.text.toString()
-        add_item_edit.setText("")
+        add_item_edit.text.clear()
         KeyboardUtils.hideKeyboard(this)
         // Add greeting only if new.
         if (greeting.isNotEmpty() && !greetingAdapter.containsGreeting(greeting)) {

@@ -66,7 +66,7 @@ class GoToWorldTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         }
 
         // Save location on save button clicked.
-        save_button.setOnClickListener {handleSaveClick() }
+        save_button.setOnClickListener { handleSaveClick() }
 
         // Go to location on go to button clicked.
         goto_button.setOnClickListener {
@@ -145,7 +145,7 @@ class GoToWorldTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
     private fun handleSaveClick() {
         val location = add_item_edit.text.toString()
-        add_item_edit.setText("")
+        add_item_edit.text.clear()
         KeyboardUtils.hideKeyboard(this)
         // Save location only if new.
         if (location.isNotEmpty() && !savedLocations.containsKey(location)) {
@@ -168,11 +168,11 @@ class GoToWorldTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     private fun saveLocation(location: String) {
         // Get the robot frame asynchronously.
         val robotFrameFuture = actuation?.async()?.robotFrame()
-        robotFrameFuture?.andThenConsume { robotFrame ->
+        robotFrameFuture?.andThenConsume {
             // Create a FreeFrame representing the current robot frame.
             val locationFrame = mapping?.makeFreeFrame()
             val transform = TransformBuilder.create().fromXTranslation(0.0)
-            locationFrame?.update(robotFrame, transform, 0L)
+            locationFrame?.update(it, transform, 0L)
 
             // Store the FreeFrame.
             if (locationFrame != null)
@@ -203,12 +203,12 @@ class GoToWorldTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
             // Execute the GoTo action asynchronously.
             goTo.async().run()
-        }?.thenConsume { future ->
-            if (future.isSuccess) {
+        }?.thenConsume {
+            if (it.isSuccess) {
                 Log.i(TAG, "Location reached: $location")
                 waitForInstructions()
-            } else if (future.hasError()) {
-                Log.e(TAG, "Go to location error", future.error)
+            } else if (it.hasError()) {
+                Log.e(TAG, "Go to location error", it.error)
                 waitForInstructions()
             }
         }

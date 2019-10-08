@@ -70,11 +70,11 @@ class EnforceTabletReachabilityTutorialActivity : TutorialActivity(), RobotLifec
         enforceTabletReachabilityFuture = enforceTabletReachability?.async()?.run()
 
         // Handle the action's end
-        enforceTabletReachabilityFuture?.thenConsume { future ->
+        enforceTabletReachabilityFuture?.thenConsume {
             // Display eventual errors
-            if (future.hasError()) {
+            if (it.hasError()) {
                 val message = "The EnforceTabletReachability action finished with error."
-                Log.e(TAG, message, future.error)
+                Log.e(TAG, message, it.error)
                 displayLine(message, ConversationItemType.ERROR_LOG)
             } else {
                 val message = "The EnforceTabletReachability action has finished."

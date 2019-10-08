@@ -121,7 +121,7 @@ class TakePictureTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks 
                 take_pic_button.isEnabled = true
             }
 
-            val buffer = encodedImage.getData()
+            val buffer = encodedImage.data
             buffer.rewind()
             val pictureBufferSize = buffer.remaining()
             val pictureArray = ByteArray(pictureBufferSize)

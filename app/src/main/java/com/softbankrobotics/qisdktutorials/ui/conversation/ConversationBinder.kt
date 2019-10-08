@@ -22,8 +22,8 @@ class ConversationBinder private constructor(private val conversationStatus: Con
             }
         }
 
-        onHeardListener = ConversationStatus.OnHeardListener { heardPhrase ->
-            val text = heardPhrase.text
+        onHeardListener = ConversationStatus.OnHeardListener {
+            val text = it.text
             conversationView.post { conversationView.addLine(text, ConversationItemType.HUMAN_INPUT) }
         }
 

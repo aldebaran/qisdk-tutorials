@@ -7,7 +7,6 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.motion.gotoframe
 
 import android.os.Bundle
 import android.util.Log
-import com.aldebaran.qi.Future
 
 import com.aldebaran.qi.sdk.QiContext
 import com.aldebaran.qi.sdk.QiSDK
@@ -93,17 +92,17 @@ class GoToTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         this.goTo = goTo
 
         // Execute the GoTo action asynchronously.
-        val goToFuture: Future<Void> = goTo.async().run()
+        val goToFuture = goTo.async().run()
 
         // Add a lambda to the action execution.
-        goToFuture.thenConsume { future ->
-            if (future.isSuccess) {
+        goToFuture.thenConsume {
+            if (it.isSuccess) {
                 val message = "GoTo action finished with success."
                 Log.i(TAG, message)
                 displayLine(message, ConversationItemType.INFO_LOG)
-            } else if (future.hasError()) {
+            } else if (it.hasError()) {
                 val message = "GoTo action finished with error."
-                Log.e(TAG, message, future.error)
+                Log.e(TAG, message, it.error)
                 displayLine(message, ConversationItemType.ERROR_LOG)
             }
         }

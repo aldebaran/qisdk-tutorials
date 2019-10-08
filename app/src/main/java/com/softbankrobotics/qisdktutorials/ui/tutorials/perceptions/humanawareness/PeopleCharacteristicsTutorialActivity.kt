@@ -107,9 +107,9 @@ class PeopleCharacteristicsTutorialActivity : TutorialActivity(), RobotLifecycle
             // Get the humans around the robot.
             val humansAroundFuture = humanAwareness?.async()?.humansAround
 
-            humansAroundFuture?.andThenConsume { humansAround ->
-                Log.i(TAG, humansAround.size.toString() + " human(s) around.")
-                retrieveCharacteristics(humansAround, qiContext)
+            humansAroundFuture?.andThenConsume {
+                Log.i(TAG, it.size.toString() + " human(s) around.")
+                retrieveCharacteristics(it, qiContext)
             }
     }
 
@@ -120,14 +120,14 @@ class PeopleCharacteristicsTutorialActivity : TutorialActivity(), RobotLifecycle
         // Get the robot frame.
         val robotFrame = actuation.robotFrame()
         //we clear memory used for human who are being showed
-        for (h in humanInfoList) {
-            h.clearMemory()
+         humanInfoList.forEach {
+            it.clearMemory()
         }
 
         humanInfoList.clear()
-        for (i in humans.indices) {
+        humans.indices.forEach {
             // Get the human.
-            val human = humans[i]
+            val human = humans[it]
 
             // Get the characteristics.
             val age = human.estimatedAge.years
@@ -140,7 +140,7 @@ class PeopleCharacteristicsTutorialActivity : TutorialActivity(), RobotLifecycle
             val humanFrame = human.headFrame
 
             // Display the characteristics.
-            Log.i(TAG, "----- Human $i -----")
+            Log.i(TAG, "----- Human $it -----")
             Log.i(TAG, "Age: $age year(s)")
             Log.i(TAG, "Gender: $gender")
             Log.i(TAG, "Pleasure state: $pleasureState")

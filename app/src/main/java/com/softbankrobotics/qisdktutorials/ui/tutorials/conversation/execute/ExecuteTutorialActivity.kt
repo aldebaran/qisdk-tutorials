@@ -98,7 +98,6 @@ class ExecuteTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
     override val layoutId = R.layout.conversation_layout
 
-
     private fun displayLine(text: String, type: ConversationItemType) {
         runOnUiThread { conversation_view.addLine(text, type) }
     }
@@ -115,7 +114,6 @@ class ExecuteTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
             displayLine("QiChatExecutor stopped", ConversationItemType.INFO_LOG)
             Log.i(TAG, "QiChatExecutor stopped")
         }
-
 
         private fun animate(qiContext: QiContext) {
             // Create an animation.

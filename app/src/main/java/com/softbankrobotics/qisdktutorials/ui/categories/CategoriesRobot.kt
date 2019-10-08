@@ -54,8 +54,8 @@ internal class CategoriesRobot(private val presenter: CategoriesContract.Present
     override fun stopDiscussion(tutorial: Tutorial) {
         val chatFuture = chatFuture
         if (chatFuture != null) {
-            chatFuture.thenConsume { future ->
-                if (future.isCancelled) {
+            chatFuture.thenConsume {
+                if (it.isCancelled) {
                     presenter.goToTutorial(tutorial)
                 }
             }

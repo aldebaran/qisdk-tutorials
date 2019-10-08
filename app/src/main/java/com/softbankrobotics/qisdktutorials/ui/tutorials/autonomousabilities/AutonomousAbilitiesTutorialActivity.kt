@@ -56,7 +56,7 @@ class AutonomousAbilitiesTutorialActivity : TutorialActivity(), RobotLifecycleCa
         super.onDestroy()
     }
 
-    override val layoutId: Int = R.layout.activity_autonomous_abilities_tutorial
+    override val layoutId = R.layout.activity_autonomous_abilities_tutorial
 
     override fun onRobotFocusGained(qiContext: QiContext) {
         // Store the provided QiContext.

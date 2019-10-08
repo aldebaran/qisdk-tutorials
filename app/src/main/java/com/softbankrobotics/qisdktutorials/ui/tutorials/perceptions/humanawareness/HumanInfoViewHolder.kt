@@ -7,8 +7,6 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.humanawaren
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 
 import com.softbankrobotics.qisdktutorials.R
 import kotlinx.android.synthetic.main.human_info_layout.view.*
