@@ -83,16 +83,16 @@ class BasicEmotionObserver {
             lastPleasure = observedEmotion.pleasure
 
             // Notify the listener when excitement changes.
-            observedEmotion.addOnExcitementChangedListener { excitementState ->
-                if (excitementState != lastExcitement) {
-                    lastExcitement = excitementState
+            observedEmotion.addOnExcitementChangedListener {
+                if (it != lastExcitement) {
+                    lastExcitement = it
                 }
             }
 
             // Notify the listener when pleasure changes.
-            observedEmotion.addOnPleasureChangedListener { pleasureState ->
-                if (pleasureState != lastPleasure) {
-                    lastPleasure = pleasureState
+            observedEmotion.addOnPleasureChangedListener {
+                if (it != lastPleasure) {
+                    lastPleasure = it
                 }
             }
 

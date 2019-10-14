@@ -30,7 +30,7 @@ internal class HumanInfoAdapter : RecyclerView.Adapter<HumanInfoViewHolder>() {
         holder.bind(humanInfo)
     }
 
-    override fun getItemCount(): Int = humanInfoList.size
+    override fun getItemCount() = humanInfoList.size
 
     fun updateList(humanInfoList: List<HumanInfo>) {
         this.humanInfoList = humanInfoList

@@ -30,7 +30,6 @@ import com.softbankrobotics.qisdktutorials.utils.KeyboardUtils
 import kotlinx.android.synthetic.main.activity_go_to_world_tutorial.*
 
 import java.util.ArrayList
-import java.util.HashMap
 
 private const val TAG = "GoToWorldActivity"
 
@@ -45,7 +44,7 @@ class GoToWorldTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
     // Store the selected location.
     private var selectedLocation: String? = null
     // Store the saved locations.
-    private val savedLocations = HashMap<String, FreeFrame>()
+    private val savedLocations = hashMapOf<String, FreeFrame>()
     // The QiContext provided by the QiSDK.
     private var qiContext: QiContext? = null
     // Store the Actuation service.

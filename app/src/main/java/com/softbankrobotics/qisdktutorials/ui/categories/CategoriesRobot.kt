@@ -125,8 +125,8 @@ internal class CategoriesRobot(private val presenter: CategoriesContract.Present
         enableLevel(selectedLevel)
         enableTopic(selectedCategory)
 
-        qiChatbot.addOnBookmarkReachedListener { bookmark ->
-            when (bookmark.name) {
+        qiChatbot.addOnBookmarkReachedListener {
+            when (it.name) {
                 "talk" -> {
                     presenter.loadTutorials(TutorialCategory.TALK)
                     selectTopic(TutorialCategory.TALK)

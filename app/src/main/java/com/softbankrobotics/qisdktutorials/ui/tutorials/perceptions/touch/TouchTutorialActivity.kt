@@ -63,8 +63,8 @@ class TouchTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         // Get the head touch sensor.
         val headTouchSensor = touch.getSensor("Head/Touch")
         // Add onStateChanged listener.
-        headTouchSensor.addOnStateChangedListener { touchState ->
-            val message = "Sensor " + (if (touchState.touched) "touched" else "released") + " at " + touchState.time
+        headTouchSensor.addOnStateChangedListener {
+            val message = "Sensor " + (if (it.touched) "touched" else "released") + " at ${it.time}"
             Log.i(TAG, message)
             displayLine(message, ConversationItemType.INFO_LOG)
         }

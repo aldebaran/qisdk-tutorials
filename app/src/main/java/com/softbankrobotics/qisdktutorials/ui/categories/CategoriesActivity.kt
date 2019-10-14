@@ -141,8 +141,8 @@ class CategoriesActivity : RobotActivity(), CategoriesContract.View, OnTutorialC
      * Configure the level switch.
      */
     private fun setupSwitch() {
-        level_switch.setOnCheckedChangeListener(OnCheckedChangeListener { isChecked ->
-            if (isChecked) {
+        level_switch.setOnCheckedChangeListener(OnCheckedChangeListener {
+            if (it) {
                 presenter.loadTutorials(TutorialLevel.ADVANCED)
                 robot.selectLevel(TutorialLevel.ADVANCED)
             } else {

@@ -133,12 +133,12 @@ class FollowHumanTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks 
         if(qiContext != null) {
             val humanAwareness = qiContext.humanAwareness
             val humansAroundFuture = humanAwareness.async().humansAround
-            humansAroundFuture.andThenConsume { humans ->
+            humansAroundFuture.andThenConsume {
                 // If humans found, follow the closest one.
-                if (humans.isNotEmpty()) {
+                if (it.isNotEmpty()) {
                     Log.i(TAG, "Human found.")
-                    val humanToFollow = getClosestHuman(humans, qiContext)
-                    humanToFollow?.let { followHuman(it) }
+                    val humanToFollow = getClosestHuman(it, qiContext)
+                    humanToFollow?.let { human -> followHuman(human) }
                 } else {
                     Log.i(TAG, "No human.")
                     enterWaitingForOrderState()

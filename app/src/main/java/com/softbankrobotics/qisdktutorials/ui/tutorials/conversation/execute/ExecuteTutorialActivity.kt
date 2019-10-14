@@ -27,8 +27,6 @@ import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity
 import kotlinx.android.synthetic.main.activity_autonomous_abilities_tutorial.*
 
-import java.util.HashMap
-
 private const val TAG = "ExecuteTutorialActivity"
 
 /**
@@ -63,7 +61,7 @@ class ExecuteTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
         // Create a qiChatbot
         val qiChatbot = QiChatbotBuilder.with(qiContext).withTopic(topic).build()
-        val executors = HashMap<String, QiChatExecutor>()
+        val executors = hashMapOf<String, QiChatExecutor>()
 
         // Map the executor name from the topic to our qiChatbotExecutor
         executors["myExecutor"] = MyQiChatExecutor(qiContext)

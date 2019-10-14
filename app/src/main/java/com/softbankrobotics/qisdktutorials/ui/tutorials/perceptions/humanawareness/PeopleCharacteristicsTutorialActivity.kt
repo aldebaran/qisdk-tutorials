@@ -125,10 +125,7 @@ class PeopleCharacteristicsTutorialActivity : TutorialActivity(), RobotLifecycle
         }
 
         humanInfoList.clear()
-        humans.indices.forEach {
-            // Get the human.
-            val human = humans[it]
-
+        humans.forEachIndexed { index, human ->
             // Get the characteristics.
             val age = human.estimatedAge.years
             val gender = human.estimatedGender
@@ -140,7 +137,7 @@ class PeopleCharacteristicsTutorialActivity : TutorialActivity(), RobotLifecycle
             val humanFrame = human.headFrame
 
             // Display the characteristics.
-            Log.i(TAG, "----- Human $it -----")
+            Log.i(TAG, "----- Human $index -----")
             Log.i(TAG, "Age: $age year(s)")
             Log.i(TAG, "Gender: $gender")
             Log.i(TAG, "Pleasure state: $pleasureState")

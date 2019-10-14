@@ -110,21 +110,21 @@ class LookAtTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
         this.lookAt = lookAt
 
         // Add a lambda to the action execution.
-        lookAtFuture.thenConsume { future ->
+        lookAtFuture.thenConsume {
             when {
-                future.isSuccess -> {
+                it.isSuccess -> {
                     val message = "LookAt action finished with success."
                     Log.i(TAG, message)
                     displayLine(message, ConversationItemType.INFO_LOG)
                 }
-                future.isCancelled -> {
+                it.isCancelled -> {
                     val message = "LookAt action was cancelled."
                     Log.i(TAG, message)
                     displayLine(message, ConversationItemType.INFO_LOG)
                 }
                 else -> {
                     val message = "LookAt action finished with error."
-                    Log.e(TAG, message, future.error)
+                    Log.e(TAG, message, it.error)
                     displayLine(message, ConversationItemType.ERROR_LOG)
                 }
             }
