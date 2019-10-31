@@ -33,13 +33,13 @@ class EnforceTabletReachabilityTutorialActivity : TutorialActivity(), RobotLifec
     private var qiContext: QiContext? = null
 
     // Store the EnforceTabletReachability action
-    private lateinit var enforceTabletReachability: EnforceTabletReachability
+    private var enforceTabletReachability: EnforceTabletReachability? = null
 
     // Store the say action related to the moment when the position is reached.
-    private lateinit var positionReachedSay: Say
+    private var positionReachedSay: Say? = null
 
     // Store the say action related to the moment when the action is ended.
-    private lateinit var actionEndedSay: Say
+    private var actionEndedSay: Say? = null
 
     // Store the enforceTabletReachability action's future
     private var enforceTabletReachabilityFuture: Future<Void>? = null
@@ -49,7 +49,7 @@ class EnforceTabletReachabilityTutorialActivity : TutorialActivity(), RobotLifec
 
         tablet_reachability_button.setOnClickListener {
             val enforceTabletReachabilityFuture = this.enforceTabletReachabilityFuture
-            if (!::enforceTabletReachability.isInitialized) {
+            if (enforceTabletReachability == null) {
                 val errorLog = "EnforceTabletReachability has not been built yet"
                 displayLine(errorLog, ConversationItemType.ERROR_LOG)
                 Log.e(TAG, errorLog)
@@ -72,7 +72,7 @@ class EnforceTabletReachabilityTutorialActivity : TutorialActivity(), RobotLifec
 
     private fun startEnforceTabletReachability() {
         // Run the action asynchronously
-        enforceTabletReachabilityFuture = enforceTabletReachability.async()?.run()
+        enforceTabletReachabilityFuture = enforceTabletReachability?.async()?.run()
 
         // Handle the action's end
         enforceTabletReachabilityFuture?.thenConsume {
@@ -91,7 +91,7 @@ class EnforceTabletReachabilityTutorialActivity : TutorialActivity(), RobotLifec
             setButtonText(resources.getString(R.string.enforce_tablet_reachability))
 
             // Give vocal feedback
-            actionEndedSay.run()
+            actionEndedSay?.run()
         }
     }
 
@@ -135,7 +135,7 @@ class EnforceTabletReachabilityTutorialActivity : TutorialActivity(), RobotLifec
                 .build()
 
         // On started listener
-        enforceTabletReachability.addOnStartedListener {
+        enforceTabletReachability?.addOnStartedListener {
             // Display log
             val infoLog = "The EnforceTabletReachability action has started."
             displayLine(infoLog, ConversationItemType.INFO_LOG)
@@ -143,7 +143,7 @@ class EnforceTabletReachabilityTutorialActivity : TutorialActivity(), RobotLifec
         }
 
         // On position reached listener
-        enforceTabletReachability.addOnPositionReachedListener {
+        enforceTabletReachability?.addOnPositionReachedListener {
             // Display log
             val infoLog = "The tablet now is in position."
             displayLine(infoLog, ConversationItemType.INFO_LOG)
@@ -153,7 +153,7 @@ class EnforceTabletReachabilityTutorialActivity : TutorialActivity(), RobotLifec
             setButtonText(resources.getString(R.string.cancel_action))
 
             // Give vocal feedback
-            positionReachedSay.run()
+            positionReachedSay?.run()
         }
 
         // Run introduction say
@@ -170,8 +170,8 @@ class EnforceTabletReachabilityTutorialActivity : TutorialActivity(), RobotLifec
         conversationBinder?.unbind()
 
         // Remove all listeners
-        enforceTabletReachability.removeAllOnStartedListeners()
-        enforceTabletReachability.removeAllOnPositionReachedListeners()
+        enforceTabletReachability?.removeAllOnStartedListeners()
+        enforceTabletReachability?.removeAllOnPositionReachedListeners()
 
         this.qiContext = null
     }
