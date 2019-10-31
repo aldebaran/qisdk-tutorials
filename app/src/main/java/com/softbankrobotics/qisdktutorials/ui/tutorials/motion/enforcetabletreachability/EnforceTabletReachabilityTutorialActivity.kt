@@ -41,7 +41,7 @@ class EnforceTabletReachabilityTutorialActivity : TutorialActivity(), RobotLifec
     // Store the say action related to the moment when the action is ended.
     private lateinit var actionEndedSay: Say
 
-    // Store the enforceTabletReachability action future
+    // Store the enforceTabletReachability action's future
     private var enforceTabletReachabilityFuture: Future<Void>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,17 +49,16 @@ class EnforceTabletReachabilityTutorialActivity : TutorialActivity(), RobotLifec
 
         tablet_reachability_button.setOnClickListener {
             val enforceTabletReachabilityFuture = this.enforceTabletReachabilityFuture
-            when {
-                !::enforceTabletReachability.isInitialized -> {
-                    val errorLog = "EnforceTabletReachability has not been built yet"
-                    displayLine(errorLog, ConversationItemType.ERROR_LOG)
-                    Log.e(TAG, errorLog)
-                }
-                enforceTabletReachabilityFuture == null || enforceTabletReachabilityFuture.isDone ->
-                    // The EnforceTabletReachability action is not running
-                    startEnforceTabletReachability()
-                else -> // The EnforceTabletReachability action is running
-                    stopEnforceTabletReachability()
+            if (!::enforceTabletReachability.isInitialized) {
+                val errorLog = "EnforceTabletReachability has not been built yet"
+                displayLine(errorLog, ConversationItemType.ERROR_LOG)
+                Log.e(TAG, errorLog)
+            } else if (enforceTabletReachabilityFuture == null || enforceTabletReachabilityFuture.isDone) {
+                // The EnforceTabletReachability action is not running
+                startEnforceTabletReachability()
+            } else {
+                // The EnforceTabletReachability action is running
+                stopEnforceTabletReachability()
             }
         }
 
