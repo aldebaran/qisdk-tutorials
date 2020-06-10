@@ -3,19 +3,20 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.exploration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import com.aldebaran.qi.Consumer
 import com.aldebaran.qi.Future
 import com.aldebaran.qi.Promise
-import com.aldebaran.qi.sdk.Qi
 import com.aldebaran.qi.sdk.QiContext
 import com.aldebaran.qi.sdk.QiSDK
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks
 import com.aldebaran.qi.sdk.`object`.actuation.ExplorationMap
 import com.aldebaran.qi.sdk.`object`.actuation.LocalizationStatus
+import com.aldebaran.qi.sdk.`object`.actuation.LocalizeAndMap
 import com.aldebaran.qi.sdk.builder.LocalizeAndMapBuilder
+import com.aldebaran.qi.sdk.util.FutureUtils
 import com.softbankrobotics.qisdktutorials.R
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity
 import kotlinx.android.synthetic.main.activity_exploration_map_representation_tutorial.*
+import java.util.concurrent.TimeUnit
 
 /**
  * The tutorial for using ExplorationMap representation.
@@ -38,11 +39,14 @@ class ExplorationMapRepresentationTutorialActivity : TutorialActivity(), RobotLi
     override val layoutId = R.layout.activity_exploration_map_representation_tutorial
 
     override fun onRobotFocusGained(qiContext: QiContext) {
-        mapSurroundings(qiContext).andThenApply {
-            mapToBitmap(it)
-        }.andThenConsume(Qi.onUiThread(Consumer {
-            displayMap(it)
-        }))
+        mapSurroundings(qiContext).andThenConsume { explorationMap ->
+            val bitmap = mapToBitmap(explorationMap)
+            runOnUiThread { displayMap(bitmap) }
+            extendMap(explorationMap, qiContext) { updatedMap ->
+                val updatedBitmap = mapToBitmap(updatedMap)
+                runOnUiThread { displayMap(updatedBitmap) }
+            }
+        }
     }
 
     override fun onRobotFocusLost() {
@@ -76,10 +80,8 @@ class ExplorationMapRepresentationTutorialActivity : TutorialActivity(), RobotLi
 
                     localizeAndMap.async().run().thenConsume {
                         localizeAndMap.removeAllOnStatusChangedListeners()
-                        if (it.hasError()) {
-                            if (!promise.future.isDone) {
-                                promise.setError(it.errorMessage)
-                            }
+                        if (it.hasError() && !promise.future.isDone) {
+                            promise.setError(it.errorMessage)
                         }
                     }
                 }
@@ -87,6 +89,51 @@ class ExplorationMapRepresentationTutorialActivity : TutorialActivity(), RobotLi
         return promise.future.thenCompose {
             localizeAndMapFuture.cancel(true)
             return@thenCompose it
+        }
+    }
+
+    private fun extendMap(explorationMap: ExplorationMap, qiContext: QiContext, updatedMapCallback: (ExplorationMap) -> Unit): Future<Void> {
+        val promise = Promise<Void>().apply {
+            setOnCancel {
+                if (!it.future.isDone) {
+                    setCancelled()
+                }
+            }
+        }
+
+        val localizeAndMapFuture = LocalizeAndMapBuilder.with(qiContext)
+                .withMap(explorationMap)
+                .buildAsync()
+                .andThenCompose { localizeAndMap ->
+                    var publishExplorationMapFuture: Future<Void>? = null
+
+                    localizeAndMap.addOnStatusChangedListener { status ->
+                        if (status == LocalizationStatus.LOCALIZED) {
+                            publishExplorationMapFuture = publishExplorationMap(localizeAndMap, updatedMapCallback)
+                        }
+                    }
+
+                    localizeAndMap.async().run().thenConsume {
+                        localizeAndMap.removeAllOnStatusChangedListeners()
+                        publishExplorationMapFuture?.cancel(true)
+                        if (it.hasError() && !promise.future.isDone) {
+                            promise.setError(it.errorMessage)
+                        }
+                    }
+                }
+
+        return promise.future.thenCompose {
+            localizeAndMapFuture.cancel(true)
+            return@thenCompose it
+        }
+    }
+
+    private fun publishExplorationMap(localizeAndMap: LocalizeAndMap, updatedMapCallback: (ExplorationMap) -> Unit): Future<Void> {
+        return localizeAndMap.async().dumpMap().andThenCompose {
+            updatedMapCallback(it)
+            FutureUtils.wait(2L, TimeUnit.SECONDS)
+        }.andThenCompose {
+            publishExplorationMap(localizeAndMap, updatedMapCallback)
         }
     }
 
