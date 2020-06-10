@@ -6,8 +6,8 @@
 package com.softbankrobotics.qisdktutorials.ui.bilateralswitch
 
 import android.content.Context
-import android.support.constraint.ConstraintSet
-import android.support.v4.content.ContextCompat
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import android.transition.AutoTransition
 import android.transition.Transition
 import android.transition.TransitionManager

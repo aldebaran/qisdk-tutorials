@@ -6,7 +6,7 @@
 package com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.emotiondetection
 
 import android.os.Bundle
-import android.support.annotation.DrawableRes
+import androidx.annotation.DrawableRes
 
 import com.aldebaran.qi.sdk.QiContext
 import com.aldebaran.qi.sdk.QiSDK

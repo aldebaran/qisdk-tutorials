@@ -7,7 +7,7 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.bookmarks
 
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.support.annotation.RawRes
+import androidx.annotation.RawRes
 import android.util.Log
 
 import com.aldebaran.qi.sdk.QiContext

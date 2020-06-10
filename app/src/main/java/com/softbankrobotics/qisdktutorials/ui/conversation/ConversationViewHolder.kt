@@ -5,7 +5,7 @@
 
 package com.softbankrobotics.qisdktutorials.ui.conversation
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 
 import kotlinx.android.synthetic.main.layout_info_log_view.view.*

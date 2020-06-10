@@ -5,7 +5,7 @@
 
 package com.softbankrobotics.qisdktutorials.ui.categories
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 
 import com.softbankrobotics.qisdktutorials.R

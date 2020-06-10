@@ -5,7 +5,7 @@
 
 package com.softbankrobotics.qisdktutorials.model.data
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 
 /**
  * Represents a tutorial.
