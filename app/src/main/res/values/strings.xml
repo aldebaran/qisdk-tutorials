@@ -38,6 +38,10 @@
     <string name="english">EN</string>
     <string name="japanese">JA</string>
 
+    <!-- ExplorationMap representation -->
+    <string name="start_mapping">Start mapping</string>
+    <string name="extend_map">Extend map</string>
+
     <!-- Tutorial names -->
     <string name="hello_human">Hello human</string>
     <string name="qichatbot">Listen and reply</string>

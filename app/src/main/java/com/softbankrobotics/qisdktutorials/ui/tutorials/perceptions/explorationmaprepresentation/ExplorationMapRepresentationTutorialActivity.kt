@@ -3,6 +3,7 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.exploration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import androidx.lifecycle.Lifecycle
 import com.aldebaran.qi.Future
 import com.aldebaran.qi.Promise
 import com.aldebaran.qi.sdk.QiContext
@@ -23,11 +24,67 @@ import java.util.concurrent.TimeUnit
  */
 class ExplorationMapRepresentationTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
+    private var qiContext: QiContext? = null
+    private var initialExplorationMap: ExplorationMap? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        startMappingButton.setOnClickListener {
+            qiContext?.let {
+                startMappingButton.isEnabled = false
+                mapSurroundings(it).thenConsume { future ->
+                    if (future.isSuccess) {
+                        val explorationMap = future.get()
+                        this.initialExplorationMap = explorationMap
+                        val bitmap = mapToBitmap(explorationMap)
+                        runOnUiThread {
+                            if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                                displayMap(bitmap)
+                                extendMapButton.isEnabled = true
+                            }
+                        }
+                    } else {
+                        runOnUiThread {
+                            if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                                startMappingButton.isEnabled = true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        extendMapButton.setOnClickListener {
+            val initialExplorationMap = initialExplorationMap ?: return@setOnClickListener
+            val qiContext = qiContext ?: return@setOnClickListener
+            extendMapButton.isEnabled = false
+            extendMap(initialExplorationMap, qiContext) { updatedMap ->
+                val updatedBitmap = mapToBitmap(updatedMap)
+                runOnUiThread {
+                    if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                        displayMap(updatedBitmap)
+                    }
+                }
+            }.thenConsume { future ->
+                if (!future.isSuccess) {
+                    runOnUiThread {
+                        if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                            extendMapButton.isEnabled = true
+                        }
+                    }
+                }
+            }
+        }
+
         // Register the RobotLifecycleCallbacks to this Activity.
         QiSDK.register(this, this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startMappingButton.isEnabled = false
+        extendMapButton.isEnabled = false
     }
 
     override fun onDestroy() {
@@ -39,13 +96,9 @@ class ExplorationMapRepresentationTutorialActivity : TutorialActivity(), RobotLi
     override val layoutId = R.layout.activity_exploration_map_representation_tutorial
 
     override fun onRobotFocusGained(qiContext: QiContext) {
-        mapSurroundings(qiContext).andThenConsume { explorationMap ->
-            val bitmap = mapToBitmap(explorationMap)
-            runOnUiThread { displayMap(bitmap) }
-            extendMap(explorationMap, qiContext) { updatedMap ->
-                val updatedBitmap = mapToBitmap(updatedMap)
-                runOnUiThread { displayMap(updatedBitmap) }
-            }
+        this.qiContext = qiContext
+        runOnUiThread {
+            startMappingButton.isEnabled = true
         }
     }
 
