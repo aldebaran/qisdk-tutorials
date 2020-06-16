@@ -37,67 +37,14 @@ class ExplorationMapRepresentationTutorialActivity : TutorialActivity(), RobotLi
         super.onCreate(savedInstanceState)
 
         startMappingButton.setOnClickListener {
-            qiContext?.let {
-                displayLine("Start mapping...", ConversationItemType.INFO_LOG)
-                startMappingButton.isEnabled = false
-                mapSurroundings(it).thenConsume { future ->
-                    if (future.isSuccess) {
-                        displayLine("Mapping done, retrieving map representation...", ConversationItemType.INFO_LOG)
-                        val explorationMap = future.get()
-                        this.initialExplorationMap = explorationMap
-                        val bitmap = mapToBitmap(explorationMap)
-                        displayLine("Map representation retrieved.", ConversationItemType.INFO_LOG)
-                        runOnUiThread {
-                            if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                                displayMap(bitmap)
-                                extendMapButton.isEnabled = true
-                            }
-                        }
-
-                        val say = SayBuilder.with(qiContext)
-                                .withText("I can now extend this map. Click on extend map, then give me a tour to try!")
-                                .build()
-
-                        say.run()
-                    } else {
-                        if (future.hasError()) {
-                            displayLine("Mapping failed: ${future.errorMessage}", ConversationItemType.ERROR_LOG)
-                        }
-                        runOnUiThread {
-                            if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                                startMappingButton.isEnabled = true
-                            }
-                        }
-                    }
-                }
-            }
+            val qiContext = qiContext ?: return@setOnClickListener
+            startMappingStep(qiContext)
         }
 
         extendMapButton.setOnClickListener {
             val initialExplorationMap = initialExplorationMap ?: return@setOnClickListener
             val qiContext = qiContext ?: return@setOnClickListener
-            displayLine("Starting map extension...", ConversationItemType.INFO_LOG)
-            extendMapButton.isEnabled = false
-            extendMap(initialExplorationMap, qiContext) { updatedMap ->
-                val updatedBitmap = mapToBitmap(updatedMap)
-                displayLine("New map representation available.", ConversationItemType.INFO_LOG)
-                runOnUiThread {
-                    if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                        displayMap(updatedBitmap)
-                    }
-                }
-            }.thenConsume { future ->
-                if (!future.isSuccess) {
-                    if (future.hasError()) {
-                        displayLine("Map extension failed: ${future.errorMessage}", ConversationItemType.ERROR_LOG)
-                    }
-                    runOnUiThread {
-                        if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                            extendMapButton.isEnabled = true
-                        }
-                    }
-                }
-            }
+            startMapExtensionStep(initialExplorationMap, qiContext)
         }
 
         // Register the RobotLifecycleCallbacks to this Activity.
@@ -146,6 +93,66 @@ class ExplorationMapRepresentationTutorialActivity : TutorialActivity(), RobotLi
 
     override fun onRobotFocusRefused(reason: String) {
         // Nothing here.
+    }
+
+    private fun startMappingStep(qiContext: QiContext) {
+        displayLine("Start mapping...", ConversationItemType.INFO_LOG)
+        startMappingButton.isEnabled = false
+        mapSurroundings(qiContext).thenConsume { future ->
+            if (future.isSuccess) {
+                displayLine("Mapping done, retrieving map representation...", ConversationItemType.INFO_LOG)
+                val explorationMap = future.get()
+                this.initialExplorationMap = explorationMap
+                val bitmap = mapToBitmap(explorationMap)
+                displayLine("Map representation retrieved.", ConversationItemType.INFO_LOG)
+                runOnUiThread {
+                    if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                        displayMap(bitmap)
+                        extendMapButton.isEnabled = true
+                    }
+                }
+
+                val say = SayBuilder.with(qiContext)
+                        .withText("I can now extend this map. Click on extend map, then give me a tour to try!")
+                        .build()
+
+                say.run()
+            } else {
+                if (future.hasError()) {
+                    displayLine("Mapping failed: ${future.errorMessage}", ConversationItemType.ERROR_LOG)
+                }
+                runOnUiThread {
+                    if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                        startMappingButton.isEnabled = true
+                    }
+                }
+            }
+        }
+    }
+
+    private fun startMapExtensionStep(initialExplorationMap: ExplorationMap, qiContext: QiContext) {
+        displayLine("Starting map extension...", ConversationItemType.INFO_LOG)
+        extendMapButton.isEnabled = false
+        extendMap(initialExplorationMap, qiContext) { updatedMap ->
+            val updatedBitmap = mapToBitmap(updatedMap)
+            displayLine("New map representation available.", ConversationItemType.INFO_LOG)
+            runOnUiThread {
+                if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                    displayMap(updatedBitmap)
+                }
+            }
+        }.thenConsume { future ->
+            if (!future.isSuccess) {
+                if (future.hasError()) {
+                    displayLine("Map extension failed: ${future.errorMessage}", ConversationItemType.ERROR_LOG)
+                }
+                runOnUiThread {
+                    if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                        extendMapButton.isEnabled = true
+                    }
+                }
+            }
+        }
     }
 
     private fun mapSurroundings(qiContext: QiContext): Future<ExplorationMap> {
