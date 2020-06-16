@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/backArrow"
+            android:id="@+id/back_arrow"
             android:layout_width="73dp"
             android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -26,17 +26,17 @@
             android:contentDescription="@string/content_description_back_button" />
 
         <View
-            android:id="@+id/backgroundView"
+            android:id="@+id/background_view"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/close_button"
-            app:layout_constraintStart_toEndOf="@+id/backArrow"
+            app:layout_constraintStart_toEndOf="@+id/back_arrow"
             app:layout_constraintTop_toTopOf="parent"
             tools:background="@color/basic_green" />
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/titleTextView"
+            android:id="@+id/title_textview"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="2dp"
@@ -51,13 +51,13 @@
             app:autoSizeMaxTextSize="@dimen/big_text"
             app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/levelTextView"
-            app:layout_constraintStart_toEndOf="@+id/backArrow"
+            app:layout_constraintEnd_toStartOf="@+id/level_textview"
+            app:layout_constraintStart_toEndOf="@+id/back_arrow"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Mastering HumanAwareness &amp; Human" />
 
         <TextView
-            android:id="@+id/levelTextView"
+            android:id="@+id/level_textview"
             android:layout_width="230dp"
             android:layout_height="match_parent"
             android:gravity="center"

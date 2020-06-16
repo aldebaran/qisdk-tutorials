@@ -15,7 +15,7 @@
 
     <com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
         style="@style/RecyclerView"
-        android:id="@+id/conversationView"
+        android:id="@+id/conversation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/picture_view"
@@ -32,7 +32,7 @@
         android:id="@+id/picture_view"
         android:layout_width="300dp"
         android:layout_height="250dp"
-        android:layout_above="@+id/take_pic"
+        android:layout_above="@+id/take_pic_button"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:visibility="visible"
@@ -40,11 +40,11 @@
 
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/progress_bar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/take_pic"
+        android:layout_above="@+id/take_pic_button"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="120dp"
         android:theme="@style/Progressbar.Blue"
@@ -52,7 +52,7 @@
 
 
     <Button
-        android:id="@+id/take_pic"
+        android:id="@+id/take_pic_button"
         style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

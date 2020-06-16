@@ -16,7 +16,7 @@
 
     <com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
         style="@style/RecyclerView"
-        android:id="@+id/conversationView"
+        android:id="@+id/conversation_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -29,7 +29,7 @@
 
     <Button
         style="@style/Button"
-        android:id="@+id/button"
+        android:id="@+id/button_switch_autonomous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hold" />

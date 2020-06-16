@@ -30,7 +30,7 @@
         android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toTopOf="@+id/goto_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/editText" />
+        app:layout_constraintEnd_toStartOf="@+id/add_item_edit" />
 
     <Button
         style="@style/Button"
@@ -45,7 +45,7 @@
         tools:layout_editor_absoluteX="41dp" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/add_item_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -62,13 +62,13 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="@+id/goto_button"
         app:layout_constraintBottom_toBottomOf="@+id/goto_button"
-        app:layout_constraintStart_toStartOf="@+id/editText"
-        app:layout_constraintEnd_toEndOf="@+id/editText"
+        app:layout_constraintStart_toStartOf="@+id/add_item_edit"
+        app:layout_constraintEnd_toEndOf="@+id/add_item_edit"
         tools:layout_editor_absoluteX="193dp" />
 
     <com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
         style="@style/RecyclerView"
-        android:id="@+id/conversationView"
+        android:id="@+id/conversation_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/activity_vertical_margin"

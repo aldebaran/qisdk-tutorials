@@ -10,10 +10,10 @@
         android:id="@+id/background_layer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/levelView"
+        app:layout_constraintBottom_toBottomOf="@+id/level_view"
         app:layout_constraintEnd_toEndOf="@+id/second_section"
         app:layout_constraintStart_toStartOf="@+id/first_section"
-        app:layout_constraintTop_toTopOf="@+id/levelView"
+        app:layout_constraintTop_toTopOf="@+id/level_view"
         android:background="@color/unselected_category_gray" />
 
     <com.softbankrobotics.qisdktutorials.ui.bilateralswitch.RoundedLayout
@@ -21,10 +21,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         tools:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/levelView"
-        app:layout_constraintEnd_toEndOf="@+id/levelView"
+        app:layout_constraintBottom_toBottomOf="@+id/level_view"
+        app:layout_constraintEnd_toEndOf="@+id/level_view"
         app:layout_constraintStart_toStartOf="@+id/first_section"
-        app:layout_constraintTop_toTopOf="@+id/levelView" />
+        app:layout_constraintTop_toTopOf="@+id/level_view" />
 
     <TextView
         android:id="@+id/first_section"
@@ -33,7 +33,7 @@
         android:paddingEnd="8dp"
         android:paddingStart="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/levelView"
+        app:layout_constraintEnd_toStartOf="@+id/level_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="&quot;Basic&quot;"
@@ -41,7 +41,7 @@
         android:fontFamily="@font/open_sans_semibold" />
 
     <TextView
-        android:id="@+id/levelView"
+        android:id="@+id/level_view"
         android:layout_width="42dp"
         android:layout_height="42dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -63,7 +63,7 @@
         android:paddingStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/levelView"
+        app:layout_constraintStart_toEndOf="@id/level_view"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="&quot;Advanced&quot;"
         android:textColor="@android:color/black"
@@ -76,9 +76,9 @@
         android:alpha="0.3"
         android:background="#000"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/levelView"
-        app:layout_constraintEnd_toEndOf="@+id/levelView"
-        app:layout_constraintStart_toStartOf="@+id/levelView"
-        app:layout_constraintTop_toTopOf="@+id/levelView" />
+        app:layout_constraintBottom_toBottomOf="@+id/level_view"
+        app:layout_constraintEnd_toEndOf="@+id/level_view"
+        app:layout_constraintStart_toStartOf="@+id/level_view"
+        app:layout_constraintTop_toTopOf="@+id/level_view" />
 
 </android.support.constraint.ConstraintLayout>

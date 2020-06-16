@@ -16,7 +16,7 @@
 
     <com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
         style="@style/RecyclerView"
-        android:id="@+id/conversationView"
+        android:id="@+id/conversation_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:paddingStart="8dp"
@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <RadioButton
-            android:id="@+id/enButton"
+            android:id="@+id/en_button"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -52,7 +52,7 @@
             android:text="@string/english" />
 
         <RadioButton
-            android:id="@+id/jaButton"
+            android:id="@+id/ja_button"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"

@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/variable_editText"
+        android:id="@+id/variable_edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -40,7 +40,7 @@
 
     <com.softbankrobotics.qisdktutorials.ui.conversation.ConversationView
         style="@style/RecyclerView"
-        android:id="@+id/conversationView"
+        android:id="@+id/conversation_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
@@ -67,14 +67,14 @@
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_check"
         android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="@+id/variable_editText"
+        app:layout_constraintBottom_toBottomOf="@+id/variable_edit_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/variable_editText"
-        app:layout_constraintTop_toTopOf="@+id/variable_editText"
+        app:layout_constraintStart_toEndOf="@+id/variable_edit_text"
+        app:layout_constraintTop_toTopOf="@+id/variable_edit_text"
         android:contentDescription="@string/content_description_assign_button" />
 
     <TextView
-        android:id="@+id/templateTextView"
+        android:id="@+id/template_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
