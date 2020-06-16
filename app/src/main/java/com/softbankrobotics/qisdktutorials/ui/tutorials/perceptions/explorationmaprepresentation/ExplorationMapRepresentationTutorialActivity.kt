@@ -55,6 +55,8 @@ class ExplorationMapRepresentationTutorialActivity : TutorialActivity(), RobotLi
         super.onResume()
         startMappingButton.isEnabled = false
         extendMapButton.isEnabled = false
+        initialExplorationMap = null
+        mapImageView.setImageBitmap(null)
     }
 
     override fun onDestroy() {
