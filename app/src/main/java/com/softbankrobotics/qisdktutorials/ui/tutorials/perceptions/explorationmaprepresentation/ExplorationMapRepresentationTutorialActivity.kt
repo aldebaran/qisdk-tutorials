@@ -13,8 +13,11 @@ import com.aldebaran.qi.sdk.`object`.actuation.ExplorationMap
 import com.aldebaran.qi.sdk.`object`.actuation.LocalizationStatus
 import com.aldebaran.qi.sdk.`object`.actuation.LocalizeAndMap
 import com.aldebaran.qi.sdk.builder.LocalizeAndMapBuilder
+import com.aldebaran.qi.sdk.builder.SayBuilder
 import com.aldebaran.qi.sdk.util.FutureUtils
 import com.softbankrobotics.qisdktutorials.R
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationBinder
+import com.softbankrobotics.qisdktutorials.ui.conversation.ConversationItemType
 import com.softbankrobotics.qisdktutorials.ui.tutorials.TutorialActivity
 import kotlinx.android.synthetic.main.activity_exploration_map_representation_tutorial.*
 import java.util.concurrent.TimeUnit
@@ -24,7 +27,10 @@ import java.util.concurrent.TimeUnit
  */
 class ExplorationMapRepresentationTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
+    private var conversationBinder: ConversationBinder? = null
+    // The QiContext provided by the QiSDK.
     private var qiContext: QiContext? = null
+    // The initial ExplorationMap.
     private var initialExplorationMap: ExplorationMap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,19 +38,31 @@ class ExplorationMapRepresentationTutorialActivity : TutorialActivity(), RobotLi
 
         startMappingButton.setOnClickListener {
             qiContext?.let {
+                displayLine("Start mapping...", ConversationItemType.INFO_LOG)
                 startMappingButton.isEnabled = false
                 mapSurroundings(it).thenConsume { future ->
                     if (future.isSuccess) {
+                        displayLine("Mapping done, retrieving map representation...", ConversationItemType.INFO_LOG)
                         val explorationMap = future.get()
                         this.initialExplorationMap = explorationMap
                         val bitmap = mapToBitmap(explorationMap)
+                        displayLine("Map representation retrieved.", ConversationItemType.INFO_LOG)
                         runOnUiThread {
                             if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
                                 displayMap(bitmap)
                                 extendMapButton.isEnabled = true
                             }
                         }
+
+                        val say = SayBuilder.with(qiContext)
+                                .withText("I can now extend this map. Click on extend map, then give me a tour to try!")
+                                .build()
+
+                        say.run()
                     } else {
+                        if (future.hasError()) {
+                            displayLine("Mapping failed: ${future.errorMessage}", ConversationItemType.ERROR_LOG)
+                        }
                         runOnUiThread {
                             if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
                                 startMappingButton.isEnabled = true
@@ -58,9 +76,11 @@ class ExplorationMapRepresentationTutorialActivity : TutorialActivity(), RobotLi
         extendMapButton.setOnClickListener {
             val initialExplorationMap = initialExplorationMap ?: return@setOnClickListener
             val qiContext = qiContext ?: return@setOnClickListener
+            displayLine("Starting map extension...", ConversationItemType.INFO_LOG)
             extendMapButton.isEnabled = false
             extendMap(initialExplorationMap, qiContext) { updatedMap ->
                 val updatedBitmap = mapToBitmap(updatedMap)
+                displayLine("New map representation available.", ConversationItemType.INFO_LOG)
                 runOnUiThread {
                     if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
                         displayMap(updatedBitmap)
@@ -68,6 +88,9 @@ class ExplorationMapRepresentationTutorialActivity : TutorialActivity(), RobotLi
                 }
             }.thenConsume { future ->
                 if (!future.isSuccess) {
+                    if (future.hasError()) {
+                        displayLine("Map extension failed: ${future.errorMessage}", ConversationItemType.ERROR_LOG)
+                    }
                     runOnUiThread {
                         if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
                             extendMapButton.isEnabled = true
@@ -96,14 +119,29 @@ class ExplorationMapRepresentationTutorialActivity : TutorialActivity(), RobotLi
     override val layoutId = R.layout.activity_exploration_map_representation_tutorial
 
     override fun onRobotFocusGained(qiContext: QiContext) {
+        // Store the provided QiContext.
         this.qiContext = qiContext
+
+        // Bind the conversational events to the view.
+        val conversationStatus = qiContext.conversation.status(qiContext.robotContext)
+        conversationBinder = conversation_view.bindConversationTo(conversationStatus)
+
+        val say = SayBuilder.with(qiContext)
+                .withText("I can display the graphical representation of a map. Click on start mapping to try!")
+                .build()
+
+        say.run()
+
         runOnUiThread {
             startMappingButton.isEnabled = true
         }
     }
 
     override fun onRobotFocusLost() {
-        // Nothing here.
+        conversationBinder?.unbind()
+
+        // Remove the QiContext.
+        this.qiContext = null
     }
 
     override fun onRobotFocusRefused(reason: String) {
@@ -199,5 +237,13 @@ class ExplorationMapRepresentationTutorialActivity : TutorialActivity(), RobotLi
 
     private fun displayMap(bitmap: Bitmap) {
         mapImageView.setImageBitmap(bitmap)
+    }
+
+    private fun displayLine(text: String, type: ConversationItemType) {
+        runOnUiThread {
+            if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                conversation_view.addLine(text, type)
+            }
+        }
     }
 }
