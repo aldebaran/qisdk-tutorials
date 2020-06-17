@@ -1,4 +1,4 @@
-package com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.explorationmaprepresentation
+package com.softbankrobotics.qisdktutorials.ui.tutorials.motion.extendmap
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -23,9 +23,9 @@ import kotlinx.android.synthetic.main.activity_exploration_map_representation_tu
 import java.util.concurrent.TimeUnit
 
 /**
- * The tutorial for using ExplorationMap representation.
+ * The tutorial to extend an ExplorationMap.
  */
-class ExplorationMapRepresentationTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
+class MapExtensionTutorialActivity : TutorialActivity(), RobotLifecycleCallbacks {
 
     private var conversationBinder: ConversationBinder? = null
     // The QiContext provided by the QiSDK.
