@@ -5,7 +5,7 @@
 
 package com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.dynamicconcepts
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import kotlinx.android.synthetic.main.greeting_layout.view.*
 

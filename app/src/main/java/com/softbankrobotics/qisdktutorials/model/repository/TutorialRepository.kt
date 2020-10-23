@@ -99,6 +99,7 @@ class TutorialRepository {
                 tutorials.add(Tutorial(TutorialId.CHARACTERISTICS, R.string.people_characteristics, "people_characteristics", TutorialLevel.ADVANCED))
                 tutorials.add(Tutorial(TutorialId.EMOTION, R.string.emotion, "emotion", TutorialLevel.ADVANCED))
                 tutorials.add(Tutorial(TutorialId.DETECT_HUMANS_WITH_LOCALIZATION, R.string.detect_humans_with_localization, "detect_humans_with_localization", TutorialLevel.ADVANCED))
+                tutorials.add(Tutorial(TutorialId.EXTEND_MAP, R.string.extend_a_map, "extend_map", TutorialLevel.ADVANCED))
             }
         }
         return tutorials

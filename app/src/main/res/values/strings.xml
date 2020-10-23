@@ -38,6 +38,10 @@
     <string name="english">EN</string>
     <string name="japanese">JA</string>
 
+    <!-- ExplorationMap representation -->
+    <string name="start_mapping">Start mapping</string>
+    <string name="extend_map">Extend map</string>
+
     <!-- Tutorial names -->
     <string name="hello_human">Hello human</string>
     <string name="qichatbot">Listen and reply</string>
@@ -61,6 +65,7 @@
     <string name="enforce_tablet_reachability">Enforce tablet reachability</string>
     <string name="detect_humans_with_localization">Detect humans with localization</string>
     <string name="chat_locale">Mastering Chat locale</string>
+    <string name="extend_a_map">Extend a map</string>
 
     <!-- Categories -->
     <string name="categories_intro_sentence">Please tell me or select on the tablet which demo you want me to show you</string>

@@ -5,7 +5,7 @@
 
 package com.softbankrobotics.qisdktutorials.ui.categories
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import android.util.Log
 
 import com.aldebaran.qi.Future

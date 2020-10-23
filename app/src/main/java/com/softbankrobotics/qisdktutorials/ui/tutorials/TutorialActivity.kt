@@ -7,7 +7,7 @@ package com.softbankrobotics.qisdktutorials.ui.tutorials
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.annotation.LayoutRes
+import androidx.annotation.LayoutRes
 import android.view.View
 import android.view.ViewTreeObserver
 

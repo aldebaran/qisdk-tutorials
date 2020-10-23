@@ -31,6 +31,7 @@ import com.softbankrobotics.qisdktutorials.ui.tutorials.motion.lookat.LookAtTuto
 import com.softbankrobotics.qisdktutorials.ui.tutorials.motion.trajectory.TrajectoryTutorialActivity
 import com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.detecthumanswithlocalization.DetectHumansWithLocalizationTutorialActivity
 import com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.emotiondetection.EmotionTutorialActivity
+import com.softbankrobotics.qisdktutorials.ui.tutorials.motion.extendmap.MapExtensionTutorialActivity
 import com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.humanawareness.PeopleCharacteristicsTutorialActivity
 import com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.takepicture.TakePictureTutorialActivity
 import com.softbankrobotics.qisdktutorials.ui.tutorials.perceptions.touch.TouchTutorialActivity
@@ -81,6 +82,7 @@ internal class CategoriesRouter : CategoriesContract.Router {
             TutorialId.ANIMATION_LABEL -> AnimationLabelActivity::class.java
             TutorialId.DETECT_HUMANS_WITH_LOCALIZATION -> DetectHumansWithLocalizationTutorialActivity::class.java
             TutorialId.CHAT_LOCALE -> ChatLocaleTutorialActivity::class.java
+            TutorialId.EXTEND_MAP -> MapExtensionTutorialActivity::class.java
         }
     }
 }

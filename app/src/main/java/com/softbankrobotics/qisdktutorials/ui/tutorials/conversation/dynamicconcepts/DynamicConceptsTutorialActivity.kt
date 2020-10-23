@@ -6,7 +6,7 @@
 package com.softbankrobotics.qisdktutorials.ui.tutorials.conversation.dynamicconcepts
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.inputmethod.EditorInfo
 import com.aldebaran.qi.Consumer
 import com.aldebaran.qi.sdk.Qi
